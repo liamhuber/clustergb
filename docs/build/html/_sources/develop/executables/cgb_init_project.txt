@@ -1,0 +1,10 @@
+
+
+cgb_init_project.py
+===================
+
+.. automodule:: cgb_init_project
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

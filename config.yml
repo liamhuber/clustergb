@@ -1,0 +1,7 @@
+executables:
+  lammps: 'lmp_liammac_mpi'
+  mpi: 'mpirun'
+  voropp: 'voro++'
+version:
+  version: 'Nov17_paper_v1'
+# To disable mpi or voro capabilities, use an empty string: ''

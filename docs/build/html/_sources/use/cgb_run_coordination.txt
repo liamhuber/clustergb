@@ -1,0 +1,7 @@
+cgb_run_coordination.py
+=======================
+
+.. argparse::
+    :module: cgb_run_coordination
+    :func: _ret_parser
+    :prog: cgb_run_coordination

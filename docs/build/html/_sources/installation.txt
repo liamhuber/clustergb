@@ -1,0 +1,70 @@
+Installation
+============
+
+|project| has only been tested on Unix systems. Sorry, Windows.
+
+0) Environment
+--------------
+
+|project| was written for Python2.7 and uses a variety of Python packages. If you are already familiar with Python,
+simply ensure that your environment has all of the packages listed below. If you are unfamiliar with Python, you can
+download it for free from a variety of places, but I recommend an `Anaconda distribution
+<https://conda.io/docs/user-guide/install/index.html>`_. With Anaconda, any missing packages can be easily installed
+with
+
+.. code-block:: bash
+
+    conda install ${PACKAGE_NAME}
+
+All required Packages (most scientific installations of Python will already have these):
+
+    - ``argparse``
+    - ``logging``
+    - ``matplotlib`` (just for :ref:`use_interactive`)
+    - ``numpy``
+    - ``os``
+    - ``readline`` (just for :ref:`use_interactive`)
+    - ``rlcompleter`` (just for :ref:`use_interactive`)
+    - ``scipy``
+    - ``seaborn`` (just for :ref:`use_interactive`)
+    - ``shutil``
+    - ``sklearn`` (just for the :ref:`tutorial` project or, later, your own analysis)
+    - ``subprocess``
+    - ``time``
+    - ``yaml``
+
+The heavy-lifting of calculating energies and forces for |project| is done using LAMMPS_. LAMMPS_ is invoked as a
+separate subprocess, so you just need a regular LAMMPS_ executable, which can be built from the source code or, for
+some systems, downloaded pre-built `here <http://lammps.sandia.gov/download.html>`_. Most versions of LAMMPS_ should
+be fine, but |project| was tested using the 1 Jul 2016 release.
+
+If MPI runs on your machine, it can be used to accelerate the LAMMPS_ calculations by running them in parallel.
+
+Finally, Voronoi analysis (optional) is performed by calling |voro|_, which is also free to `download
+<http://math.lbl.gov/voro++/download/>`_.
+
+1) Download
+-----------
+
+If you have these docs, you probably already have the source code for |project|. If not, you can download it from
+`Github <https://github.com/liamhuber/clustergb>`_. Python is an interpreted language, so no special compilation is
+required, just add the folder containing |init_proj| etc. to your system PATH for easy use.
+
+.. |init_proj| replace:: ``cgb_init_proj.py``
+.. _init_proj: use/cgb_init_proj.html
+
+2) Configuration
+----------------
+
+In ``config.yml``, set the ``lammps``, (optionally) ``voro``, and (optionally) ``mpi`` fields to point to
+valid executables on your machine for LAMMPS_, |voro|_ and MPI, respectively.
+
+That's it, you're ready to go with |project|.
+
+
+.. _LAMMPS: http://lammps.sandia.gov
+.. |voro| replace:: Voro++
+.. _voro: http://math.lbl.gov/voro++/
+
+.. toctree::
+

@@ -1,0 +1,7 @@
+clustergb.voronoi
+=================
+
+.. automodule:: clustergb.voronoi
+    :members:
+    :undoc-members:
+    :show-inheritance:

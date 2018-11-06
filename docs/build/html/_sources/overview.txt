@@ -1,0 +1,642 @@
+Overview
+========
+
+|project| is a set of Python scripts designed to facilitate easy calculations of planar grain boundaries (GBs) using
+the Large-scale Atomic/Molecular Massively Parallel Simulator (LAMMPS_). In order to accommodate even low-symmetry
+boundaries, |project| uses vacuum clusters to eliminate the need for periodic boundary conditions.
+
+The user first begins a :class:`Project <clustergb.project.Project>` to specify a material (i.e. an empirical
+potential and a species it treats), then inside this :class:`Project <clustergb.project.Project>` creates a series of
+:class:`Jobs <clustergb.job.Job>`--one for each GB to be studied.
+
+Initializing a new :class:`Job <clustergb.job.Job>` generates a GB structure file with the requested GB character and
+(stochastically) minimized microscopic degrees of freedom. From here various ``cgb_run_*`` scripts can be called from
+either the :class:`Job <clustergb.job.Job>` or :class:`Project <clustergb.project.Project>` level of the hierarchy to
+calculate properties of a particular GB or all the GBs in the project, respectively. An important example is
+calculating the segregation energy of a solute species to each site at the GB, which can be done with the
+:ref:`use_mono` script.
+
+|project| can accommodate any macroscopic GB character, but currently only works for single-species host structures
+with FCC or BCC crystal structure, and relies on LAMMPS_ with
+`Embedded Atom Method <http://lammps.sandia.gov/doc/pair_eam.html>`_ potentials with "alloy" or "Finnis-Sinclair"
+formatting.
+
+If you are instead interested in GB structures *with* periodic boundary conditions, please check out oekosheri's
+`GB_code <https://github.com/oekosheri/GB_code>`_.
+
+.. _LAMMPS: http://lammps.sandia.gov
+
+
+Science
+-------
+
+Each GB is constructed in the yz-plane of a large vacuum cluster by choosing the GB macroscopic character and
+minimizing its microscopic degrees of freedom. The GB character can be specified using either the shared axis
+:math:`\langle{} ijk \rangle{}`, the relative misorientation about this axis :math:`\theta` (in degrees), and the GB normal
+plane :math:`(lmn)` (for the left grain), XOR by explicitly providing two rotation matrices, one for each grain (as in
+:ref:`Olmsted et al., Acta Mat 57 (2009) <olmsted>`).
+
+.. note::
+
+    :math:`\langle ijk \rangle` and :math:`(lmn)` do NOT need to have integer values! GBs in |project| are not bound
+    by periodic boundary conditions, so choose any values you'd like. However, if the boundary you choose doesn't repeat
+    periodically inside the cluster, note that you're simply sampling some portion of a larger boundary.
+
+In the former case, the appropriate Bravais vectors are found for each grain by misorienting an initial set of Bravais
+vectors (according to the crystal type) by :math:`\theta / 2` degrees in either direction about the vector
+:math:`\langle{} ijk \rangle{}`. Both sets of vectors are then rotated in tandem until :math:`(lmn)` in the coordinates
+of the first set point along the x-axis of the original, global coordinates. In the latter case, the two rotation
+matrices are applied to the original Bravais vectors directly.
+
+Once the Bravais vectors have been found, two spheres of atoms are constructed and the left half of one (along the
+x-axis) is taken as the first grain, and the right half of the other is the second grain. These are merged into a
+single cluster with a flat GB in the yz-plane.
+
+Next, the microscopic degrees of freedom are minimized by a combination of a stochastic search in translation+merging
+space, annealing, and force minimization.
+
+Because |project| uses a cluster geometry and is not restricted to GBs with high symmetry, we have no guarantee that
+the `displacement shift complete lattice <https://www.tf.uni-kiel.de/matwis/amat/def_en/kap_7/backbone/r7_1_3.html>`_
+will be readily available, thus GB interfacial energy minimization by translation of one grain with respect to another
+is performed in a stochastic way using the `simultateous perturbation stochastic approximation (SPSA)
+<https://en.wikipedia.org/wiki/Simultaneous_perturbation_stochastic_approximation>`_. As the name suggests, this
+simply minimizes the objective (GB energy) in a particular space (three translations, and a merge distance within which
+atoms from opposite grains are merged).
+
+For computational efficiency, SPSA minimization is decoupled from the annealing process; SPSA generates a new GB
+cluster with some translations and merge distance and simply minimizes the forces before evaluating the energy. The
+best found structure is kept.
+
+Using this best found structure, the second minimization step is an anneal-quench-minimize process. For a specified
+amount of time, the cluster is run using molecular dynamics (MD) at the specified temperature. Several times through
+this annealing, the simulation will be forked. Before continuing with MD from the fork point, a new MD run is performed
+using friction to suck heat out of the system, and finally the force is minimized using the conjugate gradient scheme.
+The forked quenching process that gives the lowest GB energy is stored.
+
+Details of this optimization process can be chosen when setting up a `new <use/cgb_init_project.html>`_
+:class:`Project <clustergb.project.Project>`.
+
+Finally, the result is a vacuum cluster of atoms containing a GB of the requested character with microscopic degrees of
+freedom stochastically optimized to have GB energy near the global minima. More expensive optimization parameters (more
+SPSA trials, longer annealing, etc) are more likely to give a structure closer to the global minima. It is possible
+that the annealing process will have introduced a small amount of faceting in the boundary, but unless you use
+exceptionally long annealing times and high temperatures, the GB should be relatively planar and sit in the yz-plane.
+
+The most important free parameters in this computational framework are the radius of the cluster, and the radius of a
+smaller sub-sphere with the same center. Only atoms inside this smaller subsphere are used when calculating GB
+energies, and a `common neighbour analysis <http://lammps.sandia.gov/doc/compute_cna_atom.html>`_ search for GB sites
+to consider is restricted to this sub-sphere. If the difference between these inner and outer radii is too small, GB
+interfacial energy and site properties (e.g. solute segregation energy) can be erroneously impacted by surface effects.
+If the difference in radii is too large, the calculation becomes needlessly expensive.
+
+
+Architecture
+------------
+
+In addition to writing human-readable structure and log files, the main forms of data persistence for |project| are
+:class:`Project <clustergb.project.Project>` and :class:`Job <clustergb.job.Job>` Python objects, which are saved using
+`pickle <https://docs.python.org/3/library/pickle.html>`_.
+
+A reference diagram of the object structure is provided below. Executables are represented by trapezoids, the
+:class:`Project <clustergb.project.Project>` and :class:`Jobs <clustergb.job.Job>` classes by hexagons, Python
+|namespaces| by ovals, and all other data types by boxes. The bold line indicates that parameters ``par`` for
+:class:`Jobs <clustergb.job.Job>` are simply copied from the parent :class:`Project <clustergb.project.Project>`, and
+dotted lines indicate the result of an executable (or one of its flags). Colour is used selectively to guide the eye.
+Large boxes group together related nodes and are labeled by their access path.
+
+.. |namespaces| replace:: ``Namespaces``
+.. _namespaces: https://docs.python.org/2/library/argparse.html#argparse.Namespace
+
+
+.. graphviz::
+
+    digraph {
+
+        rankdir="LR"
+        compound = true
+        nodesep = 0.05
+        node[height=0.2]
+
+        /* *** Edge definitions *** */
+
+        /* project class structure */
+        subgraph cluster_proj {
+            label="Project"
+            proj -> psave [dir=none]
+            proj -> pver [dir=none]
+            proj -> pname [dir=none]
+            proj -> cnmes [dir=none]
+            proj -> ploc [dir=none]
+
+            proj -> ppar [dir=none]
+            subgraph cluster_ppar {
+                label="Project.par"
+
+                ppar -> chem [dir=none, lhead=sg_chem]
+                subgraph cluster_chem {
+                    label = "Project.par.chem"
+                    chem -> host [dir=none]
+                    chem -> potl [dir=none]
+                    chem -> sols [dir=none]
+                }
+
+                ppar -> xl [dir=none]
+                subgraph cluster_xl {
+                    label = "Project.par.xl"
+                    xl -> brav [dir=none]
+                    xl -> base [dir=none]
+                    xl -> type [dir=none]
+                    xl -> len [dir=none]
+                    xl -> nnd [dir=none]
+                    xl -> snnd [dir=none]
+                }
+
+                ppar -> clust [dir=none]
+                subgraph cluster_clust {
+                    label = "Project.par.cluster"
+                    clust -> rad [dir=none]
+                    clust -> rin [dir=none]
+                    clust -> rout [dir=none]
+                    clust -> vac [dir=none]
+                    clust -> size [dir=none]
+                    clust -> cent [dir=none]
+                    clust -> comm [dir=none]
+                }
+
+                ppar -> newt [dir=none]
+                subgraph cluster_newt {
+                    label = "Project.newton"
+                    newt -> prec [dir=none]
+                    newt -> nmaxs [dir=none]
+                    newt -> nverb [dir=none]
+                }
+
+                ppar -> spsa [dir=none]
+                subgraph cluster_spsa {
+                    label = "Project.par.spsa"
+                    spsa -> probs [dir=none]
+                    spsa -> gamma [dir=none]
+                    spsa -> steps [dir=none]
+                    spsa -> stepo [dir=none]
+                    spsa -> alpha [dir=none]
+                    spsa -> convu [dir=none]
+                    spsa -> convj [dir=none]
+                    spsa -> mom [dir=none]
+                    spsa -> smaxs [dir=none]
+                    spsa -> trials [dir=none]
+                    spsa -> sverb [dir=none]
+                    spsa -> merge [dir=none]
+                }
+
+                ppar -> lammps [dir=none]
+                subgraph cluster_lammps {
+                    label = "Project.par.lammps"
+                    lammps -> fconv [dir=none]
+                    lammps -> lmaxs [dir=none]
+                    lammps -> tstep [dir=none]
+                    lammps -> ostep [dir=none]
+
+                    lammps -> anneal [dir=none]
+                    subgraph cluster_anneal {
+                        label = "Project.par.lammps.anneal"
+                        anneal -> atime [dir=none]
+                        anneal -> temp [dir=none]
+                        anneal -> itemp [dir=none]
+                        anneal -> asteps [dir=none]
+                        anneal -> lang [dir=none]
+                    }
+
+                    lammps -> quench [dir=none]
+                    subgraph cluster_quench {
+                        label = "Project.par.lammps.quench"
+                        quench -> samps [dir=none]
+                        quench -> damp [dir=none]
+                        quench -> qtime [dir=none]
+                        quench -> qsteps [dir=none]
+                    }
+                }
+
+                ppar -> pout [dir=none]
+                subgraph cluster_out {
+                    label = "Project.par.output"
+                    pout -> decomp [dir=none]
+                }
+            }
+
+            proj -> bulk [dir=none]
+            subgraph cluster_bulk {
+                label = "Project.bulk"
+                bulk -> centid [dir=none]
+                bulk -> btherm [dir=none]
+            }
+
+            proj -> bulkx [dir=none]
+            subgraph cluster_bulkx {
+                label = "Project.bulk_${SOLUTE}"
+                bulkx -> xtherm [dir=none]
+                bulkx -> xstrain [dir=none]
+            }
+        }
+
+        /* job class structure */
+
+        subgraph cluster_job {
+            label = "Job"
+            job -> jsave [dir=none]
+            job -> jproj [dir=none]
+            job -> jver [dir=none]
+            job -> jproc [dir=none]
+            job -> jname [dir=none]
+            job -> jloc [dir=none]
+
+            job -> jpar [dir=none]
+
+            jpar -> jout [dir=none]
+            subgraph cluster_jpar {
+                label="Job.par"
+                subgraph cluster_jout {
+                    label = "Job.par.output"
+                    jout -> ltp [dir=none]
+                    jout -> ldp [dir=none]
+                }
+
+                jpar -> pargb [dir=none]
+                subgraph cluster_pargb {
+                    label="Job.par.gb"
+                    pargb -> miso [dir=none]
+                    pargb -> shar [dir=none]
+                    pargb -> norm [dir=none]
+                    /* pargb -> symm [dir=none] */
+                }
+            }
+
+            job -> gb [dir=none]
+            subgraph cluster_jgb {
+                label = "Job.gb"
+                gb -> aqe [dir=none]
+                gb -> b1 [dir=none]
+                gb -> b2 [dir=none]
+                gb -> gben [dir=none]
+                gb -> nnbl [dir=none]
+                gb -> nin [dir=none]
+                gb -> nout [dir=none]
+                gb -> nbal [dir=none]
+                gb -> spsate [dir=none]
+                gb -> gtherm [dir=none]
+            }
+
+            job -> res [dir=none]
+            subgraph cluster_res {
+                label = "Job.results"
+                res -> bondo [dir=none]
+                subgraph cluster_bondo {
+                    label = "Job.results.bond_order"
+                    bondo -> qn [dir=none]
+                }
+                res -> coord [dir=none]
+                subgraph cluster_coord {
+                    label = "Job.results.coordination"
+                    coord -> ccent [dir=none]
+                    coord -> csmear [dir=none]
+                    coord -> cnum [dir=none]
+                    coord -> cclose [dir=none]
+                }
+                res -> mono [dir=none]
+                subgraph cluster_mono {
+                    label = "Job.results.monosegregation"
+                    mono -> monox [dir=none]
+                    subgraph cluster_monox {
+                        label = "Job.results.monosegregation.${SOLUTE}."
+                        monox -> men [dir=none]
+                        monox -> mcen [dir=none]
+                        monox -> mmen [dir=none]
+                        monox -> mcoord [dir=none]
+                        monox -> mvoro [dir=none]
+                    }
+                }
+                res -> voro [dir=none]
+                    subgraph cluster_voro {
+                    label = "Job.results.voronoi"
+                    voro -> varea [dir=none]
+                    voro -> velen [dir=none]
+                    voro -> vedge [dir=none]
+                    voro -> vface [dir=none]
+                    voro -> voff [dir=none]
+                    voro -> vvert [dir=none]
+                    voro -> vvol [dir=none]
+                }
+            }
+        }
+
+        /* job-project connections */
+        ppar -> jpar [style=bold]
+
+        /* executable impacts */
+
+        init_proj -> proj [style=dotted]
+        init_proj -> decompf [dir=none]
+        decompf -> decomp [style=dotted]
+        decomp -> mcen [style=dotted]
+        decomp -> mmen [style=dotted]
+        decomp -> xstrain [style=dotted]
+
+        init_job -> job [style=dotted]
+
+        run_bondo -> bondo [style=dotted, color=red]
+
+        run_coord -> coord [style=dotted, color=green]
+
+        run_mono -> mono [style=dotted, color=orange]
+        run_mono -> solvoro [dir=none]
+        run_mono -> solcoord [dir=none]
+        solvoro -> mvoro [style=dotted, color=blue]
+        solcoord -> mcoord [style=dotted, color=green]
+
+        run_voro -> voro [style=dotted, color=blue]
+
+        /* fine-tuning */
+
+        {rank = same; init_proj; init_job; run_bondo; run_coord; run_mono; run_voro}
+
+
+        /* *** Node definitions *** */
+
+        /* project class */
+        proj [shape=polygon, sides=6, label="Project",
+         tooltip="Projects store parameters which will be used across many individual grain boundaries (i.e. Jobs)."]
+
+        psave [shape=box, label="proj_save_name",
+         tooltip="File name for pickles of this object."]
+        pver   [shape=box, label="version",
+         tooltip="Version of code object was created with."]
+        pname  [shape=box, label="name",
+         tooltip="Name of the Project."]
+        cnmes [shape=box, label="child_names",
+         tooltip="A list of the names of Job objects lower in the hierarchy."]
+        ploc  [shape=box, label="location",
+         tooltip="Path to where the Project is stored."]
+
+        ppar  [shape=ellipse, label="par",
+         tooltip="A collection of parameters for running cluster calculations."]
+
+        chem   [shape=ellipse, label="chem",
+         tooltip="A collection of parameters for the chemistry."]
+        host    [shape=box, label="host",
+         tooltip="Chemical symbol for host species."]
+        potl    [shape=box, label="potential",
+         tooltip="Path to the LAMMPS potential to use."]
+        sols    [shape=box, label="solutes",
+         tooltip="List of chemical symbols for the solute species (if any)."]
+
+        xl     [shape=ellipse, label="xl",
+         tooltip="A collection of parameters for the crystal structure."]
+        brav    [shape=box, label="bravais",
+         tooltip="Bravais vectors for the crystal lattice unit cell."]
+        base    [shape=box, label="basis",
+         tooltip="Direct-coordinate basis for atoms in the unit cell."]
+        type    [shape=box, label="type",
+         tooltip="Short-hand for the crystal lattice name."]
+        len     [shape=box, label="length",
+         tooltip="Length of the lattice vector."]
+        nnd     [shape=box, label="nn_dist",
+         tooltip="First-nearest neighbour distance for the lattice."]
+        snnd    [shape=box, label="snn_dist",
+         tooltip="Second-nearest neighbour distance for the lattice."]
+
+        clust  [shape=ellipse, label="cluster",
+         tooltip="A collection of variables for cluster geometry."]
+        rad     [shape=box, label="radius",
+         tooltip="How big the cluster is."]
+        rin     [shape=box, label="inner_r",
+         tooltip="Radius of the sub-sphere used for calculating GB energies and finding GB sites."]
+        rout    [shape=box, label="outer_r",
+         tooltip="A slightly larger sub-sphere, for moving a few extra atoms to the head structure file."]
+        vac     [shape=box, label="vacuum",
+         tooltip="The minimum vacuum between periodic images of the cluster."]
+        size    [shape=box, label="size",
+         tooltip="Edge length of the cubic simulation box."]
+        cent    [shape=box, label="center",
+         tooltip="Coordinates for the center of the simulation box."]
+        comm    [shape=box, label="comment",
+         tooltip="Header comment for structure files describing the cluster geometry."]
+
+        newt   [shape=ellipse, label="newton",
+         tooltip="A collection of parameters for running Newton's method to find grains' Bravais."]
+        prec    [shape=box, label="precision",
+         tooltip="Numeric precision limit, mostly for L2-norm difference determining whether two vectors are the " +
+                 "same. Used in gradient descent when looking for GB bravais vectors."]
+        nmaxs   [shape=box, label="max_steps",
+         tooltip="Maximum number of gradient descent steps to use in search for rotation angles when looking for GB " +
+                 "bravais vectors."]
+        nverb   [shape=box, label="verbosity",
+         tooltip="Verbosity interval of the gradient descent search for rotation angles."]
+
+        spsa   [shape=ellipse, label="spsa",
+         tooltip="A collection of parameters for running SPSA to minimize microscopic DoF."]
+        probs   [shape=box, label="probe_size",
+         tooltip="How far to step when evaluating the simultaneous perturbation for a gradient."]
+        gamma   [shape=box, label="gamma",
+         tooltip="The power at which probe size decays with iterations."]
+        steps   [shape=box, label="step_size",
+         tooltip="Multiplier for how far to follow the gradient."]
+        stepo   [shape=box, label="step_offset",
+         tooltip="Iteration offset for damping the decay of the step size."]
+        alpha   [shape=box, label="alpha",
+         tooltip="The power at which the step size decays with iterations."]
+        convu   [shape=box, label="conv_u",
+         tooltip="The maximum change in (translation, merge)-space between consecutive minima to be considered " +
+                 "converged."]
+        convj   [shape=box, label="conv_J",
+         tooltip="The maximum change in unrelaxed GB energy between consecutive minima to be considered converged."]
+        mom     [shape=box, label="momentum",
+         tooltip="Momenta for the stochastic gradient descent."]
+        smaxs   [shape=box, label="max_steps",
+         tooltip="Maximum number of iterations to use."]
+        trials  [shape=box, label="trials",
+         tooltip="Number of (semi)randomly initialized SPSA trials to perform."]
+        sverb   [shape=box, label="verbosity",
+         tooltip="Flag to activate verbose output for the SPSA search."]
+        merge   [shape=box, label="merge_limits",
+         tooltip="Max and min merge distances used in minimization of microscopic DoF."]
+
+        lammps [shape=ellipse, label="lammps",
+         tooltip="A collection of parameters for LAMMPS runs."]
+        fconv   [shape=box, label="force_convergence",
+         tooltip="Force convergence for all LAMMPS minimizations."]
+        lmaxs   [shape=box, label="max_steps",
+         tooltip="Max steps for LAMMPS energy minimization."]
+        tstep   [shape=box, label="timestep",
+         tooltip="Timestep for LAMMPS MD."]
+        ostep   [shape=box, label="omega_step",
+         tooltip="The most steps any LAMMPS run will ever have."]
+        anneal  [shape=ellipse, label="annealing",
+         tooltip="A collection of parameters for annealing."]
+        atime    [shape=box, label="time",
+         tooltip="How long to anneal for."]
+        temp     [shape=box, label="temp",
+         tooltip="How hot to anneal at."]
+        itemp    [shape=box, label="init_temp",
+         tooltip="Temperature for initializing velocities."]
+        asteps   [shape=box, label="steps",
+         tooltip="Number of LAMMPS steps to anneal for."]
+        lang     [shape=box, label="langevin",
+         tooltip="Langevin damping parameter to use for thermostat while annealing."]
+        quench  [shape=ellipse, label="quenching",
+         tooltip="A collection of parameters for quenching."]
+        samps    [shape=box, label="samples",
+         tooltip="Number of times to sample the annealed state with a quench and minimization."]
+        damp     [shape=box, label="damping",
+         tooltip="Strength of quench (friction: force/velocity)."]
+        qtime    [shape=box, label="time",
+         tooltip="Duration of quench."]
+        qsteps   [shape=box, label="steps",
+         tooltip="Number of LAMMPS steps for the quench."]
+
+        pout    [shape=ellipse, label="output",
+         tooltip="A space for parameters that control the output."]
+        decomp  [shape=box, label="decompose",
+         tooltip="Flag to run pure-host energy evaluations on solute-relaxed structures for decomposition of " +
+                 "segregation energies into 'mechanical' and 'chemical' contributions."]
+
+        bulk  [shape=ellipse, label="bulk",
+         tooltip="A space for collecting data from a run of the pure bulk structure."]
+        centid [shape=box, label="central_id",
+         tooltip="ID of the center-most atom."]
+        btherm [shape=ellipse, label="thermo_data",
+         tooltip="Thermodynamic data for the bulk cluster run parsed from the LAMMPS log."]
+
+        bulkx [shape=ellipse, label="bulk_${SOLUTE}",
+         tooltip="Space(s) for collecting data from runs of the bulk-like structure with a single ${SOLUTE} species " +
+                 "substitutional defect."]
+        xtherm [shape=ellipse, label="thermo_data",
+          tooltip="Thermodynamic data for the bulk cluster run with a single ${SOLUTE} atom in the center of the " +
+                  "cluster parsed from the LAMMPS log."]
+        xstrain [shape=ellipse, label="sol_strain",
+          tooltip="Thermodynamic data from a static calculation of the pure-bulk cluster frozen in the single-solute " +
+                  "relaxed configuration parsed from the LAMMPS log."]
+
+        /* job class */
+        job  [shape=polygon, sides=6, label="Job",
+          tooltip="For calculations on a particular GB cluster."]
+
+        jsave [shape=box, label="job_save_name",
+         tooltip="File name for pickles of this object."]
+        jproj [shape=box, label="project",
+         tooltip="The `Project` this job belongs to."]
+        jver  [shape=box, label="version",
+         tooltip="Version of code object was created with."]
+        jproc [shape=box, label="procs",
+         tooltip="How many processors to call LAMMPS with."]
+        jname [shape=box, label="name",
+         tooltip="Name of the Job."]
+        jloc  [shape=box, label="location",
+         tooltip="Path to where the Job is stored."]
+
+        jpar  [shape=ellipse, label="par",
+          tooltip="A collection of variables for running a calculation, most of which are pulled from the parent " +
+                  "clustergb.project.Project object."]
+        pargb  [shape=ellipse, label="gb",
+         tooltip="A collection of GB macroscopic DoF parameters."]
+        miso   [shape=box, label="misorientation",
+         tooltip="Misorientation between the two grains."]
+        shar   [shape=box, label="shared",
+         tooltip="Shared axis (in multiples of the bravais vectors) of the two grains."]
+        norm   [shape=box, label="normal",
+         tooltip="Grain boundary normal axis (in Bravais vectors) of one grain."]
+        /* symm [shape=box, label="symmetric", */
+        /* tooltip="Whether the boundary should be symmetric (opposite normals calculated using misorientation)."] */
+        /* this is not exposed in init_job right now */
+        jout [shape=ellipse, label="output",
+          tooltip = "A space for parameters that control the output."]
+        ltp    [shape=box, label="thermo_period",
+         tooltip="How many steps to go between writing LAMMPS thermodynamic data."]
+        ldp    [shape=box, label="dump_period",
+         tooltip="How many steps to go between dumpy LAMMPS .xyz data."]
+
+
+        gb    [shape=ellipse, label="gb",
+          tooltip="A space for storing results from the construction and microscopic optimization of the GB."]
+        aqe    [shape=box, label="annealing_quench_energies",
+         tooltip="Interfacial energies from each quench of the annealing process."]
+        b1     [shape=box, label="brav1",
+         tooltip="Bravais lattice for the first grain."]
+        b2     [shape=box, label="brav2",
+         tooltip="Bravais lattice for the second grain."]
+        gben   [shape=box, label="gb_energy",
+         tooltip="The interfacial energy (in mJ/m^2)."]
+        nnbl   [shape=box, label="natoms_nonbulklike",
+         tooltip="The number of atoms inside `self.par.cluster.r_inner` with non-bulklike common neighbour analysis " +
+                 "values."]
+        nin    [shape=box, label="natoms_inner",
+         tooltip="The number of bulklike atoms inside `self.par.cluster.r_inner`."]
+        nout   [shape=box, label="natoms_outer",
+         tooltip="The number of atoms beyond `self.par.cluster.r_inner` but inside `self.par.cluster.r_outer`."]
+        nbal   [shape=box, label="natoms_balance",
+         tooltip="The remaining number of atoms in the cluster."]
+        spsate [shape=box, label="spsa_trial_energies",
+         tooltip="Interfacial energies from each SPSA minimization trial."]
+        gtherm [shape=ellipse, label="thermo_data",
+         tooltip="Collection of thermodynamic properties for the final, relaxed grain boundary."]
+
+        res [shape=ellipse, label="results", tooltip="An empty container for other scripts to add results to."]
+
+        bondo [shape=ellipse, label="bond_order", color=red,
+          tooltip="The bond-orientational order parameters of each GB site"]
+        qn [shape=box, label="Q${N}", tooltip="The per-site bond-order orientation parameters"]
+
+        coord [shape=ellipse, label="coordination", color=green,
+          tooltip="A space for the results of Fermi-smeared coordination analysis."]
+        ccent [shape=box, label="center", tooltip="Distance for half contribution."]
+        cnum [shape=box, label="number", tooltip="Smeared coordination numbers."]
+        cclose [shape=box, label="closest", tooltip="Distances to closest neighbour."]
+        csmear [shape=box, label="smearing", tooltip="Smearing width."]
+
+        mono [shape=ellipse, label="monosegregation", color=orange,
+          tooltip="A space for storing segregation results of dilute solutes."]
+        monox [shape=ellipse, label="${SOL}",
+          tooltip="One space for each solute species."]
+        men [shape=box, label="energy", tooltip="Per-site solute segregation energies."]
+        mcen [shape=box, label="chemical_energy", tooltip="'Chemical' segregation energy component."]
+        mmen [shape=box, label="mechanical_energy", tooltip="'Mechanical' segregation energy component."]
+        mcoord [shape=ellipse, label="coordination", color=green,
+          tooltip="A space for the coordination analysis of relaxed solute sites."]
+        mvoro [shape=ellipse, label="voronoi", color=blue,
+          tooltip="A space for the Voronoi analysis of relaxed solute sites."]
+
+        voro [shape=ellipse, label="voronoi", color=blue,
+          tooltip="A space for the results of Voronoi analysis."]
+        varea [shape=box, label="area", tooltip="Area of Voronoi cell."]
+        velen [shape=box, label="edge_length", tooltip="Length of all edges of the Voronoi cell."]
+        vedge [shape=box, label="edges", tooltip="Number of Voronoi cell edges."]
+        vface [shape=box, label="faces", tooltip="Number of Voronoi cell faces."]
+        voff [shape=box, label="offset",
+          tooltip="Offset of the Voronoi centroid from the atom for which it was constructed."]
+        vvert [shape=box, label="vertices", tooltip="Number of Voronoi cell vertices."]
+        vvol [shape=box, label="volume", tooltip="Per-site Voronoi volume."]
+
+        /* executables */
+        init_proj [shape=invhouse, label="cgb_init_project.py",
+          tooltip="Sets up a Project to host multiple GBs (Jobs) using a particular potential all treated in a " +
+                  "consistent manner."]
+        decompf [shape=box, label="decompose", tooltip="Trigger decomposition calculations."]
+
+        init_job [shape=invhouse, label="cgb_init_job.py",
+          tooltip="Initialize a cluster containing a GB with particular macroscopic character and minimize the " +
+                  "microscopic degrees of freedom according to parameters from the parent Project."]
+
+        run_bondo [shape=invhouse, label="cgb_run_bond_orientational_order.py", color=red,
+          tooltip="Calculate the bond orientational order parameters for each GB site at a particular boundary."]
+
+        run_coord [shape=invhouse, label="cgb_run_coordination.py", color=green,
+          tooltip="Calculate the Fermi-smeared coordination number of each GB site."]
+
+        run_mono [shape=invhouse, label="cgb_run_monosegregation.py", color=orange,
+          tooltip="Calculate the segregation energy of each solute to each GB site."]
+        solvoro [shape=box, label="solute-voronoi", color=blue,
+          tooltip="Calculate Voronoi properties of relaxed solute sites."]
+        solcoord [shape=box, label="solute-coordination", color=green,
+          tooltip="Calculate coordination data for relaxed solute sites."]
+
+        run_voro [shape=invhouse, label="cgb_run_voronoi.py", color=blue
+          tooltip="Calculate the Voronoi volume and other Voronoi features for each GB site."]
+    }

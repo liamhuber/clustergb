@@ -1,0 +1,12 @@
+FAQ
+===
+
+**Why does |project| call executables instead of, e.g. compiling LAMMPS as a library and running everything in Python,
+wouldn't that be faster?**
+
+Yes, it would almost certainly be faster! This is tentatively planned for the future. On a first pass, |project| was
+optimized for ease of use rather than computational efficiency, and having access to a copy of LAMMPS is a lot more
+likely than having access to LAMMPS compiled as a library.
+
+.. toctree::
+

@@ -1,0 +1,127 @@
+<map id="%3" name="%3">
+<area shape="poly" id="node1" title="Projects store parameters which will be used across many individual grain boundaries (i.e. Jobs)." alt="" coords="579,2513,554,2488,504,2488,479,2513,504,2539,554,2539"/>
+<area shape="rect" id="node2" title="File name for pickles of this object." alt="" coords="642,2498,756,2529"/>
+<area shape="rect" id="node3" title="Version of code object was created with." alt="" coords="663,2462,735,2493"/>
+<area shape="rect" id="node4" title="Name of the Project." alt="" coords="663,2615,735,2646"/>
+<area shape="rect" id="node5" title="A list of the names of Job objects lower in the hierarchy." alt="" coords="652,2579,746,2610"/>
+<area shape="rect" id="node6" title="Path to where the Project is stored." alt="" coords="663,2543,735,2574"/>
+<area shape="poly" id="node7" title="A collection of parameters for running cluster calculations." alt="" coords="735,1721,733,1715,728,1709,720,1704,710,1701,699,1700,688,1701,678,1704,670,1709,665,1715,663,1721,665,1728,670,1734,678,1739,688,1742,699,1743,710,1742,720,1739,728,1734,733,1728"/>
+<area shape="poly" id="node62" title="A space for collecting data from a run of the pure bulk structure." alt="" coords="735,2419,733,2412,728,2406,720,2401,710,2398,699,2397,688,2398,678,2401,670,2406,665,2412,663,2419,665,2426,670,2432,678,2436,688,2439,699,2440,710,2439,720,2436,728,2432,733,2426"/>
+<area shape="poly" id="node65" title="Space(s) for collecting data from runs of the bulk&#45;like structure with a single ${SOLUTE} species substitutional defect." alt="" coords="1163,2484,1158,2477,1145,2471,1125,2467,1100,2464,1072,2462,1044,2464,1019,2467,999,2471,986,2477,982,2484,986,2491,999,2497,1019,2502,1044,2505,1072,2506,1100,2505,1125,2502,1145,2497,1158,2491"/>
+<area shape="poly" id="node8" title="A collection of parameters for the chemistry." alt="" coords="905,2219,904,2212,898,2206,890,2201,880,2198,869,2197,857,2198,847,2201,839,2206,834,2212,832,2219,834,2226,839,2232,847,2236,857,2239,869,2240,880,2239,890,2236,898,2232,904,2226"/>
+<area shape="poly" id="node12" title="A collection of parameters for the crystal structure." alt="" coords="905,1996,903,1989,898,1983,890,1979,880,1976,869,1974,857,1976,847,1979,839,1983,834,1989,833,1996,834,2003,839,2009,847,2014,857,2017,869,2018,880,2017,890,2014,898,2009,903,2003"/>
+<area shape="poly" id="node19" title="A collection of variables for cluster geometry." alt="" coords="910,1721,908,1715,902,1709,893,1704,881,1701,869,1700,856,1701,844,1704,835,1709,829,1715,827,1721,829,1728,835,1734,844,1739,856,1742,869,1743,881,1742,893,1739,902,1734,908,1728"/>
+<area shape="poly" id="node27" title="A collection of parameters for running Newton&#39;s method to find grains&#39; Bravais." alt="" coords="913,1499,911,1492,904,1486,895,1481,882,1478,869,1477,855,1478,843,1481,833,1486,826,1492,824,1499,826,1506,833,1512,843,1516,855,1519,869,1520,882,1519,895,1516,904,1512,911,1506"/>
+<area shape="poly" id="node31" title="A collection of parameters for running SPSA to minimize microscopic DoF." alt="" coords="905,1172,903,1165,898,1159,890,1155,880,1152,869,1150,857,1152,847,1155,839,1159,834,1165,833,1172,834,1179,839,1185,847,1190,857,1193,869,1194,880,1193,890,1190,898,1185,903,1179"/>
+<area shape="poly" id="node44" title="A collection of parameters for LAMMPS runs." alt="" coords="916,789,913,783,907,777,896,772,883,769,869,768,854,769,841,772,830,777,824,783,821,789,824,796,830,802,841,807,854,810,869,811,883,810,896,807,907,802,913,796"/>
+<area shape="poly" id="node60" title="A space for parameters that control the output." alt="" coords="909,212,907,205,901,199,892,195,881,192,869,190,856,192,845,195,836,199,830,205,828,212,830,219,836,225,845,230,856,233,869,234,881,233,892,230,901,225,907,219"/>
+<area shape="poly" id="node75" title="A collection of variables for running a calculation, most of which are pulled from the parent clustergb.project.Project object." alt="" coords="905,2920,903,2913,898,2907,890,2903,880,2900,869,2898,857,2900,847,2903,839,2907,834,2913,833,2920,834,2927,839,2933,847,2938,857,2941,869,2942,880,2941,890,2938,898,2933,903,2927"/>
+<area shape="rect" id="node9" title="Chemical symbol for host species." alt="" coords="1036,2255,1108,2286"/>
+<area shape="rect" id="node10" title="Path to the LAMMPS potential to use." alt="" coords="1036,2219,1108,2250"/>
+<area shape="rect" id="node11" title="List of chemical symbols for the solute species (if any)." alt="" coords="1036,2183,1108,2214"/>
+<area shape="rect" id="node13" title="Bravais vectors for the crystal lattice unit cell." alt="" coords="1036,2089,1108,2119"/>
+<area shape="rect" id="node14" title="Direct&#45;coordinate basis for atoms in the unit cell." alt="" coords="1036,2053,1108,2083"/>
+<area shape="rect" id="node15" title="Short&#45;hand for the crystal lattice name." alt="" coords="1036,2017,1108,2047"/>
+<area shape="rect" id="node16" title="Length of the lattice vector." alt="" coords="1036,1981,1108,2011"/>
+<area shape="rect" id="node17" title="First&#45;nearest neighbour distance for the lattice." alt="" coords="1036,1945,1108,1975"/>
+<area shape="rect" id="node18" title="Second&#45;nearest neighbour distance for the lattice." alt="" coords="1036,1909,1108,1939"/>
+<area shape="rect" id="node20" title="How big the cluster is." alt="" coords="1036,1634,1108,1665"/>
+<area shape="rect" id="node21" title="Radius of the sub&#45;sphere used for calculating GB energies and finding GB sites." alt="" coords="1036,1598,1108,1629"/>
+<area shape="rect" id="node22" title="A slightly larger sub&#45;sphere, for moving a few extra atoms to the head structure file." alt="" coords="1036,1814,1108,1845"/>
+<area shape="rect" id="node23" title="The minimum vacuum between periodic images of the cluster." alt="" coords="1036,1778,1108,1809"/>
+<area shape="rect" id="node24" title="Edge length of the cubic simulation box." alt="" coords="1036,1742,1108,1773"/>
+<area shape="rect" id="node25" title="Coordinates for the center of the simulation box." alt="" coords="1036,1706,1108,1737"/>
+<area shape="rect" id="node26" title="Header comment for structure files describing the cluster geometry." alt="" coords="1035,1670,1109,1701"/>
+<area shape="rect" id="node28" title="Numeric precision limit, mostly for L2&#45;norm difference determining whether two vectors are the same. Used in gradient descent when looking for GB bravais vectors." alt="" coords="1035,1503,1109,1534"/>
+<area shape="rect" id="node29" title="Maximum number of gradient descent steps to use in search for rotation angles when looking for GB bravais vectors." alt="" coords="1031,1467,1113,1498"/>
+<area shape="rect" id="node30" title="Verbosity interval of the gradient descent search for rotation angles." alt="" coords="1035,1431,1109,1462"/>
+<area shape="rect" id="node32" title="How far to step when evaluating the simultaneous perturbation for a gradient." alt="" coords="1031,1121,1113,1151"/>
+<area shape="rect" id="node33" title="The power at which probe size decays with iterations." alt="" coords="1036,1085,1108,1115"/>
+<area shape="rect" id="node34" title="Multiplier for how far to follow the gradient." alt="" coords="1035,1049,1109,1079"/>
+<area shape="rect" id="node35" title="Iteration offset for damping the decay of the step size." alt="" coords="1030,1013,1114,1043"/>
+<area shape="rect" id="node36" title="The power at which the step size decays with iterations." alt="" coords="1036,977,1108,1007"/>
+<area shape="rect" id="node37" title="The maximum change in (translation, merge)&#45;space between consecutive minima to be considered converged." alt="" coords="1036,941,1108,971"/>
+<area shape="rect" id="node38" title="The maximum change in unrelaxed GB energy between consecutive minima to be considered converged." alt="" coords="1036,1337,1108,1367"/>
+<area shape="rect" id="node39" title="Momenta for the stochastic gradient descent." alt="" coords="1029,1301,1115,1331"/>
+<area shape="rect" id="node40" title="Maximum number of iterations to use." alt="" coords="1031,1265,1113,1295"/>
+<area shape="rect" id="node41" title="Number of (semi)randomly initialized SPSA trials to perform." alt="" coords="1036,1229,1108,1259"/>
+<area shape="rect" id="node42" title="Flag to activate verbose output for the SPSA search." alt="" coords="1035,1193,1109,1223"/>
+<area shape="rect" id="node43" title="Max and min merge distances used in minimization of microscopic DoF." alt="" coords="1024,1157,1120,1187"/>
+<area shape="rect" id="node45" title="Force convergence for all LAMMPS minimizations." alt="" coords="1008,774,1136,805"/>
+<area shape="rect" id="node46" title="Max steps for LAMMPS energy minimization." alt="" coords="1031,738,1113,769"/>
+<area shape="rect" id="node47" title="Timestep for LAMMPS MD." alt="" coords="1036,846,1108,877"/>
+<area shape="rect" id="node48" title="The most steps any LAMMPS run will ever have." alt="" coords="1027,810,1117,841"/>
+<area shape="poly" id="node49" title="A collection of parameters for annealing." alt="" coords="1126,647,1123,640,1116,634,1104,629,1089,626,1072,625,1056,626,1041,629,1029,634,1021,640,1018,647,1021,654,1029,660,1041,664,1056,667,1072,668,1089,667,1104,664,1116,660,1123,654"/>
+<area shape="poly" id="node55" title="A collection of parameters for quenching." alt="" coords="1129,425,1126,419,1118,413,1105,408,1090,405,1072,404,1055,405,1039,408,1026,413,1018,419,1016,425,1018,432,1026,438,1039,443,1055,446,1072,447,1090,446,1105,443,1118,438,1126,432"/>
+<area shape="rect" id="node50" title="How long to anneal for." alt="" coords="1240,541,1312,571"/>
+<area shape="rect" id="node51" title="How hot to anneal at." alt="" coords="1240,685,1312,715"/>
+<area shape="rect" id="node52" title="Temperature for initializing velocities." alt="" coords="1238,649,1314,679"/>
+<area shape="rect" id="node53" title="Number of LAMMPS steps to anneal for." alt="" coords="1240,613,1312,643"/>
+<area shape="rect" id="node54" title="Langevin damping parameter to use for thermostat while annealing." alt="" coords="1240,577,1312,607"/>
+<area shape="rect" id="node56" title="Number of times to sample the annealed state with a quench and minimization." alt="" coords="1240,374,1312,405"/>
+<area shape="rect" id="node57" title="Strength of quench (friction: force/velocity)." alt="" coords="1240,338,1312,369"/>
+<area shape="rect" id="node58" title="Duration of quench." alt="" coords="1240,446,1312,477"/>
+<area shape="rect" id="node59" title="Number of LAMMPS steps for the quench." alt="" coords="1240,410,1312,441"/>
+<area shape="rect" id="node61" title="Flag to run pure&#45;host energy evaluations on solute&#45;relaxed structures for decomposition of segregation energies into &#39;mechanical&#39; and &#39;chemical&#39; contributions." alt="" coords="1029,202,1115,233"/>
+<area shape="poly" id="node67" title="Thermodynamic data from a static calculation of the pure&#45;bulk cluster frozen in the single&#45;solute relaxed configuration parsed from the LAMMPS log." alt="" coords="1329,2435,1327,2428,1319,2422,1307,2417,1292,2414,1276,2413,1259,2414,1244,2417,1232,2422,1225,2428,1222,2435,1225,2442,1232,2448,1244,2452,1259,2455,1276,2456,1292,2455,1307,2452,1319,2448,1327,2442"/>
+<area shape="rect" id="node105" title="&#39;Chemical&#39; segregation energy component." alt="" coords="1396,4313,1513,4343"/>
+<area shape="rect" id="node106" title="&#39;Mechanical&#39; segregation energy component." alt="" coords="1389,4349,1520,4379"/>
+<area shape="rect" id="node63" title="ID of the center&#45;most atom." alt="" coords="830,2409,907,2439"/>
+<area shape="poly" id="node64" title="Thermodynamic data for the bulk cluster run parsed from the LAMMPS log." alt="" coords="934,2381,930,2375,921,2369,907,2364,889,2361,869,2360,848,2361,830,2364,816,2369,807,2375,804,2381,807,2388,816,2394,830,2399,848,2402,869,2403,889,2402,907,2399,921,2394,930,2388"/>
+<area shape="poly" id="node66" title="Thermodynamic data for the bulk cluster run with a single ${SOLUTE} atom in the center of the cluster parsed from the LAMMPS log." alt="" coords="1341,2484,1338,2477,1328,2471,1314,2467,1296,2464,1276,2462,1256,2464,1237,2467,1223,2471,1214,2477,1211,2484,1214,2491,1223,2497,1237,2502,1256,2505,1276,2506,1296,2505,1314,2502,1328,2497,1338,2491"/>
+<area shape="poly" id="node68" title="For calculations on a particular GB cluster." alt="" coords="735,4060,717,4035,681,4035,663,4060,681,4085,717,4085"/>
+<area shape="rect" id="node69" title="File name for pickles of this object." alt="" coords="814,4557,923,4587"/>
+<area shape="rect" id="node70" title="The `Project` this job belongs to." alt="" coords="833,3095,905,3126"/>
+<area shape="rect" id="node71" title="Version of code object was created with." alt="" coords="833,3059,905,3090"/>
+<area shape="rect" id="node72" title="How many processors to call LAMMPS with." alt="" coords="833,4665,905,4695"/>
+<area shape="rect" id="node73" title="Name of the Job." alt="" coords="833,4629,905,4659"/>
+<area shape="rect" id="node74" title="Path to where the Job is stored." alt="" coords="833,4593,905,4623"/>
+<area shape="poly" id="node83" title="A space for storing results from the construction and microscopic optimization of the GB." alt="" coords="905,3388,903,3381,898,3375,890,3371,880,3368,869,3366,857,3368,847,3371,839,3375,834,3381,833,3388,834,3395,839,3401,847,3406,857,3409,869,3410,880,3409,890,3406,898,3401,903,3395"/>
+<area shape="poly" id="node94" title="An empty container for other scripts to add results to." alt="" coords="910,4060,908,4053,902,4047,893,4043,881,4040,869,4038,856,4040,844,4043,835,4047,829,4053,827,4060,829,4067,835,4073,844,4078,856,4081,869,4082,881,4081,893,4078,902,4073,908,4067"/>
+<area shape="poly" id="node76" title="A space for parameters that control the output." alt="" coords="1113,2980,1111,2973,1105,2967,1096,2963,1085,2960,1072,2958,1060,2960,1048,2963,1039,2967,1034,2973,1032,2980,1034,2987,1039,2993,1048,2998,1060,3001,1072,3002,1085,3001,1096,2998,1105,2993,1111,2987"/>
+<area shape="poly" id="node79" title="A collection of GB macroscopic DoF parameters." alt="" coords="1108,2860,1106,2853,1101,2847,1093,2843,1083,2840,1072,2838,1061,2840,1051,2843,1043,2847,1038,2853,1036,2860,1038,2867,1043,2873,1051,2878,1061,2881,1072,2882,1083,2881,1093,2878,1101,2873,1106,2867"/>
+<area shape="rect" id="node77" title="How many steps to go between writing LAMMPS thermodynamic data." alt="" coords="1224,2995,1328,3026"/>
+<area shape="rect" id="node78" title="How many steps to go between dumpy LAMMPS .xyz data." alt="" coords="1228,2959,1324,2990"/>
+<area shape="rect" id="node80" title="Misorientation between the two grains." alt="" coords="1224,2865,1327,2895"/>
+<area shape="rect" id="node81" title="Shared axis (in multiples of the bravais vectors) of the two grains." alt="" coords="1240,2829,1312,2859"/>
+<area shape="rect" id="node82" title="Grain boundary normal axis (in Bravais vectors) of one grain." alt="" coords="1240,2793,1312,2823"/>
+<area shape="rect" id="node84" title="Interfacial energies from each quench of the annealing process." alt="" coords="983,3287,1161,3318"/>
+<area shape="rect" id="node85" title="Bravais lattice for the first grain." alt="" coords="1036,3251,1108,3282"/>
+<area shape="rect" id="node86" title="Bravais lattice for the second grain." alt="" coords="1036,3215,1108,3246"/>
+<area shape="rect" id="node87" title="The interfacial energy (in mJ/m^2)." alt="" coords="1031,3179,1113,3210"/>
+<area shape="rect" id="node88" title="The number of atoms inside `self.par.cluster.r_inner` with non&#45;bulklike common neighbour analysis values." alt="" coords="1004,3517,1140,3547"/>
+<area shape="rect" id="node89" title="The number of bulklike atoms inside `self.par.cluster.r_inner`." alt="" coords="1023,3481,1121,3511"/>
+<area shape="rect" id="node90" title="The number of atoms beyond `self.par.cluster.r_inner` but inside `self.par.cluster.r_outer`." alt="" coords="1023,3445,1121,3475"/>
+<area shape="rect" id="node91" title="The remaining number of atoms in the cluster." alt="" coords="1016,3409,1128,3439"/>
+<area shape="rect" id="node92" title="Interfacial energies from each SPSA minimization trial." alt="" coords="1007,3373,1137,3403"/>
+<area shape="poly" id="node93" title="Collection of thermodynamic properties for the final, relaxed grain boundary." alt="" coords="1137,3345,1134,3339,1125,3333,1110,3328,1092,3325,1072,3324,1052,3325,1034,3328,1020,3333,1010,3339,1007,3345,1010,3352,1020,3358,1034,3363,1052,3366,1072,3367,1092,3366,1110,3363,1125,3358,1134,3352"/>
+<area shape="poly" id="node95" title="The bond&#45;orientational order parameters of each GB site" alt="" coords="1133,3984,1130,3977,1122,3971,1108,3967,1091,3964,1072,3962,1053,3964,1036,3967,1023,3971,1014,3977,1011,3984,1014,3991,1023,3997,1036,4002,1053,4005,1072,4006,1091,4005,1108,4002,1122,3997,1130,3991"/>
+<area shape="poly" id="node97" title="A space for the results of Fermi&#45;smeared coordination analysis." alt="" coords="1138,4137,1135,4131,1126,4125,1111,4120,1093,4117,1072,4116,1052,4117,1033,4120,1019,4125,1009,4131,1006,4137,1009,4144,1019,4150,1033,4155,1052,4158,1072,4159,1093,4158,1111,4155,1126,4150,1135,4144"/>
+<area shape="poly" id="node102" title="A space for storing segregation results of dilute solutes." alt="" coords="1156,4400,1152,4393,1140,4387,1121,4383,1098,4380,1072,4378,1046,4380,1023,4383,1004,4387,992,4393,988,4400,992,4407,1004,4413,1023,4418,1046,4421,1072,4422,1098,4421,1121,4418,1140,4413,1152,4407"/>
+<area shape="poly" id="node109" title="A space for the results of Voronoi analysis." alt="" coords="1118,3812,1116,3805,1110,3799,1099,3795,1086,3792,1072,3790,1058,3792,1045,3795,1035,3799,1028,3805,1026,3812,1028,3819,1035,3825,1045,3830,1058,3833,1072,3834,1086,3833,1099,3830,1110,3825,1116,3819"/>
+<area shape="rect" id="node96" title="The per&#45;site bond&#45;order orientation parameters" alt="" coords="1240,3969,1312,3999"/>
+<area shape="rect" id="node98" title="Distance for half contribution." alt="" coords="1240,4105,1312,4135"/>
+<area shape="rect" id="node99" title="Smearing width." alt="" coords="1239,4069,1312,4099"/>
+<area shape="rect" id="node100" title="Smeared coordination numbers." alt="" coords="1240,4177,1312,4207"/>
+<area shape="rect" id="node101" title="Distances to closest neighbour." alt="" coords="1240,4141,1312,4171"/>
+<area shape="poly" id="node103" title="One space for each solute species." alt="" coords="1325,4400,1322,4393,1315,4387,1305,4383,1291,4380,1276,4378,1261,4380,1247,4383,1236,4387,1229,4393,1227,4400,1229,4407,1236,4413,1247,4418,1261,4421,1276,4422,1291,4421,1305,4418,1315,4413,1322,4407"/>
+<area shape="rect" id="node104" title="Per&#45;site solute segregation energies." alt="" coords="1419,4385,1491,4415"/>
+<area shape="poly" id="node107" title="A space for the coordination analysis of relaxed solute sites." alt="" coords="1521,4492,1518,4485,1508,4479,1494,4475,1475,4472,1455,4470,1434,4472,1416,4475,1401,4479,1392,4485,1389,4492,1392,4499,1401,4505,1416,4510,1434,4513,1455,4514,1475,4513,1494,4510,1508,4505,1518,4499"/>
+<area shape="poly" id="node108" title="A space for the Voronoi analysis of relaxed solute sites." alt="" coords="1501,4443,1499,4436,1492,4430,1482,4425,1469,4422,1455,4421,1441,4422,1428,4425,1417,4430,1411,4436,1409,4443,1411,4450,1417,4456,1428,4460,1441,4463,1455,4464,1469,4463,1482,4460,1492,4456,1499,4450"/>
+<area shape="rect" id="node110" title="Area of Voronoi cell." alt="" coords="1240,3725,1312,3755"/>
+<area shape="rect" id="node111" title="Length of all edges of the Voronoi cell." alt="" coords="1230,3689,1321,3719"/>
+<area shape="rect" id="node112" title="Number of Voronoi cell edges." alt="" coords="1240,3653,1312,3683"/>
+<area shape="rect" id="node113" title="Number of Voronoi cell faces." alt="" coords="1240,3869,1312,3899"/>
+<area shape="rect" id="node114" title="Offset of the Voronoi centroid from the atom for which it was constructed." alt="" coords="1240,3833,1312,3863"/>
+<area shape="rect" id="node115" title="Number of Voronoi cell vertices." alt="" coords="1240,3797,1312,3827"/>
+<area shape="rect" id="node116" title="Per&#45;site Voronoi volume." alt="" coords="1240,3761,1312,3791"/>
+<area shape="poly" id="node117" title="Sets up a Project to host multiple GBs (Jobs) using a particular potential all treated in a consistent manner." alt="" coords="96,1288,210,1307,325,1288,325,1258,96,1258"/>
+<area shape="rect" id="node118" title="Trigger decomposition calculations." alt="" coords="826,25,911,55"/>
+<area shape="poly" id="node119" title="Initialize a cluster containing a GB with particular macroscopic character and minimize the microscopic degrees of freedom according to parameters from the parent Project." alt="" coords="114,4068,210,4087,307,4068,307,4038,114,4038"/>
+<area shape="poly" id="node120" title="Calculate the bond orientational order parameters for each GB site at a particular boundary." alt="" coords="5,4712,210,4731,416,4712,415,4682,6,4682"/>
+<area shape="poly" id="node121" title="Calculate the Fermi&#45;smeared coordination number of each GB site." alt="" coords="68,4771,210,4790,353,4771,352,4741,68,4741"/>
+<area shape="poly" id="node122" title="Calculate the segregation energy of each solute to each GB site." alt="" coords="45,4830,210,4848,376,4830,376,4800,45,4800"/>
+<area shape="rect" id="node123" title="Calculate Voronoi properties of relaxed solute sites." alt="" coords="477,4770,581,4801"/>
+<area shape="rect" id="node124" title="Calculate coordination data for relaxed solute sites." alt="" coords="464,4806,594,4837"/>
+<area shape="poly" id="node125" title="Calculate the Voronoi volume and other Voronoi features for each GB site." alt="" coords="92,4654,210,4672,329,4654,329,4624,92,4624"/>
+</map>

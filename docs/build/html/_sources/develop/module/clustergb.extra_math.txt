@@ -1,0 +1,7 @@
+clustergb.extra_math
+====================
+
+.. automodule:: clustergb.extra_math
+    :members:
+    :undoc-members:
+    :show-inheritance:

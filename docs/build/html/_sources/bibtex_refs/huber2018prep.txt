@@ -1,0 +1,17 @@
+.. _huber:
+
+Huber *et al.*
+==============
+
+.. code-block:: bibtex
+
+    @article{huber2018prep,
+        title={In preparation},
+        author={Huber, Liam and Hadian, Raheleh and Grabowski, Blazej and Neugebauer, J{\"o}rg},
+        journal={TBA},
+        volume={TBA},
+        number={TBA},
+        pages={TBA},
+        year={2018},
+        publisher={TBA}
+    }

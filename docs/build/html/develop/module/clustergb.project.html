@@ -1,0 +1,370 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>clustergb.project &mdash; ClusterGB 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ClusterGB 1.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="ClusterGB module" href="../mod.html" />
+    <link rel="next" title="clustergb.structure" href="clustergb.structure.html" />
+    <link rel="prev" title="clustergb.osio" href="clustergb.osio.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clustergb.structure.html" title="clustergb.structure"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.osio.html" title="clustergb.osio"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" accesskey="U">ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-clustergb.project">
+<span id="clustergb-project"></span><h1>clustergb.project<a class="headerlink" href="#module-clustergb.project" title="Permalink to this headline">¶</a></h1>
+<p>Projects control the workflow to ensure that multiple grain boundaries are treated with the same set of operations,
+e.g. annealing temperatures and times.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Project objects save themselves using pickle, but they can only be unpickled IF clustergb is added to the
+Python path, e.g. <cite>import sys; sys.path.append(&#8216;/path/to/clustergb&#8217;)</cite>.</p>
+</div>
+<dl class="class">
+<dt id="clustergb.project.Project">
+<em class="property">class </em><code class="descclassname">clustergb.project.</code><code class="descname">Project</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.project.Project" title="Permalink to this definition">¶</a></dt>
+<dd><p>ClusterGB rests on LAMMPS, which uses classical potential to evaluate forces and energies.</p>
+<p>Projects store parameters which will be used across many individual grain boundaries (i.e. Jobs). This ensures
+consistency in how these boundaries are treated. Each Project is associated with a particular potential file and
+chemical symbols for the host and solute species.</p>
+<p>After initialization, Projects have methods for performing a calculation of a cluster of perfect bulk, and bulk
+with a substitutional defect at the center of the cluster.</p>
+<p>All units are assumed to be LAMMPS &#8220;metal&#8221; units (angstroms, eV, etc...)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#clustergb.project.Project.proj_save_name" title="clustergb.project.Project.proj_save_name"><strong>proj_save_name</strong></a> (<em>str</em>) &#8211; File name for pickles of this object.</li>
+<li><strong>version</strong> (<em>str</em>) &#8211; Version of code object was created with (from config.yml).</li>
+<li><strong>name</strong> (<em>str</em>) &#8211; Name of the Project.</li>
+<li><strong>child_names</strong> (<em>list</em>) &#8211; A list of the names of Job objects lower in the hierarchy.</li>
+<li><strong>location</strong> (<em>str</em>) &#8211; Path to where the Project is stored.</li>
+<li><strong>par</strong> (<em>Namespace</em>) &#8211; <p>A collection of parameters for running cluster calculations.</p>
+<ul>
+<li><strong>chem</strong> (<em>Namespace</em>) &#8211; A collection of parameters for the chemistry.<blockquote>
+<div><ul>
+<li><strong>host</strong> (<em>str</em>) &#8211; Chemical symbol for host species.</li>
+<li><strong>potential</strong> (<em>str</em>) &#8211; Path to the LAMMPS potential to use.</li>
+<li><strong>solutes</strong> (<em>list</em>) &#8211; List of chemical symbols for the solute species (if any).</li>
+</ul>
+</div></blockquote>
+</li>
+<li><strong>xl</strong> (<em>Namespace</em>) &#8211; A collection of parameters for the crystal structure.<blockquote>
+<div><ul>
+<li><strong>bravais</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,3)\)</span> Bravais vectors for the crystal lattice unit cell.</li>
+<li><strong>basis</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,3)\)</span> direct-coordinate basis for atoms in the unit cell.</li>
+<li><strong>type</strong> (<em>str</em>) &#8211; Short-hand for the crystal lattice name.</li>
+<li><strong>length</strong> (<em>float</em>) &#8211; Length of the lattice vector. (Currently we use only cubic lattices, which
+have just a single length scale.)</li>
+<li><strong>nn_dist</strong> (<em>float</em>) &#8211; First-nearest neighbour distance for the lattice.</li>
+<li><strong>snn_dist</strong> (<em>float</em>) &#8211; Second-nearest neighbour distance for the lattice.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><strong>cluster</strong> (<em>Namespace</em>) &#8211; A collection of variables for cluster geometry.<blockquote>
+<div><ul>
+<li><strong>radius</strong> (<em>float</em>) &#8211; How big the cluster is.</li>
+<li><strong>inner_r</strong> (<em>float</em>) &#8211; Radius of the sub-sphere used for calculating GB energies and finding
+GB sites.</li>
+<li><strong>outer_r</strong> (<em>float</em>) &#8211; A slightly larger sub-sphere, for moving a few extra atoms to the
+head structure file. (Not yet used for anything.)</li>
+<li><strong>vacuum</strong> (<em>float</em>) &#8211; The minimum vacuum between periodic images of the cluster.</li>
+<li><strong>size</strong> (<em>float</em>) &#8211; Edge length of the cubic simulation box.</li>
+<li><strong>center</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,)\)</span> coordinates for the center of the simulation box.</li>
+<li><strong>comment</strong> (<em>str</em>) &#8211; Header comment for structure files describing the cluster geometry.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><strong>newton</strong> (<em>Namespace</em>) &#8211; A collection of parameters for running Newton&#8217;s method to find grains&#8217;
+Bravais.<blockquote>
+<div><ul>
+<li><strong>precision</strong> (<em>float</em>) &#8211; Numeric precision limit, mostly for L2-norm difference determining
+whether two vectors are the same. Used in gradient descent when looking for GB bravais vectors.</li>
+<li><strong>max_steps</strong> (<em>int</em>) &#8211; Maximum number of gradient descent steps to use in search for rotation
+angles when looking for GB bravais vectors.</li>
+<li><strong>verbosity</strong> (<em>int</em>) &#8211; Verbosity interval of the gradient descent search for rotation angles.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><strong>spsa</strong> (<em>Namespace</em>) &#8211; A collection of parameters for running SPSA to minimize microscopic DoF.<blockquote>
+<div><ul>
+<li><strong>probe_size</strong> (<em>float</em>) &#8211; How far to step when evaluating the simultaneous perturbation for a
+gradient.</li>
+<li><strong>gamma</strong> (<em>float</em>) &#8211; The power at which probe size decays with iterations.</li>
+<li><strong>step_size</strong> (<em>float</em>) &#8211; Multiplier for how far to follow the gradient.</li>
+<li><strong>step_offset</strong> (<em>float</em>) &#8211; Iteration offset for damping the decay of the step size.</li>
+<li><strong>alpha</strong> (<em>float</em>) &#8211; The power at which the step size decays with iterations.</li>
+<li><strong>conv_u</strong> (<em>float</em>) &#8211; The maximum change in (translation, merge)-space between consecutive minima
+to be considered converged.</li>
+<li><strong>conv_J</strong> (<em>float</em>) &#8211; The maximum change in unrelaxed GB energy between consecutive minima to be
+considered converged.</li>
+<li><strong>momentum</strong> (<em>float</em>) &#8211; Momenta for the stochastic gradient descent, i.e. fraction of last
+iteration&#8217;s step to add to the current step between 0 and 1.</li>
+<li><strong>max_steps</strong> (<em>int</em>) &#8211; Maximum number of iterations to use.</li>
+<li><strong>trials</strong> (<em>int</em>) &#8211; Number of (semi)randomly initialized SPSA trials to perform.</li>
+<li><strong>verbosity</strong> (<em>int</em>) &#8211; Flag to activate verbose output for the SPSA search.</li>
+<li><strong>merge_limits</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((2,)\)</span> Max and min merge distances used in minimization of
+microscopic DoF.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><strong>lammps</strong> (<em>Namespace</em>) &#8211; A collection of parameters for LAMMPS runs.<blockquote>
+<div><ul>
+<li><strong>force_convergence</strong> (<em>float</em>) &#8211; Force convergence for all LAMMPS minimizations.</li>
+<li><strong>max_steps</strong> (<em>int</em>) &#8211; Max steps for LAMMPS energy minimization.</li>
+<li><strong>timestep</strong> (<em>float</em>) &#8211; Timestep for LAMMPS MD.</li>
+<li><strong>omega_step</strong> (<em>int</em>) &#8211; The most steps any LAMMPS run will ever have.</li>
+<li><strong>annealing</strong> (<em>Namespace</em>) &#8211; A collection of parameters for annealing.<blockquote>
+<div><ul>
+<li><strong>time</strong> (<em>float</em>) &#8211; How long to anneal for.</li>
+<li><strong>temp</strong> (<em>float</em>) &#8211; How hot to anneal at.</li>
+<li><strong>init_temp</strong> (<em>float</em>) &#8211; Temperature for initializing velocities.</li>
+<li><strong>steps</strong> (<em>int</em>) &#8211; Number of LAMMPS steps to anneal for.</li>
+<li><strong>langevin</strong> (<em>float</em>) &#8211; Langevin damping parameter to use for thermostat while annealing
+(see LAMMPS <a class="reference external" href="http://lammps.sandia.gov/doc/fix_langevin.html">documentation</a> for details.)</li>
+</ul>
+</div></blockquote>
+</li>
+<li><strong>quenching</strong> (<em>Namespace</em>) &#8211; A collection of parameters for quenching.<blockquote>
+<div><ul>
+<li><strong>samples</strong> (<em>int</em>) &#8211; Number of times to sample the annealed state with a quench and
+minimization.</li>
+<li><strong>damping</strong> (<em>float</em>) &#8211; Strength of quench (friction: force/velocity).</li>
+<li><strong>time</strong> (<em>float</em>) &#8211; Duration of quench.</li>
+<li><strong>steps</strong> (<em>int</em>) &#8211; Number of LAMMPS steps for the quench.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><strong>output</strong> (<em>Namespace</em>) &#8211; Variables for what to output/calculate.<blockquote>
+<div><ul>
+<li><strong>decompose</strong> (<em>bool</em>) &#8211; Flag to run pure-host energy evaluations on solute-relaxed structures.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</li>
+<li><strong>bulk</strong> (<em>Namespace</em>) &#8211; <p>A space for collecting data from a run of the pure bulk structure.</p>
+<ul>
+<li><strong>central_id</strong> (<em>int</em>) &#8211; ID of the center-most atom (don&#8217;t for get to add &#8220;1&#8221; when looking for it in a
+LAMMPS file, since LAMMPS starts counting at &#8220;1&#8221; while Python starts at &#8220;0&#8221;).</li>
+<li><strong>thermo_data</strong> (<em>Namespace</em>) &#8211; Thermodynamic data for the bulk cluster run parsed from the LAMMPS log.</li>
+</ul>
+</li>
+<li><strong>bulk_${SOLUTE}</strong> (<em>Namespace</em>) &#8211; <p>Space(s) for collecting data from runs of the bulk-like structure with a single
+${SOLUTE} species substitutional defect.</p>
+<blockquote>
+<div><ul>
+<li><strong>thermo_data</strong> (<em>Namespace</em>) &#8211; Thermodynamic data for the parsed from the LAMMPS log for the calculation
+with a single ${SOLUTE} atom in the center of the cluster.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="clustergb.project.Project.find_children">
+<code class="descname">find_children</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.project.Project.find_children" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look in all lower directories for Job objects whose parent has the same name as self and ensure that these Jobs
+are listed in <cite>self.child_names</cite>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="clustergb.project.Project.proj_save_name">
+<code class="descname">proj_save_name</code><em class="property"> = 'clustergb.project'</em><a class="headerlink" href="#clustergb.project.Project.proj_save_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="clustergb.project.Project.run_bulk">
+<code class="descname">run_bulk</code><span class="sig-paren">(</span><em>procs</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.project.Project.run_bulk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs a LAMMPS minimization of the pure bulk-like cluster and saves thermodynamic output to the Namespace
+<cite>self.bulk</cite>. The id of the center-most atom is also stored in <cite>self.bulk.central_id</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(<em>int</em>) &#8211; The index of the atom closest to the center of the cluster.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.project.Project.run_in_children">
+<code class="descname">run_in_children</code><span class="sig-paren">(</span><em>func</em>, <em>kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.project.Project.run_in_children" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a function across all child Jobs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>func</strong> (<em>callable</em>) &#8211; The function to call, which takes as its arguments a <cite>job.Job</cite> and any keyword arguments.</li>
+<li><strong>kwargs</strong> (<em>dict</em>) &#8211; The keyword arguments for <cite>func</cite>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.project.Project.run_solute">
+<code class="descname">run_solute</code><span class="sig-paren">(</span><em>solute</em>, <em>solute_ids</em>, <em>procs</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.project.Project.run_solute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs a LAMMPS minimization of the bulk-like cluster with a solute atoms replacing all the host sites indicated
+by <cite>solute_ids</cite>, and saves thermodynamic output to the Namespace <cite>self.results.bulk_${solute}</cite>.</p>
+<p>If the <cite>par.output.decompose</cite> flag is thrown, a second calculation is made for the solute-relaxed structure
+with pure-host chemsitry and saved to <cite>self.results.bulk_${solute}.sol_strain</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>solute</strong> (<em>str</em>) &#8211; Chemical symbol for the solute species.</li>
+<li><strong>solute_ids</strong> (<em>int or list</em>) &#8211; Which indices to convert to the solute species.</li>
+<li><strong>procs</strong> (<em>int</em>) &#8211; How many processors to run LAMMPS on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.project.Project.save">
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.project.Project.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the Project as a pickled object.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">How to cite ClusterGB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../development.html">Development</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../development.html#docs">Docs:</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mod.html">ClusterGB module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exe.html">Executables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="clustergb.osio.html"
+                        title="previous chapter">clustergb.osio</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="clustergb.structure.html"
+                        title="next chapter">clustergb.structure</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/develop/module/clustergb.project.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clustergb.structure.html" title="clustergb.structure"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.osio.html" title="clustergb.osio"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" >ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Liam Huber.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

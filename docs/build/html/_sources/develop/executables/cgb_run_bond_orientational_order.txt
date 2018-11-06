@@ -1,0 +1,7 @@
+cgb_run_bond_orientational_order.py
+===================================
+
+.. automodule:: cgb_run_bond_orientational_order
+    :members:
+    :undoc-members:
+    :show-inheritance:

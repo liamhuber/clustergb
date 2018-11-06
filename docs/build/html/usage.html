@@ -1,0 +1,312 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Usage &mdash; ClusterGB 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ClusterGB 1.0.0 documentation" href="index.html" />
+    <link rel="next" title="cgb_bulk_modulus.py" href="use/cgb_bulk_modulus.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="use/cgb_bulk_modulus.html" title="cgb_bulk_modulus.py"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<p>The structure of ClusterGB is deliberately simple, where the code is based on a two-level hierarchy of
+<a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Projects</span></code></a> and <a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Jobs</span></code></a>, which are stored as <a class="reference external" href="https://docs.python.org/3/library/pickle.html">pickled</a>
+Python objects for later access, and all <a class="reference external" href="http://lammps.sandia.gov">LAMMPS</a> calculations are performed by making a shell call to an external
+<a class="reference external" href="http://lammps.sandia.gov">LAMMPS</a> executable. <a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Projects</span></code></a>, <a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Jobs</span></code></a>, and further
+calculations can all be created/executed using shell commands.</p>
+<div class="section" id="initialize-project">
+<h2>Initialize project<a class="headerlink" href="#initialize-project" title="Permalink to this headline">¶</a></h2>
+<p>A new <a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a> is started using <a class="reference internal" href="use/cgb_init_project.html#use-init-proj"><span class="std std-ref">cgb_init_project.py</span></a> and requires a project name, a valid
+EAM potential, a host species, and a crystal structure (FCC or BCC with lattice parameter). There are many other
+parameters for <a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Projects</span></code></a>, but most have very reasonable defaults. These parameters
+are stored in <code class="xref py py-attr docutils literal"><span class="pre">clustergb.project.par</span></code>.</p>
+<p><a class="reference internal" href="use/cgb_init_project.html#use-init-proj"><span class="std std-ref">cgb_init_project.py</span></a> will create a new directory with the project name and run calculations for bulk clusters: one pure bulk,
+and one calculation for each solute with the solute atom substitutionally placed at the center of the cluster. Output
+from these calculations is stored in <code class="xref py py-attr docutils literal"><span class="pre">clustergb.project.bulk</span></code> and
+<code class="xref py py-attr docutils literal"><span class="pre">clustergb.project.bulk_${SOLUTE}</span></code>, respectively.</p>
+<p><a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Projects</span></code></a> store themselves as <a class="reference external" href="https://docs.python.org/3/library/pickle.html">pickled</a>  Python objects and keep a <code class="docutils literal"><span class="pre">.log</span></code> file of
+their operations.</p>
+</div>
+<div class="section" id="initialize-a-job">
+<h2>Initialize a job<a class="headerlink" href="#initialize-a-job" title="Permalink to this headline">¶</a></h2>
+<p>Inside a <a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a> directory, a new <a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Job</span></code></a> can be created
+using <a class="reference internal" href="use/cgb_init_job.html#use-init-job"><span class="std std-ref">cgb_init_job.py</span></a>. The new <a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Job</span></code></a> will inherit the parent
+<a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a> parameters stored in <code class="xref py py-attr docutils literal"><span class="pre">par</span></code> and copy them locally.
+This is so that all GBs in a particular project are treated in a consistent way (i.e. same cluster size, annealing
+treatment, etc.) Additionally, <a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Jobs</span></code></a> have a sub-namespace <code class="xref py py-attr docutils literal"><span class="pre">clustergb.job.par.gb</span></code>
+which stores the parameters used to define the macroscopic character of the GB.</p>
+<p>Results for the optimized GB structure are stored
+directly in <code class="xref py py-attr docutils literal"><span class="pre">clustergb.job.gb</span></code>, including the Bravais lattices for the two grains, the number of atoms in each
+domain of the cluster, the thermodynamic quantities for the final relaxed GB, the GB interfacial energy, etc.</p>
+<p><a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Jobs</span></code></a> store themselves as <a class="reference external" href="https://docs.python.org/3/library/pickle.html">pickled</a> Python objects and keep a <code class="docutils literal"><span class="pre">.log</span></code> file of their
+operations.</p>
+</div>
+<div class="section" id="calculate-a-gb-property">
+<h2>Calculate a GB property<a class="headerlink" href="#calculate-a-gb-property" title="Permalink to this headline">¶</a></h2>
+<p>With bulk, bulk+solute, and undecorated GB calculations completed and bulk and GB structure files available, all
+remaining calculation are done by <code class="docutils literal"><span class="pre">cgb_run_...</span></code> scripts. Invoked from a <a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Job</span></code></a> directory,
+these will calculate some property for the GB and store the results in <code class="docutils literal"><span class="pre">clustergb.Job.results.${CALCULATION_NAME}</span></code>.
+Invoked from the <a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a> level, the behaviour is similar but the calculation will
+be performed for all child <a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Jobs</span></code></a>. This modular format allows almost any static property to
+be calculated on top of the basic undecorated, relaxed GBs.</p>
+</div>
+<div class="section" id="before-and-after">
+<h2>Before and After<a class="headerlink" href="#before-and-after" title="Permalink to this headline">¶</a></h2>
+<p>ClusterGB also comes with two other scripts for interacting with EAM potentials: <a class="reference internal" href="use/cgb_rescale_potential.html#use-rescale"><span class="std std-ref">cgb_rescale_potential.py</span></a> and
+<a class="reference internal" href="use/cgb_bulk_modulus.html#use-bulk-mod"><span class="std std-ref">cgb_bulk_modulus.py</span></a>. <a class="reference internal" href="use/cgb_rescale_potential.html#use-rescale"><span class="std std-ref">cgb_rescale_potential.py</span></a> allows for rescaling the lattice parameter of a potential (for a cubic
+structure). This is useful for a study of multiple solutes where different potentials are used to accommodate different
+solute species. <a class="reference internal" href="use/cgb_bulk_modulus.html#use-bulk-mod"><span class="std std-ref">cgb_bulk_modulus.py</span></a> simply calculates the bulk modulus using one of the potential&#8217;s valid species
+(and an FCC or BCC unit cell), and is a useful sanity check after rescaling potentials.</p>
+<p>Finally, <a class="reference internal" href="use/cgb_interactive.html#use-interactive"><span class="std std-ref">cgb_interactive.py</span></a> opens an interactive Python session with many useful modules&#8211;including the
+ClusterGB module&#8211;pre-loaded. No particular scripts are included for analyzing the results, but
+<a class="reference internal" href="develop/module/clustergb.osio.html#clustergb.osio.load_project" title="clustergb.osio.load_project"><code class="xref py py-func docutils literal"><span class="pre">clustergb.osio.load_project()</span></code></a> and <a class="reference internal" href="develop/module/clustergb.osio.html#clustergb.osio.load_job" title="clustergb.osio.load_job"><code class="xref py py-func docutils literal"><span class="pre">clustergb.osio.load_job()</span></code></a> make it easy to load
+<a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Projects</span></code></a> and <a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Jobs</span></code></a> by either invoking them in a
+<a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a> or <a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Job</span></code></a> directory, or passing the path to a
+<a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a> or <a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Job</span></code></a> directory . These objects give direct
+access to calculation results for processing/plotting/etc directly in Python.</p>
+</div>
+<div class="section" id="thermo-data">
+<h2><code class="docutils literal"><span class="pre">thermo_data</span></code><a class="headerlink" href="#thermo-data" title="Permalink to this headline">¶</a></h2>
+<p>The main result from each LAMMPS calculation is a <code class="docutils literal"><span class="pre">thermo_data</span></code> namespace, which are parsed from the LAMMPS output
+file.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">lx</span></code>, <code class="docutils literal"><span class="pre">ly</span></code>, <code class="docutils literal"><span class="pre">lz</span></code></td>
+<td>Rectangular box lengths.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">pe</span></code></td>
+<td>Potential energy.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ke</span></code></td>
+<td>Kinetic energy.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">etotal</span></code></td>
+<td>Total energy.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">press</span></code></td>
+<td>Total pressure</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">vol</span></code></td>
+<td>Total volume (of the periodic box, not the cluster)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">temp</span></code></td>
+<td>Temperature.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">v_n_all</span></code></td>
+<td>Number of atoms in the entire cluster.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">v_n_inner</span></code></td>
+<td>Number of atoms in the inner sub-sphere.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c_pe_inner</span></code></td>
+<td>Potential energy of atoms in the inner sub-sphere.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">init_vals</span></code></td>
+<td>The above values at the start of the LAMMPS calculation.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><code class="docutils literal"><span class="pre">init_vals</span></code> is from the initiation of the <em>most recent</em> LAMMPS calculation. For instance, for
+<code class="xref py py-attr docutils literal"><span class="pre">clustergb.job.gb.thermo_data</span></code> the optimization of microscopic degrees of freedom is a multi-step process
+involving translations and merging, annealing, and force minimization, so the <code class="docutils literal"><span class="pre">init_vals</span></code> do not refer to any
+ideally &#8220;unrelaxed&#8221; GB structure.</p>
+</div>
+</div>
+<div class="section" id="decompose">
+<h2><code class="docutils literal"><span class="pre">decompose</span></code><a class="headerlink" href="#decompose" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Projects</span></code></a> can be initialized with a <code class="docutils literal"><span class="pre">--decompose</span></code> flag thrown which triggers an
+additional LAMMPS calculation any time a calculation with a solute atom is performed: the final relaxed structure of
+the solute-containing calculation is used as input to a new, static calculation with all atoms set to be host species.</p>
+<p>In ClusterGB solute-GB segregation energies are calculated as follows,</p>
+<div class="math">
+\[E_{\mathrm{seg}} = \big(E_{\mathrm{GB}}^{X} + E_{\mathrm{bulk}}\big) -
+                   \big(E_{\mathrm{GB}} + E_{\mathrm{bulk}}^{X}\big),\]</div>
+<p>where subscripts indicate the geometry of the of cluster calculation, and the superscript indicates the presence of
+solute. The additional calculation which has a solute-relaxed structure but pure-host chemistry (indicated by the
+superscript <span class="math">\(\widetilde{X}\)</span>) allows us to break this energy down into into &#8220;mechanical&#8221; and &#8220;chemical&#8221;
+components:</p>
+<div class="math">
+\[E_{\mathrm{seg}}^{\mathrm{mech}} = \big(E_{\mathrm{GB}}^{\widetilde{X}} + E_{\mathrm{bulk}}\big) -
+                                   \big(E_{\mathrm{GB}} + E_{\mathrm{bulk}}^{\widetilde{X}}\big)\]</div>
+<p>and</p>
+<div class="math">
+\[E_{\mathrm{seg}}^{\mathrm{chem}} = \big(E_{\mathrm{GB}}^{X} + E_{\mathrm{bulk}}^{\widetilde{X}}\big) -
+                                   \big(E_{\mathrm{GB}}^{\widetilde{X}} + E_{\mathrm{bulk}}^{X}\big)\]</div>
+<p>such that</p>
+<div class="math">
+\[E_{\mathrm{seg}} = E_{\mathrm{seg}}^{\mathrm{mech}} + E_{\mathrm{seg}}^{\mathrm{chem}}.\]</div>
+<p>That <span class="math">\(E_{\mathrm{seg}}^{\mathrm{chem}}\)</span> really represents the &#8220;chemical&#8221; aspect of solute segregating the
+boundary may be seen more easily in a refactored form:</p>
+<div class="math">
+\[E_{\mathrm{seg}}^{\mathrm{chem}} = \big(E_{\mathrm{GB}}^{X} - E_{\mathrm{GB}}^{\widetilde{X}}\big) -
+                                   \big(E_{\mathrm{bulk}}^{X} - E_{\mathrm{bulk}}^{\widetilde{X}}\big)\]</div>
+<p>Of course this decomposition is purely artificial, the electrons and protons make no such distinction. The
+approximation may nevertheless yield some insights.</p>
+</div>
+<div class="section" id="executables">
+<h2>Executables:<a class="headerlink" href="#executables" title="Permalink to this headline">¶</a></h2>
+<p>More detailed documentation for each of the ClusterGB executable scripts can be found below:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="use/cgb_bulk_modulus.html">cgb_bulk_modulus.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use/cgb_delete.html">cgb_delete.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use/cgb_init_job.html">cgb_init_job.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use/cgb_init_project.html">cgb_init_project.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use/cgb_interactive.html">cgb_interactive.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use/cgb_rescale_potential.html">cgb_rescale_potential.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use/cgb_run_bond_orientational_order.html">cgb_run_bond_orientational_order.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use/cgb_run_coordination.html">cgb_run_coordination.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use/cgb_run_monosegregation.html">cgb_run_monosegregation.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use/cgb_run_voronoi.html">cgb_run_voronoi.py</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#initialize-project">Initialize project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#initialize-a-job">Initialize a job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calculate-a-gb-property">Calculate a GB property</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#before-and-after">Before and After</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#thermo-data"><code class="docutils literal"><span class="pre">thermo_data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#decompose"><code class="docutils literal"><span class="pre">decompose</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#executables">Executables:</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="use/cgb_bulk_modulus.html">cgb_bulk_modulus.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="use/cgb_delete.html">cgb_delete.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="use/cgb_init_job.html">cgb_init_job.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="use/cgb_init_project.html">cgb_init_project.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="use/cgb_interactive.html">cgb_interactive.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="use/cgb_rescale_potential.html">cgb_rescale_potential.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="use/cgb_run_bond_orientational_order.html">cgb_run_bond_orientational_order.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="use/cgb_run_coordination.html">cgb_run_coordination.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="use/cgb_run_monosegregation.html">cgb_run_monosegregation.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="use/cgb_run_voronoi.html">cgb_run_voronoi.py</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">How to cite ClusterGB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="use/cgb_bulk_modulus.html"
+                        title="next chapter">cgb_bulk_modulus.py</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/usage.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="use/cgb_bulk_modulus.html" title="cgb_bulk_modulus.py"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Liam Huber.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

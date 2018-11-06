@@ -1,0 +1,10 @@
+Executables
+===========
+
+The executable files.
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    executables/*

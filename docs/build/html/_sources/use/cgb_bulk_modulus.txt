@@ -1,0 +1,9 @@
+.. _use_bulk_mod:
+
+cgb_bulk_modulus.py
+===================
+
+.. argparse::
+    :module: cgb_bulk_modulus
+    :func: _ret_parser
+    :prog: cgb_bulk_modulus

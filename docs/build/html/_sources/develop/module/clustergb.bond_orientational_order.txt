@@ -1,0 +1,7 @@
+clustergb.bond_orientational_order
+==================================
+
+.. automodule:: clustergb.bond_orientational_order
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,10 @@
+ClusterGB module
+================
+
+The module files.
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    module/*

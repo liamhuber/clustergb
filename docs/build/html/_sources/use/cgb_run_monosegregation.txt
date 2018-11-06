@@ -1,0 +1,9 @@
+.. _use_mono:
+
+cgb_run_monosegregation.py
+==========================
+
+.. argparse::
+    :module: cgb_run_monosegregation
+    :func: _ret_parser
+    :prog: cgb_run_monosegregation

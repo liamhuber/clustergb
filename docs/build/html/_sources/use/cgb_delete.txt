@@ -1,0 +1,7 @@
+cgb_delete.py
+=============
+
+.. argparse::
+    :module: cgb_delete
+    :func: _ret_parser
+    :prog: cgb_delete

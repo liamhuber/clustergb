@@ -1,0 +1,7 @@
+clustergb.lammps
+================
+
+.. automodule:: clustergb.lammps
+    :members:
+    :undoc-members:
+    :show-inheritance:

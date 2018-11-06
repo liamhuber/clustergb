@@ -1,0 +1,9 @@
+.. _use_init_proj:
+
+cgb_init_project.py
+===================
+
+.. argparse::
+    :module: cgb_init_project
+    :func: _ret_parser
+    :prog: cgb_init_project

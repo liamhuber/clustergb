@@ -1,0 +1,7 @@
+cgb_interactive.py
+==================
+
+.. automodule:: cgb_interactive
+    :members:
+    :undoc-members:
+    :show-inheritance:

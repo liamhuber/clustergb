@@ -1,0 +1,19 @@
+.. _rycroft:
+
+Rycroft
+=======
+
+.. code-block:: bibtex
+
+    @article{rycroft2009voro,
+        author = {Chris H. Rycroft},
+        title = {VORO++: A three-dimensional Voronoi cell library in C++},
+        journal = {Chaos: An Interdisciplinary Journal of Nonlinear Science},
+        volume = {19},
+        number = {4},
+        pages = {041111},
+        year = {2009},
+        doi = {10.1063/1.3215722},
+        URL = {https://doi.org/10.1063/1.3215722},
+        eprint = {https://doi.org/10.1063/1.3215722}
+    }

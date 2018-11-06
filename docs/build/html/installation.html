@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation &mdash; ClusterGB 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ClusterGB 1.0.0 documentation" href="index.html" />
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Usage"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>ClusterGB has only been tested on Unix systems. Sorry, Windows.</p>
+<div class="section" id="environment">
+<h2>0) Environment<a class="headerlink" href="#environment" title="Permalink to this headline">¶</a></h2>
+<p>ClusterGB was written for Python2.7 and uses a variety of Python packages. If you are already familiar with Python,
+simply ensure that your environment has all of the packages listed below. If you are unfamiliar with Python, you can
+download it for free from a variety of places, but I recommend an <a class="reference external" href="https://conda.io/docs/user-guide/install/index.html">Anaconda distribution</a>. With Anaconda, any missing packages can be easily installed
+with</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>conda install <span class="si">${</span><span class="nv">PACKAGE_NAME</span><span class="si">}</span>
+</pre></div>
+</div>
+<p>All required Packages (most scientific installations of Python will already have these):</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">argparse</span></code></li>
+<li><code class="docutils literal"><span class="pre">logging</span></code></li>
+<li><code class="docutils literal"><span class="pre">matplotlib</span></code> (just for <a class="reference internal" href="use/cgb_interactive.html#use-interactive"><span class="std std-ref">cgb_interactive.py</span></a>)</li>
+<li><code class="docutils literal"><span class="pre">numpy</span></code></li>
+<li><code class="docutils literal"><span class="pre">os</span></code></li>
+<li><code class="docutils literal"><span class="pre">readline</span></code> (just for <a class="reference internal" href="use/cgb_interactive.html#use-interactive"><span class="std std-ref">cgb_interactive.py</span></a>)</li>
+<li><code class="docutils literal"><span class="pre">rlcompleter</span></code> (just for <a class="reference internal" href="use/cgb_interactive.html#use-interactive"><span class="std std-ref">cgb_interactive.py</span></a>)</li>
+<li><code class="docutils literal"><span class="pre">scipy</span></code></li>
+<li><code class="docutils literal"><span class="pre">seaborn</span></code> (just for <a class="reference internal" href="use/cgb_interactive.html#use-interactive"><span class="std std-ref">cgb_interactive.py</span></a>)</li>
+<li><code class="docutils literal"><span class="pre">shutil</span></code></li>
+<li><code class="docutils literal"><span class="pre">sklearn</span></code> (just for the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> project or, later, your own analysis)</li>
+<li><code class="docutils literal"><span class="pre">subprocess</span></code></li>
+<li><code class="docutils literal"><span class="pre">time</span></code></li>
+<li><code class="docutils literal"><span class="pre">yaml</span></code></li>
+</ul>
+</div></blockquote>
+<p>The heavy-lifting of calculating energies and forces for ClusterGB is done using <a class="reference external" href="http://lammps.sandia.gov">LAMMPS</a>. <a class="reference external" href="http://lammps.sandia.gov">LAMMPS</a> is invoked as a
+separate subprocess, so you just need a regular <a class="reference external" href="http://lammps.sandia.gov">LAMMPS</a> executable, which can be built from the source code or, for
+some systems, downloaded pre-built <a class="reference external" href="http://lammps.sandia.gov/download.html">here</a>. Most versions of <a class="reference external" href="http://lammps.sandia.gov">LAMMPS</a> should
+be fine, but ClusterGB was tested using the 1 Jul 2016 release.</p>
+<p>If MPI runs on your machine, it can be used to accelerate the <a class="reference external" href="http://lammps.sandia.gov">LAMMPS</a> calculations by running them in parallel.</p>
+<p>Finally, Voronoi analysis (optional) is performed by calling <a class="reference external" href="http://math.lbl.gov/voro++/">Voro++</a>, which is also free to <a class="reference external" href="http://math.lbl.gov/voro++/download/">download</a>.</p>
+</div>
+<div class="section" id="id1">
+<h2>1) Download<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>If you have these docs, you probably already have the source code for ClusterGB. If not, you can download it from
+<a class="reference external" href="https://github.com/liamhuber/clustergb">Github</a>. Python is an interpreted language, so no special compilation is
+required, just add the folder containing <code class="docutils literal"><span class="pre">cgb_init_proj.py</span></code> etc. to your system PATH for easy use.</p>
+</div>
+<div class="section" id="configuration">
+<h2>2) Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>In <code class="docutils literal"><span class="pre">config.yml</span></code>, set the <code class="docutils literal"><span class="pre">lammps</span></code>, (optionally) <code class="docutils literal"><span class="pre">voro</span></code>, and (optionally) <code class="docutils literal"><span class="pre">mpi</span></code> fields to point to
+valid executables on your machine for <a class="reference external" href="http://lammps.sandia.gov">LAMMPS</a>, <a class="reference external" href="http://math.lbl.gov/voro++/">Voro++</a> and MPI, respectively.</p>
+<p>That&#8217;s it, you&#8217;re ready to go with ClusterGB.</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#environment">0) Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">1) Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">2) Configuration</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">How to cite ClusterGB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="previous chapter">Overview</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="usage.html"
+                        title="next chapter">Usage</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/installation.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Usage"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Liam Huber.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

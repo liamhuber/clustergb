@@ -1,0 +1,17 @@
+.. _olmsted:
+
+Olmsted *et al.*
+================
+
+.. code-block:: bibtex
+
+    @article{olmsted2009survey,
+        title={Survey of computed grain boundary properties in face-centered cubic metals: I. Grain boundary energy},
+        author={Olmsted, David L and Foiles, Stephen M and Holm, Elizabeth A},
+        journal={Acta Materialia},
+        volume={57},
+        number={13},
+        pages={3694--3703},
+        year={2009},
+        publisher={Elsevier}
+    }

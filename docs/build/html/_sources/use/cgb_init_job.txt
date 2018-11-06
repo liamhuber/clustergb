@@ -1,0 +1,9 @@
+.. _use_init_job:
+
+cgb_init_job.py
+===============
+
+.. argparse::
+    :module: cgb_init_job
+    :func: _ret_parser
+    :prog: cgb_init_job

@@ -1,0 +1,7 @@
+cgb_run_voronoi.py
+==================
+
+.. argparse::
+    :module: cgb_run_voronoi
+    :func: _ret_parser
+    :prog: cgb_run_voronoi

@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>clustergb.voronoi &mdash; ClusterGB 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ClusterGB 1.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="ClusterGB module" href="../mod.html" />
+    <link rel="next" title="Executables" href="../exe.html" />
+    <link rel="prev" title="clustergb.structure" href="clustergb.structure.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../exe.html" title="Executables"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.structure.html" title="clustergb.structure"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" accesskey="U">ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-clustergb.voronoi">
+<span id="clustergb-voronoi"></span><h1>clustergb.voronoi<a class="headerlink" href="#module-clustergb.voronoi" title="Permalink to this headline">¶</a></h1>
+<p>Run <a class="reference external" href="http://math.lbl.gov/voro++/">voro++</a> on a set of positions using the voro++ executable listed in the config file.</p>
+<dl class="function">
+<dt id="clustergb.voronoi.voronoi">
+<code class="descclassname">clustergb.voronoi.</code><code class="descname">voronoi</code><span class="sig-paren">(</span><em>pos</em>, <em>lx</em>, <em>ly</em>, <em>lz</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.voronoi.voronoi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a set of n atomic positions in a rectangular prismatic cell, calculates their Voronoi volumes using voro++.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">All the positions should lie inside the cell, and the calculation is aperiodic, so the cell walls function as
+Voronoi cell boundaries.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pos</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((n,3)\)</span> Cartesian atomic positions to evaluate.</li>
+<li><strong>ly, lz</strong> (<em>lx,</em>) &#8211; x-, y-, and z-lengths for rectangular cell.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p>7-element tuple containing</p>
+<ul class="simple">
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((n,)\)</span> Voronoi volumes.</li>
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((n,)\)</span> surface areas.</li>
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((n,)\)</span> edge lengths.</li>
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((n,)\)</span> <em>int</em> vertex counts.</li>
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((n,)\)</span> <em>int</em> face counts.</li>
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((n,)\)</span> <em>int</em> edge counts.</li>
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((n,3)\)</span> offset of the Voronoi centroid from the atom for which it was constructed.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">How to cite ClusterGB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../development.html">Development</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../development.html#docs">Docs:</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mod.html">ClusterGB module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exe.html">Executables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="clustergb.structure.html"
+                        title="previous chapter">clustergb.structure</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../exe.html"
+                        title="next chapter">Executables</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/develop/module/clustergb.voronoi.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../exe.html" title="Executables"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.structure.html" title="clustergb.structure"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" >ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Liam Huber.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

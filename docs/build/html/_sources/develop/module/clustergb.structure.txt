@@ -1,0 +1,7 @@
+clustergb.structure
+===================
+
+.. automodule:: clustergb.structure
+    :members:
+    :undoc-members:
+    :show-inheritance:

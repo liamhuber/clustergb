@@ -1,0 +1,7 @@
+cgb_run_monosegregation.py
+==========================
+
+.. automodule:: cgb_run_monosegregation
+    :members:
+    :undoc-members:
+    :show-inheritance:

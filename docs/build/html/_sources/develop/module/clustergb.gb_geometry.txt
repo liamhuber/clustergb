@@ -1,0 +1,7 @@
+clustergb.gb_geometry
+=====================
+
+.. automodule:: clustergb.gb_geometry
+    :members:
+    :undoc-members:
+    :show-inheritance:

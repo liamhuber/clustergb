@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>cgb_run_coordination.py &mdash; ClusterGB 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ClusterGB 1.0.0 documentation" href="../index.html" />
+    <link rel="up" title="Usage" href="../usage.html" />
+    <link rel="next" title="cgb_run_monosegregation.py" href="cgb_run_monosegregation.html" />
+    <link rel="prev" title="cgb_run_bond_orientational_order.py" href="cgb_run_bond_orientational_order.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cgb_run_monosegregation.html" title="cgb_run_monosegregation.py"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="cgb_run_bond_orientational_order.html" title="cgb_run_bond_orientational_order.py"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../usage.html" accesskey="U">Usage</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cgb-run-coordination-py">
+<h1>cgb_run_coordination.py<a class="headerlink" href="#cgb-run-coordination-py" title="Permalink to this headline">¶</a></h1>
+<p>Calculate the Fermi-smeared coordination number of each GB site at each GB recursively through the ClusterGB hierarchy. Saves results to Job.results.coordination.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">cgb_run_coordination</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">force</span><span class="o">-</span><span class="n">recalculate</span><span class="p">]</span>
+                            <span class="p">[</span><span class="o">--</span><span class="n">fermi</span><span class="o">-</span><span class="n">smearing</span> <span class="n">FERMI_SMEARING</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h2>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h2>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;force-recalculate, -recalc</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Overwrite any existing coordination number data with new calculations.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;fermi-smearing, -smear</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Amount (angstroms) of fermi-smearing to apply when calculating coordination values. (Default is 20 percent of the difference between first and second nearest neighbour distances.)</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../usage.html">Usage</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#initialize-project">Initialize project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#initialize-a-job">Initialize a job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#calculate-a-gb-property">Calculate a GB property</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#before-and-after">Before and After</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#thermo-data"><code class="docutils literal"><span class="pre">thermo_data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#decompose"><code class="docutils literal"><span class="pre">decompose</span></code></a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../usage.html#executables">Executables:</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cgb_bulk_modulus.html">cgb_bulk_modulus.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_delete.html">cgb_delete.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_init_job.html">cgb_init_job.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_init_project.html">cgb_init_project.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_interactive.html">cgb_interactive.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_rescale_potential.html">cgb_rescale_potential.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_run_bond_orientational_order.html">cgb_run_bond_orientational_order.py</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cgb_run_coordination.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_run_monosegregation.html">cgb_run_monosegregation.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_run_voronoi.html">cgb_run_voronoi.py</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">How to cite ClusterGB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cgb_run_bond_orientational_order.html"
+                        title="previous chapter">cgb_run_bond_orientational_order.py</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cgb_run_monosegregation.html"
+                        title="next chapter">cgb_run_monosegregation.py</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/use/cgb_run_coordination.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cgb_run_monosegregation.html" title="cgb_run_monosegregation.py"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="cgb_run_bond_orientational_order.html" title="cgb_run_bond_orientational_order.py"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../usage.html" >Usage</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Liam Huber.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tutorial &mdash; ClusterGB 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ClusterGB 1.0.0 documentation" href="index.html" />
+    <link rel="next" title="Units" href="units.html" />
+    <link rel="prev" title="Steinhardt et al." href="bibtex_refs/steinhardt1983bond.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="units.html" title="Units"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="bibtex_refs/steinhardt1983bond.html" title="Steinhardt et al."
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="tutorial">
+<span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<p>In this section, we&#8217;ll set up an example project and calculate properties for a couple of GBs.</p>
+<div class="section" id="step-0-get-a-potential">
+<h2>Step 0) Get a potential<a class="headerlink" href="#step-0-get-a-potential" title="Permalink to this headline">¶</a></h2>
+<p>Before we can make a new project, we&#8217;ll have to choose a potential. For the sake of this example, let&#8217;s choose the
+publicly available potential of Williams <em>et al.</em> for Cu-Ag from the
+<a class="reference external" href="https://www.ctcms.nist.gov/potentials/Download/Cu-Ag/CuAg.eam.alloy">NIST repository</a>. Once we have the potential,
+let&#8217;s make a new scratch directory and copy it in (you may need to change some path elements to be appropriate for
+your system):</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="o">{</span>your_dir<span class="o">}</span>
+mkdir cgb_tut
+<span class="nb">cd</span> cgb_tut
+cp ~/Downloads/CuAg.eam.alloy .
+</pre></div>
+</div>
+<p>In the future, we might want to look at some other Cu-X system that relies on a different potential Cu-X potential.
+Even though they both treat Copper (plus something else), they may describe the Cu system slightly differently, i.e.
+different lattice parameter and elastic constants. To be as consistent as possible when we compare Cu-X and Cu-Y
+results, we can rescale each potential so they at least have the same bulk lattice constant to have the same value.
+This is easy to do and has the advantage that we can at least make fair comparisons of the geometry of a particular
+undecorated GB represented by two different potentials.</p>
+<p>The experimental lattice parameter for copper is about 3.597 Å. We&#8217;ll only use one potential in this tutorial,
+but let&#8217;s go ahead and use <a class="reference internal" href="use/cgb_rescale_potential.html#use-rescale"><span class="std std-ref">cgb_rescale_potential.py</span></a> to rescale the potential to a nice round value of 3.6 Å:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>cgb_rescale_potential.py ./CuAg.eam.alloy Cu -fcc 3.6
+&gt; Step, error
+&gt; <span class="o">(</span>0, 0.075300180026761421<span class="o">)</span>
+&gt; <span class="o">(</span>1, -1.9982424159792345e-08<span class="o">)</span>
+&gt; Rescaled potential written to <span class="o">{</span>your_dir<span class="o">}</span>/tutorial/CuAg_rescaled_3_6.eam.alloy.
+&gt; The final lattice constant was 3.59999998002.
+</pre></div>
+</div>
+<p>As a sanity check, let&#8217;s quickly use <a class="reference internal" href="use/cgb_bulk_modulus.html#use-bulk-mod"><span class="std std-ref">cgb_bulk_modulus.py</span></a> to check the bulk modulus, which should be close to the
+experimental value of 140 GPa:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>cgb_bulk_modulus.py ./CuAg_rescaled_3_6.eam.alloy Cu -fcc 3.6
+&gt; Cu
+&gt; Repetitions, atom count, B <span class="o">(</span>GPa<span class="o">)</span>, host vol
+&gt; <span class="o">(</span>1, 4, 133.55442263960001, 11.663999808219492<span class="o">)</span>
+</pre></div>
+</div>
+<p>Yes, this is in the right ball-park. We&#8217;re ready to make some clusters!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As with all calculations using classical force fields, results are only as good as the force field you use. For a
+real project try to find a potential that behaves well in the host-rich side of the phase diagram, and ideal which
+has been shown (or fit) to well reproduce the energetics of structural defects.</p>
+</div>
+</div>
+<div class="section" id="step-1-make-a-new-project">
+<h2>Step 1) Make a new project<a class="headerlink" href="#step-1-make-a-new-project" title="Permalink to this headline">¶</a></h2>
+<p>ClusterGB will let you initialize a new <a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a>  by using <a class="reference internal" href="use/cgb_init_project.html#use-init-proj"><span class="std std-ref">cgb_init_project.py</span></a> as
+long as you&#8217;re not in a directory that has either a <code class="docutils literal"><span class="pre">clustergb.project</span></code> or <code class="docutils literal"><span class="pre">clustergb.job</span></code> file already. In
+addition to a unique name, each project will also require that you provide a potential, host species, and crystal
+structure information.
+Projects also hold many other values in their <code class="docutils literal"><span class="pre">par</span></code> Namespace which will be inherited by all
+<a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Jobs</span></code></a>. You can read about these choices in the <a class="reference internal" href="use/cgb_init_project.html#use-init-proj"><span class="std std-ref">cgb_init_project.py</span></a> documentation or
+directly in the documentation for <a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a>. For this tutorial, the only non-default
+values we&#8217;ll use are for the solute (Ag instead of none) and the size of the cluster (which we&#8217;ll make unreasonably
+small in order to speed up calculation times):</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>cgb_init_project.py CuAgTut --potential ./CuAg_rescaled_3_6.eam.alloy --host Cu --fcc 3.6 --solutes Ag --radius <span class="m">30</span> --inner-radius 10
+&gt; Initializing a new Project in CuAgTut
+&gt; Running bulk cluster
+&gt; Running bulk-like cluster with a substitutional Ag defect.
+&gt; Project initialization <span class="nv">runtime</span> <span class="o">=</span> 16.6144618988s.
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">CuAgTut</span></code> now has a <code class="docutils literal"><span class="pre">clustergb.project</span></code> file which is a pickled version of the
+<a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a> instance. The script has run two LAMMPS calculations: one for a cluster of
+perfect bulk Cu, and another cluster with bulk geometry but containing a substitutional Ag atom. Let&#8217;s use
+<a class="reference internal" href="use/cgb_interactive.html#use-interactive"><span class="std std-ref">cgb_interactive.py</span></a> to take a look at results for the pure bulk cluster:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>cgb_interactive.py
+&gt;&gt;&gt; <span class="nv">proj</span> <span class="o">=</span> cgb.osio.load_project<span class="o">(</span><span class="s2">&quot;CuAgTut&quot;</span><span class="o">)</span>
+&gt;&gt;&gt; proj.bulk.thermo_data.pe - proj.bulk.thermo_data.init_vals.pe
+&gt; -20.869990979997965
+&gt;&gt;&gt; proj.bulk.thermo_data.c_pe_inner - proj.bulk.thermo_data.init_vals.c_pe_inner
+&gt; 0.04855049000002509
+</pre></div>
+</div>
+<p>Here we see that the total energy of the cluster (radius = 30 Å) goes down by 21 eV when we allow it to relax. However,
+the energy of the inner sub-sphere (radius = 10 Å) actually goes <em>up</em> by 0.05 eV! This is actually perfectly sensible;
+the subsphere is initially perfect Cu bulk, and the cluster surface is farther away than the potential&#8217;s cutoff
+distance. But after we allow the structure to relax, elastic distortions from the surface penetrate deeply enough to
+perturb the inner sub-sphere. However, in our interactive Python environment, we can see that even for a small cluster
+this strain energy is small on a per-atom basis:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="o">(</span>proj.bulk.thermo_data.c_pe_inner - proj.bulk.thermo_data.init_vals.c_pe_inner<span class="o">)</span> / proj.bulk.thermo_data.v_n_inner
+&gt; 0.00013157314363150432
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-2-make-a-child-job">
+<h2>Step 2) Make a child job<a class="headerlink" href="#step-2-make-a-child-job" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Jobs</span></code></a> inherit almost all of their parameters from their parent
+<a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project's</span></code></a> <code class="docutils literal"><span class="pre">par</span></code> namespace. The major exception to this is values definining the
+GB character. Using <a class="reference internal" href="use/cgb_init_job.html#use-init-job"><span class="std std-ref">cgb_init_job.py</span></a> there are two main ways to define the GB character, to specify the shared axis
+<span class="math">\(\langle ijk \rangle\)</span>, the relative misorientation about this axis <span class="math">\(\theta\)</span> (in degrees), and the GB normal
+plane <span class="math">\((lmn)\)</span> (for the left grain), or by explicitly providing two rotation matrices (with at least one shared
+row.) We&#8217;ll use the first approach to make a simple, highly symmetric tilt boundary:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="o">{</span>your_dir<span class="o">}</span>/cgb_tut/CuAgTut/
+cgb_init_job.py symmetric --procs <span class="m">4</span> macro --shared <span class="m">0</span> <span class="m">0</span> <span class="m">1</span> --misorientation 53.13 --normal <span class="m">1</span> <span class="m">2</span> 0
+&gt; Initializing a new Job in symmetric
+&gt; In the transformed coordinates, the shared axis is <span class="o">[</span> 0.  0.  1.<span class="o">]</span>
+&gt; Minimizing microscopic DoF...
+&gt; Trial <span class="m">0</span> <span class="o">(</span>in <span class="m">23</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 942.45343731
+&gt; Trial <span class="m">1</span> <span class="o">(</span>in <span class="m">195</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 942.859555904
+&gt; Trial <span class="m">2</span> <span class="o">(</span>in <span class="m">11</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 909.805311475
+&gt; Trial <span class="m">3</span> <span class="o">(</span>in <span class="m">13</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 924.716316697
+&gt; Trial <span class="m">4</span> <span class="o">(</span>in <span class="m">200</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 892.776588315
+&gt; Best GB energy <span class="nv">found</span> <span class="o">=</span> 892.776588315
+&gt; Performings common neighbour analysis...
+&gt; Reordering structure...
+&gt; GB <span class="nv">energy</span> <span class="o">=</span> 892.776588315
+&gt; Job initialization <span class="nv">runtime</span> <span class="o">=</span> 501.125413895s.
+</pre></div>
+</div>
+<p>By default there is no annealing, so the microscopic degrees of freedom have just been (stochastically) optimized by
+translating the grains relative to each other and merging atoms from either grains. It is often useful to visualize our
+results, e.g. with <a class="reference external" href="https://ovito.org">Ovito</a>. Below we show our cluster using a slice in the <span class="math">\((001)\)</span> plane and see the familiar kite
+structure from symmetric <span class="math">\(\Sigma5\)</span> tilt GBs:</p>
+<a class="reference internal image-reference" href="_images/symm_gb.png"><img alt="Symmetric Sigma5 GB (Ovito)" class="align-center" src="_images/symm_gb.png" style="width: 240.0px; height: 240.0px;" /></a>
+<div class="topic">
+<p class="topic-title first">Exercise 1</p>
+<p>Create new projects with different radii and find the parameters which give a converged GB interfacial energy.
+(Very roughly, this should occur when the inner radius is about 20 lattice vectors, and the outer radius is about
+15 lattice vectors.)</p>
+</div>
+</div>
+<div class="section" id="step-3-calculate-segregation">
+<h2>Step 3) Calculate segregation<a class="headerlink" href="#step-3-calculate-segregation" title="Permalink to this headline">¶</a></h2>
+<p>Next, we&#8217;ll calculate the segregation energy of a substitutional Ag atom at each GB site that was identified by <a class="reference external" href="http://lammps.sandia.gov/doc/compute_cna_atom.html">common neighbour analysis</a>.
+These are already at the top of the <code class="docutils literal"><span class="pre">gb.xyzin</span></code> structure file, but how many there are is also stored in the
+<a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Job</span></code></a> object. First, let&#8217;s see how many sites there are then run the segregation
+calculations.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="o">{</span>your_dir<span class="o">}</span>/cgb_tut/CuAgTut/symmetric
+cgb_interactive.py
+&gt;&gt;&gt; <span class="nv">job</span> <span class="o">=</span> cgb.osio.load_job<span class="o">()</span>  <span class="c1"># if you give no name, load_job and load_project will look in the working directory</span>
+&gt;&gt;&gt; job.gb.natoms_nonbulklike
+&gt; 109
+&gt;&gt;&gt; quit<span class="o">()</span>
+</pre></div>
+</div>
+<p>Now, with a single command, we&#8217;ll calculate the segregation energy of Ag to each of these sites&#8211;this will take a
+couple minutes, so you might want to grab a coffee:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>cgb_run_monosegregation.py --procs 4
+&gt; Starting monosegregation calculation <span class="k">for</span> symmetric
+&gt; Calculating Ag binding to symmetric...
+&gt; ...For site 0
+&gt; ...For site 1
+<span class="o">[</span>...<span class="o">]</span>
+&gt; ...For site 108
+&gt; symmetric monosegregation <span class="nv">runtime</span> <span class="o">=</span> 399.633692026s.
+&gt; Total monosegregation <span class="nv">runtime</span> <span class="o">=</span> 399.637465954s.
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-4-plot-results">
+<h2>Step 4) Plot results<a class="headerlink" href="#step-4-plot-results" title="Permalink to this headline">¶</a></h2>
+<p>For analyzing the data, there are no specific executables. Rather, each <code class="docutils literal"><span class="pre">cgb_run_*</span></code> script saves calculated values in
+the <code class="docutils literal"><span class="pre">.results</span></code> namespace of the <a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Job</span></code></a> objects, which can then be loaded and parsed using
+custom Python code. For now, let&#8217;s use the <a class="reference external" href="https://seaborn.pydata.org">Seaborn</a> library (which uses <a class="reference external" href="https://matplotlib.org">matplotlib</a>) to make a histogram of dilute
+segregation energies from our <code class="docutils literal"><span class="pre">symmetric</span></code> <a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Job</span></code></a>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="o">{</span>your_dir<span class="o">}</span>/cgb_tut/CuAgTut/symmetric
+cgb_interactive.py
+&gt;&gt;&gt; <span class="nv">job</span> <span class="o">=</span> cgb.osio.load_job<span class="o">()</span>
+&gt;&gt;&gt; <span class="nv">seg_en</span> <span class="o">=</span> job.results.monosegregation.Ag.energy
+&gt;&gt;&gt; sns.distplot<span class="o">(</span>seg_en, <span class="nv">kde</span><span class="o">=</span>True, <span class="nv">bins</span><span class="o">=</span>50, <span class="nv">hist_kws</span><span class="o">={</span><span class="s1">&#39;align&#39;</span>: <span class="s1">&#39;mid&#39;</span><span class="o">})</span>
+&gt; &lt;matplotlib.axes._subplots.AxesSubplot object at 0x117441e10&gt;
+&gt;&gt;&gt; plt.xlabel<span class="o">(</span><span class="s2">&quot;Ag segregation energy [eV]&quot;</span><span class="o">)</span>
+&gt; Text<span class="o">(</span>0.5,0,<span class="s1">&#39;Ag segregation energy [eV]&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; plt.show<span class="o">()</span>
+</pre></div>
+</div>
+<p>This should give a plot similar to the one below:</p>
+<a class="reference internal image-reference" href="_images/symmetric_hist.png"><img alt="Histogram of segregation energies" class="align-center" src="_images/symmetric_hist.png" style="width: 528.0px; height: 363.0px;" /></a>
+<p>Here we see five energy peaks, even though we were expecting three (one for each of the unique sites in the GB kite
+structure shown above). This is because the small cluster size leads to surface effects distorting the environment of
+some GB sites, and thus different segregation energies. Looking at the local maxima of the smoothed distribution gives
+us a hint which energies have had their degeneracy split by the surface effects.</p>
+<div class="topic">
+<p class="topic-title first">Exercise 2</p>
+<p>Using the projects with different radii from <strong>Exercise 1</strong> (or new radii), run segregation energy calculations
+until all the segregation energies are converged to within ±0.01 eV of the three unique values.</p>
+</div>
+</div>
+<div class="section" id="step-5-run-new-gbs">
+<h2>Step 5) Run new GBs<a class="headerlink" href="#step-5-run-new-gbs" title="Permalink to this headline">¶</a></h2>
+<p>To get more than three unique segregation energies, let&#8217;s exploit ClusterGB&#8216;s ability to handle lower symmetry and
+calculate two more boundaries. First, let&#8217;s make another <span class="math">\(\Sigma 5\)</span> boundary, but with just a minor tweak to the
+normal plane we&#8217;ll ensure that it&#8217;s asymmetric:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="o">{</span>your_dir<span class="o">}</span>/cgb_tut/CuAgTut/
+cgb_init_job.py asymmetric --procs <span class="m">4</span> macro --shared <span class="m">0</span> <span class="m">0</span> <span class="m">1</span> --misorientation 53.13 --normal <span class="m">2</span> <span class="m">1</span> 0
+&gt; Initializing a new Job in asymmetric
+&gt; In the transformed coordinates, the shared axis is <span class="o">[</span> 0.  0.  1.<span class="o">]</span>
+&gt; Minimizing microscopic DoF...
+&gt; Trial <span class="m">0</span> <span class="o">(</span>in <span class="m">200</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 950.186210696
+&gt; Trial <span class="m">1</span> <span class="o">(</span>in <span class="m">200</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 1154.71379402
+&gt; Trial <span class="m">2</span> <span class="o">(</span>in <span class="m">200</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 928.110650849
+&gt; Trial <span class="m">3</span> <span class="o">(</span>in <span class="m">200</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 1110.27379922
+&gt; Trial <span class="m">4</span> <span class="o">(</span>in <span class="m">200</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 977.936360536
+&gt; Best GB energy <span class="nv">found</span> <span class="o">=</span> 928.110650849
+&gt; Performings common neighbour analysis...
+&gt; Reordering structure...
+&gt; GB <span class="nv">energy</span> <span class="o">=</span> 928.110650849
+&gt; Job initialization <span class="nv">runtime</span> <span class="o">=</span> 620.596703053s.
+</pre></div>
+</div>
+<p>As we might expect, the GB interfacial energy (given in mJ/m^2) is somewhat higher for this less-symmetric boundary,
+even though the shared axis and misorientation are identical to our <code class="docutils literal"><span class="pre">symmetric</span></code> job. Below, we can see the result of
+the asymmetry. Note also that when the boundary relaxes, there is still a preference to form local environments similar
+to the kites we saw in the symmetric case.</p>
+<a class="reference internal image-reference" href="_images/asymm_gb.png"><img alt="Asymmetric Sigma5 GB (Ovito)" class="align-center" src="_images/asymm_gb.png" style="width: 240.0px; height: 240.0px;" /></a>
+<p>Second, let&#8217;s make a very low-symmetry tilt boundary by choosing some (pseudo) random numbers for the misorientation
+and GB normal plane:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>cgb_init_job.py low_sym --procs <span class="m">4</span> macro --shared <span class="m">0</span> <span class="m">0</span> <span class="m">1</span> --misorientation 55.55 --normal 0.1234 0.4321 0
+&gt; Initializing a new Job in low_sym
+&gt; In the transformed coordinates, the shared axis is <span class="o">[</span> 0.  0.  1.<span class="o">]</span>
+&gt; Minimizing microscopic DoF...
+&gt; Trial <span class="m">0</span> <span class="o">(</span>in <span class="m">67</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 969.826375717
+&gt; Trial <span class="m">1</span> <span class="o">(</span>in <span class="m">200</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 1018.07622302
+&gt; Trial <span class="m">2</span> <span class="o">(</span>in <span class="m">200</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 971.924709166
+&gt; Trial <span class="m">3</span> <span class="o">(</span>in <span class="m">200</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 980.819954106
+&gt; Trial <span class="m">4</span> <span class="o">(</span>in <span class="m">200</span> steps<span class="o">)</span>, stochasitcally minimized GB <span class="nv">energy</span> <span class="o">=</span> 944.48786796
+&gt; Best GB energy <span class="nv">found</span> <span class="o">=</span> 944.48786796
+&gt; Performings common neighbour analysis...
+&gt; Reordering structure...
+&gt; GB <span class="nv">energy</span> <span class="o">=</span> 944.48786796
+&gt; Job initialization <span class="nv">runtime</span> <span class="o">=</span> 558.450699806s.
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/low_symm_gb.png"><img alt="Low-symmetry (pseudo) random tilt boundary (Ovito)" class="align-center" src="_images/low_symm_gb.png" style="width: 240.0px; height: 240.0px;" /></a>
+<p>Running <a class="reference internal" href="use/cgb_run_monosegregation.html#use-mono"><span class="std std-ref">cgb_run_monosegregation.py</span></a> from the <a class="reference internal" href="develop/module/clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a>-level directory will automatically
+calculate segregation energies for each <a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Job</span></code></a> in <code class="docutils literal"><span class="pre">Project.child_names</span></code>&#8211;don&#8217;t worry
+though, it will automatically see that the <code class="docutils literal"><span class="pre">symmetric</span></code> <a class="reference internal" href="develop/module/clustergb.job.html#clustergb.job.Job" title="clustergb.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Job</span></code></a> has already completed the
+calculation and skip over it (as long as we haven&#8217;t used the force-recalculate option!).</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>cgb_run_monosegregation.py --procs 4
+&gt; Starting monosegregation calculation <span class="k">for</span> symmetric
+&gt; Calculating Ag binding to symmetric...
+&gt; symmetric monosegregation <span class="nv">runtime</span> <span class="o">=</span> 0.0185780525208s.
+&gt; Starting monosegregation calculation <span class="k">for</span> asymmetric
+&gt; Calculating Ag binding to asymmetric...
+&gt; ...For site 0
+<span class="o">[</span>...<span class="o">]</span>
+&gt; ...For site 90
+&gt; asymmetric monosegregation <span class="nv">runtime</span> <span class="o">=</span> 292.752268076s.
+&gt; Starting monosegregation calculation <span class="k">for</span> low_sym
+&gt; Calculating Ag binding to low_sym...
+&gt; ...For site 0
+<span class="o">[</span>...<span class="o">]</span>
+&gt; ...For site 127
+&gt; low_sym monosegregation <span class="nv">runtime</span> <span class="o">=</span> 525.524158955s.
+&gt; Total monosegregation <span class="nv">runtime</span> <span class="o">=</span> 818.304820061s.
+</pre></div>
+</div>
+<p>We can make a similar histogram as we did for the symmetric boundary:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>cgb_interactive.py
+&gt;&gt;&gt; <span class="nv">proj</span> <span class="o">=</span> cgb.osio.load_project<span class="o">()</span>
+&gt;&gt;&gt; <span class="nv">seg_en</span> <span class="o">=</span> np.empty<span class="o">(</span>0<span class="o">)</span>
+&gt;&gt;&gt; <span class="k">for</span> cn in proj.child_names:
+...     <span class="nv">job</span> <span class="o">=</span> cgb.osio.load_job<span class="o">(</span>cn<span class="o">)</span>
+...     <span class="nv">seg_en</span> <span class="o">=</span> np.append<span class="o">(</span>seg_en, job.results.monosegregation.Ag.energy<span class="o">)</span>
+...
+&gt;&gt;&gt; sns.distplot<span class="o">(</span>seg_en, <span class="nv">kde</span><span class="o">=</span>True, <span class="nv">bins</span><span class="o">=</span>50, <span class="nv">hist_kws</span><span class="o">={</span><span class="s1">&#39;align&#39;</span>: <span class="s1">&#39;mid&#39;</span><span class="o">})</span>
+&gt; &lt;matplotlib.axes._subplots.AxesSubplot object at 0x11a442490&gt;
+&gt;&gt;&gt; plt.xlabel<span class="o">(</span><span class="s2">&quot;Ag segregation energy [eV]&quot;</span><span class="o">)</span>
+&gt; Text<span class="o">(</span>0.5,0,<span class="s1">&#39;Ag segregation energy [eV]&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; plt.show<span class="o">()</span>
+</pre></div>
+</div>
+<p>Which should produce something similar to the plot below, where we can see that across all three boundaries there is a
+much broader distribution of segregation energies, most of which are attractive.</p>
+<a class="reference internal image-reference" href="_images/all3_hist.png"><img alt="Histogram of segregation energies from all three boundaries" class="align-center" src="_images/all3_hist.png" style="width: 528.0px; height: 363.0px;" /></a>
+</div>
+<div class="section" id="step-6-model-the-segregation">
+<h2>Step 6) Model the segregation<a class="headerlink" href="#step-6-model-the-segregation" title="Permalink to this headline">¶</a></h2>
+<p>In addition to the dilute concentration segregation energy, there are other calculations we can perform using the
+relaxed grain boundary. For now, we will calculate the coordination number of each GB site:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="o">{</span>your_dir<span class="o">}</span>/cgb_tut/CuAgTut/
+cgb_run_coordination.py
+&gt; Starting fermi-smeared coordination number calculation <span class="k">for</span> symmetric
+&gt; symmetric coordination number <span class="nv">runtime</span> <span class="o">=</span> 0.147164106369s.
+&gt; Starting fermi-smeared coordination number calculation <span class="k">for</span> asymmetric
+&gt; asymmetric coordination number <span class="nv">runtime</span> <span class="o">=</span> 0.0982518196106s.
+&gt; Starting fermi-smeared coordination number calculation <span class="k">for</span> low_sym
+&gt; low_sym coordination number <span class="nv">runtime</span> <span class="o">=</span> 0.110391139984s.
+&gt; Total coordination number <span class="nv">runtime</span> <span class="o">=</span> 0.368505001068s.
+</pre></div>
+</div>
+<p>Next, we&#8217;ll try using this data&#8211;which comes from the undecorated GB&#8211;to predict segregation energies. Although it is a
+bit of overkill for a single variable, we&#8217;ll use scikit learn&#8217;s
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html">linear regression model</a>
+to do our fitting, because then it will be easier to branch out to more complex machine learning models in the future.
+We&#8217;ll set some data aside and <em>not</em> fit to it so we can later use it to evaluate the predictive power of our model.
+Since the first two boundaries we calculated were mostly constructed from repetitions of the same kite structure, we&#8217;ll
+fit our model to our last, least-orderly boundary.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>cgb_interactive.py
+&gt;&gt;&gt; <span class="nv">job_low_sym</span> <span class="o">=</span> cgb.osio.load_job<span class="o">(</span><span class="s2">&quot;low_sym&quot;</span><span class="o">)</span>
+&gt;&gt;&gt; <span class="nv">E_low_sym</span> <span class="o">=</span> job_low_sym.results.monosegregation.Ag.energy
+&gt;&gt;&gt; <span class="nv">N_low_sym</span> <span class="o">=</span> job_low_sym.results.coordination.number
+&gt;&gt;&gt; from sklearn.linear_model import LinearRegression
+&gt;&gt;&gt; <span class="nv">model</span> <span class="o">=</span> LinearRegression<span class="o">()</span>
+&gt;&gt;&gt; model.fit<span class="o">(</span>N_low_sym.reshape<span class="o">(</span>-1, 1<span class="o">)</span>, E_low_sym.reshape<span class="o">(</span>-1, 1<span class="o">))</span>
+&gt; LinearRegression<span class="o">(</span><span class="nv">copy_X</span><span class="o">=</span>True, <span class="nv">fit_intercept</span><span class="o">=</span>True, <span class="nv">n_jobs</span><span class="o">=</span>1, <span class="nv">normalize</span><span class="o">=</span>False<span class="o">)</span>
+&gt;&gt;&gt; m, <span class="nv">b</span> <span class="o">=</span> model.coef_<span class="o">[</span>0, 0<span class="o">]</span>, model.intercept_
+</pre></div>
+</div>
+<p>With the model trained, we can test its predictions for the symmetric boundaries which were excluded from the fit.
+We&#8217;ll keep things simple and just check the root-mean-square error of the predictions.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="nv">job_sym</span> <span class="o">=</span> cgb.osio.load_job<span class="o">(</span><span class="s2">&quot;symmetric&quot;</span><span class="o">)</span>
+&gt;&gt;&gt; E_sym, <span class="nv">N_sym</span> <span class="o">=</span> job_sym.results.monosegregation.Ag.energy, job_sym.results.coordination.number
+&gt;&gt;&gt; <span class="nv">job_asym</span> <span class="o">=</span> cgb.osio.load_job<span class="o">(</span><span class="s2">&quot;asymmetric&quot;</span><span class="o">)</span>
+&gt;&gt;&gt; E_asym, <span class="nv">N_asym</span> <span class="o">=</span> job_asym.results.monosegregation.Ag.energy, job_asym.results.coordination.number
+&gt;&gt;&gt; <span class="nv">predict_sym</span> <span class="o">=</span> m * N_sym + b
+&gt;&gt;&gt; <span class="nv">predict_asym</span> <span class="o">=</span> m * N_asym + b
+&gt;&gt;&gt; <span class="nv">RMSE_sym</span> <span class="o">=</span> np.sqrt<span class="o">(</span>np.mean<span class="o">((</span>E_sym - predict_sym<span class="o">)</span> ** 2<span class="o">))</span>
+&gt;&gt;&gt; <span class="nv">RMSE_asym</span> <span class="o">=</span> np.sqrt<span class="o">(</span>np.mean<span class="o">((</span>E_asym - predict_asym<span class="o">)</span> ** 2<span class="o">))</span>
+&gt;&gt;&gt; print<span class="o">(</span><span class="s2">&quot;Root mean square error for predicting symmetric segregation =&quot;</span>, RMSE_sym<span class="o">)</span>
+&gt; <span class="o">(</span><span class="s1">&#39;Root mean square error for predicting symmetric segregation =&#39;</span>, 0.12327727411082672<span class="o">)</span>
+&gt;&gt;&gt; print<span class="o">(</span><span class="s2">&quot;Root mean square error for predicting asymmetric segregation =&quot;</span>, RMSE_asym<span class="o">)</span>
+&gt; <span class="o">(</span><span class="s1">&#39;Root mean square error for predicting asymmetric segregation =&#39;</span>, 0.18097766703981663<span class="o">)</span>
+</pre></div>
+</div>
+<p>Finally, let&#8217;s plot everything together: our data, both training and test, and our line of best fit.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="nv">N_all</span> <span class="o">=</span> np.hstack<span class="o">([</span>N_low_sym, N_sym, N_asym<span class="o">])</span>
+&gt;&gt;&gt; N_min, <span class="nv">N_max</span> <span class="o">=</span> np.amin<span class="o">(</span>N_all<span class="o">)</span>, np.amax<span class="o">(</span>N_all<span class="o">)</span>
+&gt;&gt;&gt; <span class="nv">N_range</span> <span class="o">=</span> np.linspace<span class="o">(</span>N_min, N_max, 1000<span class="o">)</span>
+&gt;&gt;&gt; plt.scatter<span class="o">(</span>N_low_sym, E_low_sym, <span class="nv">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span>, <span class="nv">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span>, <span class="nv">label</span><span class="o">=</span><span class="s2">&quot;Low symmetry&quot;</span><span class="o">)</span>
+&gt;&gt;&gt; plt.scatter<span class="o">(</span>N_sym, E_sym, <span class="nv">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span>, <span class="nv">marker</span><span class="o">=</span><span class="s1">&#39;s&#39;</span>, <span class="nv">label</span><span class="o">=</span><span class="s2">&quot;Symmetric&quot;</span><span class="o">)</span>
+&gt;&gt;&gt; plt.scatter<span class="o">(</span>N_asym, E_asym, <span class="nv">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span>, <span class="nv">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span>, <span class="nv">label</span><span class="o">=</span><span class="s2">&quot;Asymmetric&quot;</span><span class="o">)</span>
+&gt;&gt;&gt; plt.plot<span class="o">(</span>N_range, m * N_range + b, <span class="nv">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span>, <span class="nv">label</span><span class="o">=</span><span class="s2">&quot;Linear model&quot;</span><span class="o">)</span>
+&gt;&gt;&gt; plt.xlabel<span class="o">(</span><span class="s2">&quot;Coordination number&quot;</span><span class="o">)</span>
+&gt;&gt;&gt; plt.ylabel<span class="o">(</span><span class="s2">&quot;Ag segregation energy [eV]&quot;</span><span class="o">)</span>
+&gt;&gt;&gt; plt.legend<span class="o">()</span>
+&gt;&gt;&gt; plt.show<span class="o">()</span>
+</pre></div>
+</div>
+<p>This should give you something like the plot below:</p>
+<a class="reference internal image-reference" href="_images/model.png"><img alt="Histogram of segregation energies from all three boundaries" class="align-center" src="_images/model.png" style="width: 528.0px; height: 363.0px;" /></a>
+<p>The model captures the qualitative trend that sites which are better coordinated are more attractive. Although, as we
+saw in our RMSE values it isn&#8217;t very quantitatively accurate&#8211;it even misclassifies some low-coordination sites as
+attractive when they should be repulsive! Of course, this isn&#8217;t so surprising&#8211;we&#8217;re trying to model the segregation
+of Ag to a GB site in Cu using <em>just</em> the coordination number of the <em>undecorated</em> site.</p>
+<div class="topic">
+<p class="topic-title first">Exercise 3</p>
+<p>Use <a class="reference internal" href="use/cgb_run_bond_orientational_order.html#use-bondo"><span class="std std-ref">cgb_run_bond_orientational_order.py</span></a> to calculate more descriptors of the local GB site environments, then build a more
+sophisticated model using a
+<a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html">random forest</a>
+and check how much improvement this gives for the test error.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">How to cite ClusterGB</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#step-0-get-a-potential">Step 0) Get a potential</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-1-make-a-new-project">Step 1) Make a new project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-2-make-a-child-job">Step 2) Make a child job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-3-calculate-segregation">Step 3) Calculate segregation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-4-plot-results">Step 4) Plot results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-5-run-new-gbs">Step 5) Run new GBs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-6-model-the-segregation">Step 6) Model the segregation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="bibtex_refs/steinhardt1983bond.html"
+                        title="previous chapter">Steinhardt <em>et al.</em></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="units.html"
+                        title="next chapter">Units</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/tutorial.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="units.html" title="Units"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="bibtex_refs/steinhardt1983bond.html" title="Steinhardt et al."
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Liam Huber.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

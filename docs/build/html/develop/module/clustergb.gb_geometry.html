@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>clustergb.gb_geometry &mdash; ClusterGB 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ClusterGB 1.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="ClusterGB module" href="../mod.html" />
+    <link rel="next" title="clustergb.job" href="clustergb.job.html" />
+    <link rel="prev" title="clustergb.extra_math" href="clustergb.extra_math.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clustergb.job.html" title="clustergb.job"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.extra_math.html" title="clustergb.extra_math"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" accesskey="U">ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-clustergb.gb_geometry">
+<span id="clustergb-gb-geometry"></span><h1>clustergb.gb_geometry<a class="headerlink" href="#module-clustergb.gb_geometry" title="Permalink to this headline">¶</a></h1>
+<p>Generates a cluster of atoms, presumably with a grain boundary running down the middle (x-axis normal), but bulk-like
+configurations are also possible.</p>
+<p>A couple FCC CSL parameters for quick reference:</p>
+<ul class="simple">
+<li>53.1301024&lt;001&gt;(210) Sigma 5 tilt</li>
+<li>36.8698976&lt;001&gt;(310) Sigma 5 tilt</li>
+</ul>
+<p>This <a class="reference external" href="https://www.researchgate.net/figure/257823895_fig3_FIG-4-110-symmetric-tilt-grain-boundary-structures-with-structural-units-outlined-for">page</a> is also useful.</p>
+<dl class="function">
+<dt id="clustergb.gb_geometry.find_bravais">
+<code class="descclassname">clustergb.gb_geometry.</code><code class="descname">find_bravais</code><span class="sig-paren">(</span><em>misorientation</em>, <em>shared</em>, <em>normal</em>, <em>symmetric</em>, <em>bravais</em>, <em>precision</em>, <em>verbosity</em>, <em>max_steps</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.gb_geometry.find_bravais" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the bravais lattices for two grains with the provided macroscopic parameters. Bravais lattices will be rotated
+together until the GB plane is the in yz-plane&#8211;i.e. the macroscopic parameters will be as requested but perhaps
+with a coordinate change applied to both grains.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>float</strong> (<em>misorientation</em>) &#8211; Misorientation between the two grains.</li>
+<li><strong>shared</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,)\)</span> axis about which to apply misorientation.</li>
+<li><strong>normal</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,)\)</span> grain boundary plane normal for one of the grains.</li>
+<li><strong>symmetric</strong> (<em>bool</em>) &#8211; Whether to ignore any normal vector and simply make a symmetric tilt boundary.</li>
+<li><strong>bravais</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,3)\)</span> matrix of lattice vectors for the underlying unit cell, one in each row.</li>
+<li><strong>precision</strong> (<em>float</em>) &#8211; Numeric precision, e.g. for determining if two vectors are close enough (L2) to be the same.</li>
+<li><strong>verbosity</strong> (<em>bool</em>) &#8211; Whether to print info from called subroutines (e.g. searching for rotation matrices).</li>
+<li><strong>max_steps</strong> (<em>int</em>) &#8211; Maximum allowable steps to use in numeric search subroutines.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p>3-element tuple containing</p>
+<ul class="simple">
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((3,3)\)</span> Bravais vectors for the left grain (x&lt;0).</li>
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((3,3)\)</span> Bravais vectors for the right grain (x&gt;0).</li>
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((3,)\)</span> Shared axis in the transformed coordinates.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.gb_geometry.ideal_hemispheres">
+<code class="descclassname">clustergb.gb_geometry.</code><code class="descname">ideal_hemispheres</code><span class="sig-paren">(</span><em>brav1</em>, <em>brav2</em>, <em>basis</em>, <em>translation</em>, <em>radius</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.gb_geometry.ideal_hemispheres" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates two arrays of atoms, one for each grain. The grain boundary (GB) normal is (100) and both grains
+together form a sphere.</p>
+<p>First, two appropriately rotated bravais lattices are found, one for each grain. Unless the <cite>symmetric</cite> flag is
+thrown, the first grain will have the <cite>normal</cite> vector pointing in the x-direction. Next, a large cubic repeat is
+made of these bravais lattices and populated with atoms using the bases. For each grain, these atoms are then
+trimmed to each form a hemisphere.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The hemispheres are allowed to extend slightly into each other and some atoms from each grain may overlap.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Right now it all only works with cubic lattices.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>brav1</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,3)\)</span> lattice vectors for the unit cell of one grain, one in each row.</li>
+<li><strong>brav2</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,3)\)</span> lattice vectors for the unit cell of the other grain, one in each row.</li>
+<li><strong>basis</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((n,3)\)</span> direct-coordinate location of atoms in the unit cell.</li>
+<li><strong>translation</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,)\)</span> relative translation of one grain to the other (in same units as the
+Bravais).</li>
+<li><strong>radius</strong> (<em>float</em>) &#8211; Radius of the cluster of atoms desired.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p>2-element tuple of Cartesian atomic positions for the sphere centred at the origin,</p>
+<ul class="simple">
+<li>(<em>np.ndarray</em>): <span class="math">\((n,3)\)</span> Cartesian coordinates of left hemisphere.</li>
+<li>(<em>np.ndarray</em>): <span class="math">\((n,3)\)</span> Cartesian coordinates of right hemisphere.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.gb_geometry.merge_hemispheres">
+<code class="descclassname">clustergb.gb_geometry.</code><code class="descname">merge_hemispheres</code><span class="sig-paren">(</span><em>pos1</em>, <em>pos2</em>, <em>merge_dist</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.gb_geometry.merge_hemispheres" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given two hemispheres of atoms, return a single array in which atoms from the two hemispheres which are too close
+too each other have been deleted and replaced with a new atom at their average position (i.e. exactly on the
+boundary plane.)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pos1</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((n,3)\)</span> Cartesian position of atoms in one hemisphere.</li>
+<li><strong>pos2</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((m,3)\)</span> Cartesian position of atoms in the other hemisphere.</li>
+<li><strong>merge_dist</strong> (<em>float</em>) &#8211; Distance within which to merge atoms in opposite hemispheres.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>np.ndarray</em>) &#8211; <span class="math">\((\leq m+n, 3)\)</span> Merged atoms.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">How to cite ClusterGB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../development.html">Development</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../development.html#docs">Docs:</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mod.html">ClusterGB module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exe.html">Executables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="clustergb.extra_math.html"
+                        title="previous chapter">clustergb.extra_math</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="clustergb.job.html"
+                        title="next chapter">clustergb.job</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/develop/module/clustergb.gb_geometry.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clustergb.job.html" title="clustergb.job"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.extra_math.html" title="clustergb.extra_math"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" >ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Liam Huber.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

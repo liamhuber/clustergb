@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>clustergb.osio &mdash; ClusterGB 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ClusterGB 1.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="ClusterGB module" href="../mod.html" />
+    <link rel="next" title="clustergb.project" href="clustergb.project.html" />
+    <link rel="prev" title="clustergb.lammps" href="clustergb.lammps.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clustergb.project.html" title="clustergb.project"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.lammps.html" title="clustergb.lammps"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" accesskey="U">ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-clustergb.osio">
+<span id="clustergb-osio"></span><h1>clustergb.osio<a class="headerlink" href="#module-clustergb.osio" title="Permalink to this headline">¶</a></h1>
+<p>Functions for os and io.</p>
+<dl class="function">
+<dt id="clustergb.osio.count_lines">
+<code class="descclassname">clustergb.osio.</code><code class="descname">count_lines</code><span class="sig-paren">(</span><em>fin</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.osio.count_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count the number of lines in a file. Python <cite>grep ${fin} | wc -l</cite> replacement.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fin</strong> (<em>str</em>) &#8211; Path to file.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(<em>int</em>) &#8211; Number of lines in file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.osio.file_extension">
+<code class="descclassname">clustergb.osio.</code><code class="descname">file_extension</code><span class="sig-paren">(</span><em>fpath</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.osio.file_extension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the extension associated with a  file, i.e. the bit after the final &#8216;.&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fpath</strong> (<em>str</em>) &#8211; Path to the file in question.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(<em>str</em>) Just the extension.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.osio.load">
+<code class="descclassname">clustergb.osio.</code><code class="descname">load</code><span class="sig-paren">(</span><em>filename</em>, <em>path='.'</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.osio.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a file as a pickled object and return it.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.osio.load_job">
+<code class="descclassname">clustergb.osio.</code><code class="descname">load_job</code><span class="sig-paren">(</span><em>path='.'</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.osio.load_job" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="clustergb.osio.load_project">
+<code class="descclassname">clustergb.osio.</code><code class="descname">load_project</code><span class="sig-paren">(</span><em>path='.'</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.osio.load_project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="clustergb.osio.make_dir">
+<code class="descclassname">clustergb.osio.</code><code class="descname">make_dir</code><span class="sig-paren">(</span><em>name</em>, <em>allow_exists=False</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.osio.make_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a new directory in the present location.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>str</em>) &#8211; New directory name.</li>
+<li><strong>allow_exists</strong> (<em>bool</em>) &#8211; Whether it&#8217;s OK if there is already an object with <em>name</em> at this location. (Default is
+False.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">OSError</span></code> &#8211; If there is already something named <em>name</em> here and <em>allow_exist</em> is False</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.osio.run_in_hierarchy">
+<code class="descclassname">clustergb.osio.</code><code class="descname">run_in_hierarchy</code><span class="sig-paren">(</span><em>func</em>, <em>kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.osio.run_in_hierarchy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs a function for all <cite>Jobs</cite> downstream of this point in the hierarchy.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>func</strong> (<em>callable</em>) &#8211; The function to call, which takes as its arguments a <cite>job.Job</cite> and any keyword arguments.</li>
+<li><strong>kwargs</strong> (<em>dict</em>) &#8211; The keyword arguments for <cite>func</cite>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">Exception</span></code> &#8211; When called from somewhere that doesn&#8217;t have a <em>Job</em> or <em>Project</em> object to load.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.osio.run_in_shell">
+<code class="descclassname">clustergb.osio.</code><code class="descname">run_in_shell</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.osio.run_in_shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs a command in the shell.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.osio.tee">
+<code class="descclassname">clustergb.osio.</code><code class="descname">tee</code><span class="sig-paren">(</span><em>log_loc</em>, <em>message</em>, <em>severity='info'</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.osio.tee" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tees a message string to both stdout and the parent logger.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>log_loc</strong> (<em>str</em>) &#8211; Path to the log file to write to.</li>
+<li><strong>message</strong> (<em>str</em>) &#8211; The string to log.</li>
+<li><strong>severity</strong> (<em>str</em>) &#8211; The log severity: &#8216;info&#8217;, &#8216;warning&#8217;, or &#8216;error&#8217;. (Default is &#8216;info&#8217;.)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">How to cite ClusterGB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../development.html">Development</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../development.html#docs">Docs:</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mod.html">ClusterGB module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exe.html">Executables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="clustergb.lammps.html"
+                        title="previous chapter">clustergb.lammps</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="clustergb.project.html"
+                        title="next chapter">clustergb.project</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/develop/module/clustergb.osio.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clustergb.project.html" title="clustergb.project"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.lammps.html" title="clustergb.lammps"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" >ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Liam Huber.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

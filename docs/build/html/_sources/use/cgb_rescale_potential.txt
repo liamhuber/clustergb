@@ -1,0 +1,9 @@
+.. _use_rescale:
+
+cgb_rescale_potential.py
+========================
+
+.. argparse::
+    :module: cgb_rescale_potential
+    :func: _ret_parser
+    :prog: cgb_rescale_potential

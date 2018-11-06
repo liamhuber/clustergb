@@ -1,0 +1,17 @@
+Units
+=====
+
+|project| units generally follow the |lammps_units|_, i.e.
+
+    * Distance = angstroms
+    * Energy = eV
+    * force = eV/angstrom
+    * Temperature = Kelvin
+    * Time = picoseconds
+
+Etc. including derived units like volume. Two notable exceptions are that **pressures are given in gigapascal** (e.g. in
+:ref:`use_bulk_mod`) and **GB interfacial energies are given in millejoules per square meter (mJ/m^2)**.
+
+
+.. |lammps_units| replace:: *metal* units from LAMMPS
+.. _lammps_units: https://lammps.sandia.gov/doc/units.html

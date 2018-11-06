@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>clustergb.job &mdash; ClusterGB 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ClusterGB 1.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="ClusterGB module" href="../mod.html" />
+    <link rel="next" title="clustergb.lammps" href="clustergb.lammps.html" />
+    <link rel="prev" title="clustergb.gb_geometry" href="clustergb.gb_geometry.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clustergb.lammps.html" title="clustergb.lammps"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.gb_geometry.html" title="clustergb.gb_geometry"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" accesskey="U">ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-clustergb.job">
+<span id="clustergb-job"></span><h1>clustergb.job<a class="headerlink" href="#module-clustergb.job" title="Permalink to this headline">¶</a></h1>
+<p>The <cite>Job</cite> class holds all the information about a particular GB&#8211;i.e. a name associated with a particular set of
+macroscopic GB parameters. Parameters for how to treat this GB (relaxation etc.) are inherited from the Project object
+in the directory where the Job is initialized. Results and analysis are stored in the <cite>Job</cite> namespace.</p>
+<dl class="class">
+<dt id="clustergb.job.Job">
+<em class="property">class </em><code class="descclassname">clustergb.job.</code><code class="descname">Job</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.job.Job" title="Permalink to this definition">¶</a></dt>
+<dd><p>For calculations on a particular GB cluster.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#clustergb.job.Job.job_save_name" title="clustergb.job.Job.job_save_name"><strong>job_save_name</strong></a> (<em>str</em>) &#8211; File name for pickles of this object.</li>
+<li><a class="reference internal" href="clustergb.project.html#module-clustergb.project" title="clustergb.project"><strong>project</strong></a> (<a class="reference internal" href="clustergb.project.html#clustergb.project.Project" title="clustergb.project.Project"><em>Project</em></a>) &#8211; The <cite>Project</cite> this job belongs to.</li>
+<li><strong>version</strong> (<em>str</em>) &#8211; Version of code object was created with from config.yml.</li>
+<li><strong>procs</strong> (<em>int</em>) &#8211; How many processors to call LAMMPS with.</li>
+<li><strong>name</strong> (<em>str</em>) &#8211; Name of the Job.</li>
+<li><strong>location</strong> (<em>str</em>) &#8211; Path to where the Job is stored.</li>
+<li><strong>par</strong> (<em>Namespace</em>) &#8211; <p>A collection of variables for running a calculation, most of which are pulled from the parent
+clustergb.project.Project object.</p>
+<blockquote>
+<div><ul>
+<li><strong>output.thermo_period</strong> (<em>int</em>) &#8211; How many steps to go between writing LAMMPS thermodynamic data.</li>
+<li><strong>output.dump_period</strong> (<em>int</em>) &#8211; How many steps to go between dumpy LAMMPS .xyz data.</li>
+<li><strong>gb</strong> (<em>Namespace</em>) &#8211; A collection of GB macroscopic DoF parameters.<blockquote>
+<div><ul>
+<li><strong>misorientation</strong> (<em>float</em>) &#8211; Misorientation between the two grains.</li>
+<li><strong>shared</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,)\)</span> shared axis (in multiples of the bravais vectors) of the
+two grains.</li>
+<li><strong>normal</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,)\)</span> grain boundary normal axis (in Bravais vectors) of one
+grain.</li>
+<li><strong>symmetric</strong> (<em>bool</em>) &#8211; Whether the boundary should be symmetric (opposite normals calculated using
+misorientation).</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><strong>gb</strong> (<em>Namespace</em>) &#8211; <p>A space for storing results from the construction and microscopic optimization of the GB.</p>
+<ul>
+<li><strong>annealing_quench_energies</strong> (<em>np.ndarray</em>) &#8211; Interfacial energies from each quench of the annealing
+process.</li>
+<li><strong>brav1</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,3)\)</span> Bravais lattice for the first grain (x-left).</li>
+<li><strong>brav2</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,3)\)</span> Bravais lattice for the second grain (x-right).</li>
+<li><strong>gb_energy</strong> (<em>float</em>) &#8211; The interfacial energy (in mJ/m^2).</li>
+<li><strong>natoms_nonbulklike</strong> (<em>int</em>) &#8211; The number of atoms inside <cite>self.par.cluster.r_inner</cite> with non-bulklike
+common neighbour analysis values.</li>
+<li><strong>natoms_inner</strong> (<em>int</em>) &#8211; The number of bulklike atoms inside <cite>self.par.cluster.r_inner</cite>.</li>
+<li><strong>natoms_outer</strong> (<em>int</em>) &#8211; The number of atoms beyond <cite>self.par.cluster.r_inner</cite> but inside
+<cite>self.par.cluster.r_outer</cite>.</li>
+<li><strong>natoms_balance</strong> (<em>int</em>) &#8211; The remaining number of atoms in the cluster.</li>
+<li><strong>spsa_trial_energies</strong> (<em>np.ndarray</em>) &#8211; Interfacial energies from each SPSA minimization trial.</li>
+<li><strong>thermo_data</strong> (<em>Namespace</em>) &#8211; <em>LammpsJob.thermo_data</em> collection of thermodynamic properties for the
+final, relaxed grain boundary.</li>
+</ul>
+</li>
+<li><strong>results</strong> (<em>Namespace</em>) &#8211; An empty container for other scripts to add results to. All <cite>run</cite> executables should save
+data to appropriately named sub-namespaces here.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="clustergb.job.Job.ensure_namespace">
+<code class="descname">ensure_namespace</code><span class="sig-paren">(</span><em>name</em>, <em>scope=None</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.job.Job.ensure_namespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensure that a namespace exists, creating it if necessary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>str</em>) &#8211; The name of the Namespace.</li>
+<li><strong>scope</strong> (<em>object or Namespace</em>) &#8211; Where to look for it. (Default is self.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>Namespace</em>) &#8211; The namespace in question.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="clustergb.job.Job.job_save_name">
+<code class="descname">job_save_name</code><em class="property"> = 'clustergb.job'</em><a class="headerlink" href="#clustergb.job.Job.job_save_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="clustergb.job.Job.new_boundary">
+<code class="descname">new_boundary</code><span class="sig-paren">(</span><em>procs</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.job.Job.new_boundary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Using the provided macroscopic GB parameters, make a new GB cluster, (stochasitcally) minimize its microscopic
+degrees of freedom, anneal it (if requested), then use common neighbour analysis to find GB sites. Write a new
+structure file (gb.xyzin) with this relaxed cluster having GB sites at the head of the file, followed by other
+atoms inside the inner radius, followed by atoms between inner and outer radii, followed by any other atoms.
+Saves data in the <cite>self.gb</cite> namespace.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>procs</strong> (<em>int</em>) &#8211; Number of processors to run LAMMPS on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.job.Job.refresh_project">
+<code class="descname">refresh_project</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.job.Job.refresh_project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reloads the parent project object and saves it to <cite>self.project</cite> again, getting a fresh copy in case there
+have been changes (e.g. from the actions of another of the project&#8217;s child jobs).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.job.Job.save">
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.job.Job.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a pickled version of this object.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="clustergb.job.Job.segregation_energy">
+<em class="property">static </em><code class="descname">segregation_energy</code><span class="sig-paren">(</span><em>gb_solute</em>, <em>bulk</em>, <em>gb</em>, <em>bulk_solute</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.job.Job.segregation_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate segregation energy for the solute to the GB site. Positive energy indicates favourable binding.
+Uses total energy in order to capture strain energy deposited by the solute outside r_inner. This is safe
+because the surface energy will almost perfectly cancel (unlike GB surface energy.)</p>
+<p>Each input is a namespace storing the thermodynamic data from a LAMMPS calculation, which will have an <cite>etotal</cite>
+value, storing the total energy from the calculation.</p>
+<p>Uses a convention with negative segregation energy as favourable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>gb_solute</strong> (<em>Namespace</em>) &#8211; Data from a calculation with a solute atom at a GB site, e.g.
+<cite>clustergb.lammps.LammpsJob.thermo_data</cite>.</li>
+<li><strong>bulk</strong> (<em>Namespace</em>) &#8211; Data from a bulk calculation, e.g. <cite>Project.bulk.thermo_data</cite>.</li>
+<li><strong>gb</strong> (<em>Namespace</em>) &#8211; Data from an undecorated GB calculation, e.g. <cite>Job.gb.thermo_data</cite>.</li>
+<li><strong>bulk_solute</strong> (<em>Namespace</em>) &#8211; Data from a pure bulk calculation, e.g. <cite>Project.bulk_X.thermo_data</cite>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>float</em>) &#8211; Solute segregation energy.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">How to cite ClusterGB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../development.html">Development</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../development.html#docs">Docs:</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mod.html">ClusterGB module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exe.html">Executables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="clustergb.gb_geometry.html"
+                        title="previous chapter">clustergb.gb_geometry</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="clustergb.lammps.html"
+                        title="next chapter">clustergb.lammps</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/develop/module/clustergb.job.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clustergb.lammps.html" title="clustergb.lammps"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.gb_geometry.html" title="clustergb.gb_geometry"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" >ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Liam Huber.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

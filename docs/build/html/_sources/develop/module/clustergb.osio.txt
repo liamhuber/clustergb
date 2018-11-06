@@ -1,0 +1,7 @@
+clustergb.osio
+==============
+
+.. automodule:: clustergb.osio
+    :members:
+    :undoc-members:
+    :show-inheritance:

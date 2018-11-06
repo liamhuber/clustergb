@@ -1,0 +1,39 @@
+How to cite |project|
+=====================
+
+If you use |project|, please make the appropriate citations. Bibtex entries are provided in the hyperlinks for your
+convenience.
+
+Any usage
+---------
+
+- :ref:`Lee and Choi, MSMSE 12 (2004) <lee>`
+- :ref:`Huber et al., in preparation (2018) <huber>`
+
+Bond orientational order
+------------------------
+
+- :ref:`Steinhardt, Nelson, and Ronchetti, PRB 28 (1983) <steinhardt>`
+
+
+Fermi-smoothed coordination number
+----------------------------------
+
+- :ref:`Huang et al., PSSB 252 (2015) <huang>`
+
+
+Voronoi analysis by Voro++
+--------------------------
+
+- `Whatever Voro++ tells you <http://math.lbl.gov/voro++/download/>`_
+
+Or (as of writing these docs):
+
+- :ref:`Rycroft, Chaos 19 (2009) <rycroft>`
+
+.. toctree::
+    :hidden:
+    :maxdepth: 1
+    :glob:
+
+    bibtex_refs/*

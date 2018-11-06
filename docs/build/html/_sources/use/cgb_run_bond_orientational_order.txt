@@ -1,0 +1,9 @@
+.. _use_bondo:
+
+cgb_run_bond_orientational_order.py
+===================================
+
+.. argparse::
+    :module: cgb_run_bond_orientational_order
+    :func: _ret_parser
+    :prog: cgb_run_bond_orientational_order

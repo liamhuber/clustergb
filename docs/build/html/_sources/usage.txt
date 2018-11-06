@@ -1,0 +1,169 @@
+Usage
+=====
+
+The structure of |project| is deliberately simple, where the code is based on a two-level hierarchy of
+:class:`Projects <clustergb.project.Project>` and :class:`Jobs <clustergb.job.Job>`, which are stored as pickled_
+Python objects for later access, and all LAMMPS_ calculations are performed by making a shell call to an external
+LAMMPS_ executable. :class:`Projects <clustergb.project.Project>`, :class:`Jobs <clustergb.job.Job>`, and further
+calculations can all be created/executed using shell commands.
+
+
+Initialize project
+------------------
+
+A new :class:`Project <clustergb.project.Project>` is started using :ref:`use_init_proj` and requires a project name, a valid
+EAM potential, a host species, and a crystal structure (FCC or BCC with lattice parameter). There are many other
+parameters for :class:`Projects <clustergb.project.Project>`, but most have very reasonable defaults. These parameters
+are stored in :attr:`clustergb.project.par`.
+
+:ref:`use_init_proj` will create a new directory with the project name and run calculations for bulk clusters: one pure bulk,
+and one calculation for each solute with the solute atom substitutionally placed at the center of the cluster. Output
+from these calculations is stored in :attr:`clustergb.project.bulk` and
+:attr:`clustergb.project.bulk_${SOLUTE}`, respectively.
+
+:class:`Projects <clustergb.project.Project>` store themselves as pickled_  Python objects and keep a ``.log`` file of
+their operations.
+
+
+Initialize a job
+----------------
+
+Inside a :class:`Project <clustergb.project.Project>` directory, a new :class:`Job <clustergb.job.Job>` can be created
+using :ref:`use_init_job`. The new :class:`Job <clustergb.job.Job>` will inherit the parent
+:class:`Project <clustergb.project.Project>` parameters stored in :attr:`~clustergb.project.par` and copy them locally.
+This is so that all GBs in a particular project are treated in a consistent way (i.e. same cluster size, annealing
+treatment, etc.) Additionally, :class:`Jobs <clustergb.job.Job>` have a sub-namespace :attr:`clustergb.job.par.gb`
+which stores the parameters used to define the macroscopic character of the GB.
+
+Results for the optimized GB structure are stored
+directly in :attr:`clustergb.job.gb`, including the Bravais lattices for the two grains, the number of atoms in each
+domain of the cluster, the thermodynamic quantities for the final relaxed GB, the GB interfacial energy, etc.
+
+:class:`Jobs <clustergb.job.Job>` store themselves as pickled_ Python objects and keep a ``.log`` file of their
+operations.
+
+
+Calculate a GB property
+-----------------------
+
+With bulk, bulk+solute, and undecorated GB calculations completed and bulk and GB structure files available, all
+remaining calculation are done by ``cgb_run_...`` scripts. Invoked from a :class:`Job <clustergb.job.Job>` directory,
+these will calculate some property for the GB and store the results in ``clustergb.Job.results.${CALCULATION_NAME}``.
+Invoked from the :class:`Project <clustergb.project.Project>` level, the behaviour is similar but the calculation will
+be performed for all child :class:`Jobs <clustergb.job.Job>`. This modular format allows almost any static property to
+be calculated on top of the basic undecorated, relaxed GBs.
+
+
+Before and After
+----------------
+
+|project| also comes with two other scripts for interacting with EAM potentials: :ref:`use_rescale` and
+:ref:`use_bulk_mod`. :ref:`use_rescale` allows for rescaling the lattice parameter of a potential (for a cubic
+structure). This is useful for a study of multiple solutes where different potentials are used to accommodate different
+solute species. :ref:`use_bulk_mod` simply calculates the bulk modulus using one of the potential's valid species
+(and an FCC or BCC unit cell), and is a useful sanity check after rescaling potentials.
+
+Finally, :ref:`use_interactive` opens an interactive Python session with many useful modules--including the
+|project| module--pre-loaded. No particular scripts are included for analyzing the results, but
+:func:`clustergb.osio.load_project` and :func:`clustergb.osio.load_job` make it easy to load
+:class:`Projects <clustergb.project.Project>` and :class:`Jobs <clustergb.job.Job>` by either invoking them in a
+:class:`Project <clustergb.project.Project>` or :class:`Job <clustergb.job.Job>` directory, or passing the path to a
+:class:`Project <clustergb.project.Project>` or :class:`Job <clustergb.job.Job>` directory . These objects give direct
+access to calculation results for processing/plotting/etc directly in Python.
+
+
+``thermo_data``
+---------------
+
+The main result from each LAMMPS calculation is a ``thermo_data`` namespace, which are parsed from the LAMMPS output
+file.
+
+====================== ========================================================
+Name                   Description
+====================== ========================================================
+``lx``, ``ly``, ``lz`` Rectangular box lengths.
+``pe``                 Potential energy.
+``ke``                 Kinetic energy.
+``etotal``             Total energy.
+``press``              Total pressure
+``vol``                Total volume (of the periodic box, not the cluster)
+``temp``               Temperature.
+``v_n_all``            Number of atoms in the entire cluster.
+``v_n_inner``          Number of atoms in the inner sub-sphere.
+``c_pe_inner``         Potential energy of atoms in the inner sub-sphere.
+``init_vals``          The above values at the start of the LAMMPS calculation.
+====================== ========================================================
+
+.. warning::
+
+    ``init_vals`` is from the initiation of the *most recent* LAMMPS calculation. For instance, for
+    :attr:`clustergb.job.gb.thermo_data` the optimization of microscopic degrees of freedom is a multi-step process
+    involving translations and merging, annealing, and force minimization, so the ``init_vals`` do not refer to any
+    ideally "unrelaxed" GB structure.
+
+
+``decompose``
+-------------
+
+:class:`Projects <clustergb.project.Project>` can be initialized with a ``--decompose`` flag thrown which triggers an
+additional LAMMPS calculation any time a calculation with a solute atom is performed: the final relaxed structure of
+the solute-containing calculation is used as input to a new, static calculation with all atoms set to be host species.
+
+In |project| solute-GB segregation energies are calculated as follows,
+
+.. math::
+
+    E_{\mathrm{seg}} = \big(E_{\mathrm{GB}}^{X} + E_{\mathrm{bulk}}\big) -
+                       \big(E_{\mathrm{GB}} + E_{\mathrm{bulk}}^{X}\big),
+
+where subscripts indicate the geometry of the of cluster calculation, and the superscript indicates the presence of
+solute. The additional calculation which has a solute-relaxed structure but pure-host chemistry (indicated by the
+superscript :math:`\widetilde{X}`) allows us to break this energy down into into "mechanical" and "chemical"
+components:
+
+.. math::
+
+    E_{\mathrm{seg}}^{\mathrm{mech}} = \big(E_{\mathrm{GB}}^{\widetilde{X}} + E_{\mathrm{bulk}}\big) -
+                                       \big(E_{\mathrm{GB}} + E_{\mathrm{bulk}}^{\widetilde{X}}\big)
+
+
+and
+
+.. math::
+
+    E_{\mathrm{seg}}^{\mathrm{chem}} = \big(E_{\mathrm{GB}}^{X} + E_{\mathrm{bulk}}^{\widetilde{X}}\big) -
+                                       \big(E_{\mathrm{GB}}^{\widetilde{X}} + E_{\mathrm{bulk}}^{X}\big)
+
+
+such that
+
+.. math::
+
+    E_{\mathrm{seg}} = E_{\mathrm{seg}}^{\mathrm{mech}} + E_{\mathrm{seg}}^{\mathrm{chem}}.
+
+That :math:`E_{\mathrm{seg}}^{\mathrm{chem}}` really represents the "chemical" aspect of solute segregating the
+boundary may be seen more easily in a refactored form:
+
+.. math::
+
+    E_{\mathrm{seg}}^{\mathrm{chem}} = \big(E_{\mathrm{GB}}^{X} - E_{\mathrm{GB}}^{\widetilde{X}}\big) -
+                                       \big(E_{\mathrm{bulk}}^{X} - E_{\mathrm{bulk}}^{\widetilde{X}}\big)
+
+Of course this decomposition is purely artificial, the electrons and protons make no such distinction. The
+approximation may nevertheless yield some insights.
+
+
+Executables:
+------------
+
+More detailed documentation for each of the |project| executable scripts can be found below:
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    use/*
+
+.. _LAMMPS: http://lammps.sandia.gov
+.. _pickled: https://docs.python.org/3/library/pickle.html
+.. _Project: develop/module/clustergb.project.html

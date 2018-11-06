@@ -1,0 +1,600 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>clustergb.lammps &mdash; ClusterGB 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ClusterGB 1.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="ClusterGB module" href="../mod.html" />
+    <link rel="next" title="clustergb.osio" href="clustergb.osio.html" />
+    <link rel="prev" title="clustergb.job" href="clustergb.job.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clustergb.osio.html" title="clustergb.osio"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.job.html" title="clustergb.job"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" accesskey="U">ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-clustergb.lammps">
+<span id="clustergb-lammps"></span><h1>clustergb.lammps<a class="headerlink" href="#module-clustergb.lammps" title="Permalink to this headline">¶</a></h1>
+<p>A class and functions for writing LAMMPS input files and running LAMMPS.</p>
+<dl class="class">
+<dt id="clustergb.lammps.LammpsJob">
+<em class="property">class </em><code class="descclassname">clustergb.lammps.</code><code class="descname">LammpsJob</code><span class="sig-paren">(</span><em>input_file='in.clustergb.lammps'</em>, <em>log_file='log.lammps'</em>, <em>cluster=None</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles LAMMPS calculations by building a LAMMPS input file through initialization and a series of <cite>add</cite> methods,
+then <cite>run</cite> the LAMMPS executable and parsing the log file.</p>
+<p>Uses LAMMPS &#8216;metal&#8217; units, so distances are all in angstroms, time in ps, temperatures in K, and energy in eV.</p>
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_cell_relax">
+<code class="descname">add_cell_relax</code><span class="sig-paren">(</span><em>pressure=0</em>, <em>isotropy='iso'</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_cell_relax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a relaxation command to the LAMMPs input string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pressure</strong> (<em>float</em>) &#8211; Pressure at which to run in bars (default is 0.)</li>
+<li><strong>isotropy</strong> (<em>str</em>) &#8211; Allow box to relax &#8216;iso&#8217;tropically or &#8216;aniso&#8217;tropically (orthogonal only.) (Default is iso.)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_dump_cna">
+<code class="descname">add_dump_cna</code><span class="sig-paren">(</span><em>xl_type</em>, <em>lattice_constant</em>, <em>dump_file</em>, <em>dump_period=1</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_dump_cna" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a dump command for common neighbour analysis values for all atoms.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xl_type</strong> (<em>str</em>) &#8211; Crystal structure indicator.</li>
+<li><strong>lattice_constant</strong> (<em>float</em>) &#8211; Lattice parameter.</li>
+<li><strong>dump_file</strong> (<em>str</em>) &#8211; Where to dump the per-atom CNA data.</li>
+<li><strong>dump_period</strong> (<em>int</em>) &#8211; Period (steps) to dump the data. (Default is 1&#8211;dump every step.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><code class="xref py py-exc docutils literal"><span class="pre">NotImplementedError</span></code> &#8211; If <cite>lattice_type</cite> is &#8220;hcp&#8221;</li>
+<li><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> &#8211; If <cite>lattice_type</cite> is not &#8220;fcc&#8221;, &#8220;bcc&#8221;, or &#8220;hcp&#8221;.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_dump_thermo">
+<code class="descname">add_dump_thermo</code><span class="sig-paren">(</span><em>dump_period=1</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_dump_thermo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a dump command for basic thermo properties (c.f. <cite>self.thermo_keys</cite>), and if the cluster option was given
+also dumps spatial data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dump_period</strong> (<em>int</em>) &#8211; Period (steps) to dump the data. (Default is 1&#8211;dump every step.)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_dump_xyz">
+<code class="descname">add_dump_xyz</code><span class="sig-paren">(</span><em>dump_file</em>, <em>dump_period=100</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_dump_xyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a dump command for the cartesian positions of the atoms.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dump_file</strong> (<em>str</em>) &#8211; Where to write the positions to. (Recommended extension for the file is .xyz)</li>
+<li><strong>dump_period</strong> (<em>int</em>) &#8211; Period (steps) to dump the data. (Default is 100&#8211;dump every hundredth step.)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_potential">
+<code class="descname">add_potential</code><span class="sig-paren">(</span><em>pot_file</em>, <em>species</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_potential" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add commands for which potential to use and which species to reference within it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pot_file</strong> (<em>str</em>) &#8211; Path to empirical potential to use.</li>
+<li><strong>species</strong> (<em>str</em>) &#8211; Space separated, potential-appropriate chemical symbols who will be applied (in order) to
+the type column of the input file.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_print_value">
+<code class="descname">add_print_value</code><span class="sig-paren">(</span><em>value</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_print_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a command to print a system reserved value. Keywords can be found at the LAMMPS <a class="reference external" href="http://lammps.sandia.gov/doc/thermo_style.html">documentation</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>value</strong> (<em>str</em>) &#8211; LAMMPS tag for the value to print.</li>
+<li><strong>filename</strong> (<em>str</em>) &#8211; Where to write the value to. (Default is None&#8211;print only to screen)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">Exception</span></code> &#8211; If <cite>value</cite> is not a valid LAMMPS keyword.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_restart">
+<code class="descname">add_restart</code><span class="sig-paren">(</span><em>read_restart</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_restart" title="Permalink to this definition">¶</a></dt>
+<dd><p>A a command for restarting the calculation from a LAMMPS restart file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>read_restart</strong> (<em>str</em>) &#8211; Where to find the LAMMPS restart file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_run_minimization">
+<code class="descname">add_run_minimization</code><span class="sig-paren">(</span><em>max_steps</em>, <em>force_convergence</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_run_minimization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a command to minimize the atomic forces using conjugate gradient.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The minimization command requires a <cite>force eval</cite>, but the LAMMPS docs are ambiguous about what counts as a
+force evaluation, so it is just 1000 times the number of steps for now. There is no evidence of this
+causing premature stopping for calculations with up to 700k atoms.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>max_steps</strong> (<em>int</em>) &#8211; Maximum number of conjugate gradient steps to take.</li>
+<li><strong>force_convergence</strong> (<em>float</em>) &#8211; Stopping threshold based on the L2 norm of the global force vector.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_run_nve_damped">
+<code class="descname">add_run_nve_damped</code><span class="sig-paren">(</span><em>steps</em>, <em>timestep</em>, <em>damping</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_run_nve_damped" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add commands to run the system with an NVE (microcanoncical) integrator and apply damping friction to the atoms.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>steps</strong> (<em>float</em>) &#8211; How long to run for.</li>
+<li><strong>timestep</strong> (<em>float</em>) &#8211; Velocity verlet integration time step size.</li>
+<li><strong>damping</strong> (<em>float</em>) &#8211; Coefficient of friction.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_run_nvt_langevin">
+<code class="descname">add_run_nvt_langevin</code><span class="sig-paren">(</span><em>steps</em>, <em>timestep</em>, <em>temp</em>, <em>langevin_period</em>, <em>init_temp=None</em>, <em>seed=None</em>, <em>write_restart=None</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_run_nvt_langevin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add commands to run the system with an NVT (canonical) integrator using a Langevin thermostat to equilibrate
+temperature.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>steps</strong> (<em>float</em>) &#8211; How long to run for.</li>
+<li><strong>timestep</strong> (<em>float</em>) &#8211; Velocity verlet integration time step size.</li>
+<li><strong>temp</strong> (<em>float</em>) &#8211; Target temperature for the thermostat.</li>
+<li><strong>langevin_period</strong> (<em>float</em>) &#8211; Parameter to control Langevin damping. Long times give weak damping.</li>
+<li><strong>init_temp</strong> (<em>float</em>) &#8211; Temperature for initial velocity distribution. (Default is <cite>temp</cite>.)</li>
+<li><strong>seed</strong> (<em>int</em>) &#8211; Seed to use when generating random initial velocities. (Default is random.)</li>
+<li><strong>write_restart</strong> (<em>str</em>) &#8211; Location to write a restart file to. (Default is to not write a file.)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_run_static">
+<code class="descname">add_run_static</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_run_static" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add commands to run the system for zero steps. Useful for forcing output without changing the system, e.g.
+with CNA.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_species_change">
+<code class="descname">add_species_change</code><span class="sig-paren">(</span><em>ids</em>, <em>new_type=2</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_species_change" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a command to change the species of some of the atoms.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If <cite>new_type</cite> exceeds the number of species available in the structure file that was read, this will cause
+a failure in the LAMMPS run.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ids</strong> (<em>int or np.ndarray or list</em>) &#8211; Integer id(s) for which to change species.</li>
+<li><strong>new_type</strong> (<em>int</em>) &#8211; New species value for given ids. (Default is 2.)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_structure_bulk">
+<code class="descname">add_structure_bulk</code><span class="sig-paren">(</span><em>xl_type</em>, <em>lattice_constant</em>, <em>cell_repetitions</em>, <em>nspec=1</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_structure_bulk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a command to set the structure to a block of the ideal crystal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>xl_type</strong> (<em>str</em>) &#8211; Crystal structure indicator.</li>
+<li><strong>lattice_constant</strong> (<em>float</em>) &#8211; Lattice parameter.</li>
+<li><strong>cell_repetitions</strong> (<em>int</em>) &#8211; How many repetitions of the unit cell to allow (in each of x-, y-, and
+z-directions.)</li>
+<li><strong>nspec</strong> (<em>int</em>) &#8211; How many species to allow. (Default is 1.)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_structure_file">
+<code class="descname">add_structure_file</code><span class="sig-paren">(</span><em>structure_file</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_structure_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a command to read the structure from a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>structure_file</strong> (<em>str</em>) &#8211; Path to .xyzin formatted structure file to read.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_structure_single">
+<code class="descname">add_structure_single</code><span class="sig-paren">(</span><em>vacuum_distance=25.0</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_structure_single" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a command to build the structure as a single atoms surrounded by vacuum.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vacuum_distance</strong> (<em>float</em>) &#8211; The vacuum distance between periodic images, i.e. the supercell edge length.
+(Default is 25.)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.add_vacancy">
+<code class="descname">add_vacancy</code><span class="sig-paren">(</span><em>ids</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.add_vacancy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete some of the atoms.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>or numpy.array(n, dtype=int) or list(int) ids</strong> (<em>int</em>) &#8211; Which id(s) to turn to vacancies.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clustergb.lammps.LammpsJob.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>nprocs</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.LammpsJob.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the <cite>input_string</cite> to file and executes LAMMPS (using MPI if available and requested.)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nprocs</strong> (<em>int</em>) &#8211; How many processors to run on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.lammps.energy_volume_curve">
+<code class="descclassname">clustergb.lammps.</code><code class="descname">energy_volume_curve</code><span class="sig-paren">(</span><em>xl_type</em>, <em>lattice_constants</em>, <em>pot_file</em>, <em>species</em>, <em>cell_repetitions=1</em>, <em>solute_ids=None</em>, <em>new_type=2</em>, <em>input_file='in.rescale.lammps'</em>, <em>nprocs=1</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.energy_volume_curve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a series of static calculations with different volumetric strains.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xl_type</strong> (<em>str</em>) &#8211; Crystal structure identifier.</li>
+<li><strong>lattice_constants</strong> (<em>list</em>) &#8211; <em>float</em> lattice parameters to use.</li>
+<li><strong>pot_file</strong> (<em>str</em>) &#8211; Path to empirical potential to use.</li>
+<li><strong>species</strong> (<em>str</em>) &#8211; Space separated, potential-appropriate chemical symbols who will be applied (in order) to
+the type column of the input file.</li>
+<li><strong>cell_repetitions</strong> (<em>int</em>) &#8211; How many repetitions of the unit cell to allow (in each of x-, y-, and
+z-directions.)</li>
+<li><strong>solute_ids</strong> (<em>int or np.ndarray or list</em>) &#8211; Integer id(s) for which to change species. (Default is None.)</li>
+<li><strong>new_type</strong> (<em>int</em>) &#8211; New species value for solute ids. (Default is 2.)</li>
+<li><strong>input_file</strong> (<em>str</em>) &#8211; File to write LAMMPS input script to. (Default is &#8220;in.rescale.lammps&#8221;)</li>
+<li><strong>nprocs</strong> (<em>int</em>) &#8211; How many processors to run on. (Default is 1.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p>2-element tuple containing</p>
+<ul class="simple">
+<li>(<em>np.ndarray</em>) &#8211; Supercell volumes used for strained structure.</li>
+<li>(<em>np.ndarray</em>) &#8211; Resulting total energies from a static calculation.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.lammps.potential_check">
+<code class="descclassname">clustergb.lammps.</code><code class="descname">potential_check</code><span class="sig-paren">(</span><em>pot_file</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.potential_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the provided string is a path pointing to a valid file with a known extension for empirical potentials.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pot_file</strong> (<em>str</em>) &#8211; Path to empirical potential to verify.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(<em>str</em>) &#8211; Path to empirical potential.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">Exception</span></code> &#8211; When the path isn&#8217;t to a file ending with the extension &#8221;.fs&#8221; or &#8221;.alloy&#8221;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.lammps.run_cna">
+<code class="descclassname">clustergb.lammps.</code><code class="descname">run_cna</code><span class="sig-paren">(</span><em>structure</em>, <em>pot_file</em>, <em>species</em>, <em>xl_type</em>, <em>lattice_constant</em>, <em>cna_file</em>, <em>input_file='in.cna.lammps'</em>, <em>nprocs=1</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.run_cna" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the common neighbour analysis values for a structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>structure</strong> &#8211; </li>
+<li><strong>pot_file</strong> (<em>str</em>) &#8211; Path to empirical potential to use.</li>
+<li><strong>species</strong> (<em>str</em>) &#8211; Space separated, potential-appropriate chemical symbols who will be applied (in order) to the
+type column of the input file.</li>
+<li><strong>xl_type</strong> (<em>str</em>) &#8211; Crystal structure indicator.</li>
+<li><strong>lattice_constant</strong> (<em>float</em>) &#8211; Lattice parameter.</li>
+<li><strong>cna_file</strong> (<em>str</em>) &#8211; Where to dump the per-atom CNA data.</li>
+<li><strong>input_file</strong> (<em>str</em>) &#8211; File to write LAMMPS input script to. (Default is &#8220;in.cna.lammps&#8221;)</li>
+<li><strong>nprocs</strong> (<em>int</em>) &#8211; How many processors to run on. (Default is 1.)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.lammps.run_minimization_bulk">
+<code class="descclassname">clustergb.lammps.</code><code class="descname">run_minimization_bulk</code><span class="sig-paren">(</span><em>xl_type</em>, <em>lattice_constant</em>, <em>pot_file</em>, <em>species</em>, <em>cell_repetitions=1</em>, <em>solute_ids=None</em>, <em>new_type=2</em>, <em>input_file='in.clustergb.lammps'</em>, <em>nprocs=1</em>, <em>pressure=0</em>, <em>isotropy='iso'</em>, <em>max_steps=1000</em>, <em>force_convergence=0.0001</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.run_minimization_bulk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimize a structure to minimize forces.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xl_type</strong> (<em>str</em>) &#8211; Crystal structure indicator.</li>
+<li><strong>lattice_constant</strong> (<em>float</em>) &#8211; Lattice parameter.</li>
+<li><strong>pot_file</strong> (<em>str</em>) &#8211; Path to empirical potential to use.</li>
+<li><strong>species</strong> (<em>str</em>) &#8211; Space separated, potential-appropriate chemical symbols who will be applied (in order) to the
+type column of the input file.</li>
+<li><strong>cell_repetitions</strong> (<em>int</em>) &#8211; How many repetitions of the unit cell to allow (in each of x-, y-, and
+z-directions.)</li>
+<li><strong>solute_ids</strong> (<em>int or np.ndarray or list</em>) &#8211; Integer id(s) for which to change species. (Default is None.)</li>
+<li><strong>new_type</strong> (<em>int</em>) &#8211; New species value for solute ids. (Default is 2.)</li>
+<li><strong>input_file</strong> (<em>str</em>) &#8211; File to write LAMMPS input script to. (Default is &#8220;in.clustergb.lammps&#8221;)</li>
+<li><strong>nprocs</strong> (<em>int</em>) &#8211; How many processors to run on. (Default is 1.)</li>
+<li><strong>pressure</strong> (<em>float</em>) &#8211; Pressure at which to run in bars (default is 0.)</li>
+<li><strong>isotropy</strong> (<em>str</em>) &#8211; Allow box to relax &#8216;iso&#8217;tropically or &#8216;aniso&#8217;tropically (orthogonal only.) (Default is iso.)</li>
+<li><strong>max_steps</strong> (<em>int</em>) &#8211; Maximum number of CG steps to take. (Default is 1000)</li>
+<li><strong>force_convergence</strong> (<em>float</em>) &#8211; Stopping threshold based on the L2 norm of the global force vector. (Default is
+0.0001.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>Namespace</em>) &#8211; Parsed thermodynamics data from the log file.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.lammps.run_static_bulk">
+<code class="descclassname">clustergb.lammps.</code><code class="descname">run_static_bulk</code><span class="sig-paren">(</span><em>xl_type</em>, <em>lattice_constant</em>, <em>pot_file</em>, <em>species</em>, <em>cell_repetitions=1</em>, <em>solute_ids=None</em>, <em>new_type=2</em>, <em>input_file='in.clustergb.lammps'</em>, <em>nprocs=1</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.lammps.run_static_bulk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a static calculation of a bulk unit cell.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xl_type</strong> (<em>str</em>) &#8211; Crystal structure indicator.</li>
+<li><strong>lattice_constant</strong> (<em>float</em>) &#8211; Lattice parameter.</li>
+<li><strong>pot_file</strong> (<em>str</em>) &#8211; Path to empirical potential to use.</li>
+<li><strong>species</strong> (<em>str</em>) &#8211; Space separated, potential-appropriate chemical symbols who will be applied (in order) to the
+type column of the input file.</li>
+<li><strong>cell_repetitions</strong> (<em>int</em>) &#8211; How many repetitions of the unit cell to allow (in each of x-, y-, and
+z-directions.) (Default is 1.)</li>
+<li><strong>solute_ids</strong> (<em>int or np.ndarray or list</em>) &#8211; Integer id(s) for which to change species. (Default is None.)</li>
+<li><strong>new_type</strong> (<em>int</em>) &#8211; New species value for solute ids. (Default is 2.)</li>
+<li><strong>input_file</strong> (<em>str</em>) &#8211; File to write LAMMPS input script to. (Default is &#8220;in.clustergb.lammps&#8221;)</li>
+<li><strong>nprocs</strong> (<em>int</em>) &#8211; How many processors to run on. (Default is 1.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>Namespace</em>) &#8211; Parsed thermodynamics data from the log file.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">How to cite ClusterGB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../development.html">Development</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../development.html#docs">Docs:</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mod.html">ClusterGB module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exe.html">Executables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="clustergb.job.html"
+                        title="previous chapter">clustergb.job</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="clustergb.osio.html"
+                        title="next chapter">clustergb.osio</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/develop/module/clustergb.lammps.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clustergb.osio.html" title="clustergb.osio"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.job.html" title="clustergb.job"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" >ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Liam Huber.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

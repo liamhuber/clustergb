@@ -1,0 +1,320 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>clustergb.structure &mdash; ClusterGB 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ClusterGB 1.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="ClusterGB module" href="../mod.html" />
+    <link rel="next" title="clustergb.voronoi" href="clustergb.voronoi.html" />
+    <link rel="prev" title="clustergb.project" href="clustergb.project.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clustergb.voronoi.html" title="clustergb.voronoi"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.project.html" title="clustergb.project"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" accesskey="U">ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-clustergb.structure">
+<span id="clustergb-structure"></span><h1>clustergb.structure<a class="headerlink" href="#module-clustergb.structure" title="Permalink to this headline">¶</a></h1>
+<p>For reading and writing LAMMPS-compatible structure files.</p>
+<dl class="function">
+<dt id="clustergb.structure.comment_count">
+<code class="descclassname">clustergb.structure.</code><code class="descname">comment_count</code><span class="sig-paren">(</span><em>counts</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.structure.comment_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert raw counts of atoms in the different cluster regions to a human-readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>counts</strong> (<em>list</em>) &#8211; <em>int</em> values for the number of nonbulklike atoms, atoms in the inner sphere (excluding
+non-bulklike), the shell between the inner and outer sphere, and the balance of atoms in the
+cluster.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(<em>str</em>) &#8211; A comment describing the atom counts.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.structure.comment_radii">
+<code class="descclassname">clustergb.structure.</code><code class="descname">comment_radii</code><span class="sig-paren">(</span><em>r_inner</em>, <em>r_outer</em>, <em>r</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.structure.comment_radii" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert radii defining the cluster and sub-spheres to a human-readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>r_inner</strong> (<em>float</em>) &#8211; Inner sub-sphere radius.</li>
+<li><strong>r_outer</strong> (<em>float</em>) &#8211; Outer sub-sphere radius.</li>
+<li><strong>r</strong> (<em>float</em>) &#8211; Radius of the entire cluster.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>str</em>) &#8211; A comment describing the cluster radii.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.structure.read_xyz">
+<code class="descclassname">clustergb.structure.</code><code class="descname">read_xyz</code><span class="sig-paren">(</span><em>fin</em>, <em>step=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.structure.read_xyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a LAMMPS-dumped .xyz file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fin</strong> (<em>str</em>) &#8211; File to read.</li>
+<li><strong>step</strong> (<em>int</em>) &#8211; Which frame to read. Can be negative to read from the end of the file. (Default is -1.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p>2-element tuple containing</p>
+<ul class="simple">
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((n, 3)\)</span> cartesian xyz positions of all atoms. and their species ids.</li>
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((n,)\)</span> and their <em>int</em> species flag.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.structure.read_xyzin">
+<code class="descclassname">clustergb.structure.</code><code class="descname">read_xyzin</code><span class="sig-paren">(</span><em>fin</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.structure.read_xyzin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads &#8216;.xyzin&#8217; file (the format for LAMMPS to read from when loading a structure.)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fin</strong> (<em>str</em>) &#8211; File to read.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">5-element tuple containing<ul class="simple">
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((n, 3)\)</span> cartesian xyz positions of all atoms. and their species ids.</li>
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((n,)\)</span> and their <em>int</em> species flag.</li>
+<li>(<em>float</em>), (<em>float</em>), (<em>float</em>) &#8211; The x-, y-, and z-lengths of the rectangular simulation cell.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.structure.reorder">
+<code class="descclassname">clustergb.structure.</code><code class="descname">reorder</code><span class="sig-paren">(</span><em>pos</em>, <em>center</em>, <em>r_inner</em>, <em>r_outer</em>, <em>cna_vals=None</em>, <em>lattice_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.structure.reorder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reorders a set of cartesian atomic positions positions so that non-bulk-like atoms are at the beginning of the
+position array, followed by inner atoms, followed by outer, followed by the balance of the list.</p>
+<ul>
+<li><dl class="first docutils">
+<dt>Non-bulk-like) Has a <cite>cna_vals</cite> id that doesn&#8217;t correspond to the bulk-indicator for the given <cite>lattice_type</cite>. If</dt>
+<dd><p class="first last"><cite>cna_vals</cite> is left as the default <cite>None</cite> type, this will be an empty list of positions.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Inner) The atoms whose position is within <cite>r_inner</cite> of the <cite>center</cite> point, but who are bulk-like.</p>
+</li>
+<li><p class="first">Outer) Atoms who lie between <cite>r_inner</cite> and <cite>r_outer</cite> from <cite>center</cite>, whether they&#8217;re bulk-like or not.</p>
+</li>
+<li><p class="first">Balance) The balance of atoms in the pos list, all farther that <cite>r_outer</cite> from <cite>center</cite>.</p>
+</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pos</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((n,3)\)</span> Cartesian atom positions.</li>
+<li><strong>center</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,)\)</span> center of the cluster.</li>
+<li><strong>r_inner</strong> (<em>float</em>) &#8211; Inner radius for partitioning the cluster.</li>
+<li><strong>r_outer</strong> (<em>float</em>) &#8211; Outer radius for partitioning the cluster.</li>
+<li><strong>cna_vals</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((n,)\)</span> <em>int</em> LAMMPS common-neighbour analysis flags per atom. (Default has no
+non-bulk-like atoms.)</li>
+<li><strong>lattice_type</strong> (<em>str</em>) &#8211; The crystal lattice type (&#8216;fcc&#8217; or &#8216;bcc&#8217;.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p>2-element tuple containing</p>
+<ul class="simple">
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((n,3)\)</span> atomic positions with atoms ordered non-bulklike, inner, outer, and balance.</li>
+<li>(<em>np.ndarray</em>) &#8211; <span class="math">\((4,)\)</span> <em>int</em> counts of atoms in the same order.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.structure.write_vorin">
+<code class="descclassname">clustergb.structure.</code><code class="descname">write_vorin</code><span class="sig-paren">(</span><em>fout</em>, <em>pos</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.structure.write_vorin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a file with atomic position data formatted for voro++ to read.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fout</strong> (<em>str</em>) &#8211; Name of file to write to.</li>
+<li><strong>pos</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((n,3)\)</span> Cartesian atomic positions to write.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.structure.write_xyzin">
+<code class="descclassname">clustergb.structure.</code><code class="descname">write_xyzin</code><span class="sig-paren">(</span><em>fout</em>, <em>pos</em>, <em>lx</em>, <em>ly=None</em>, <em>lz=None</em>, <em>species=None</em>, <em>nspecies=None</em>, <em>comment='Written with clustergb'</em>, <em>mask=None</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.structure.write_xyzin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an &#8216;.xyzin&#8217; file, i.e. xyz formatted with some box information so it can be read by LAMMPS.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fout</strong> (<em>str</em>) &#8211; Name of file to write to.</li>
+<li><strong>pos</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((n,3)\)</span> Cartesian atomic positions to write.</li>
+<li><strong>lx</strong> (<em>float</em>) &#8211; Periodic length in x-direction.</li>
+<li><strong>ly</strong> (<em>float</em>) &#8211; Periodic length in y-direction. (Default, None, uses <cite>lx</cite> value.)</li>
+<li><strong>lz</strong> (<em>float</em>) &#8211; Periodic length in z-direction. (Default, None, uses <cite>lx</cite> value.)</li>
+<li><strong>species</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((n,)\)</span> <em>int</em> species identifiers. (Default, None, is all species 1.)</li>
+<li><strong>nspecies</strong> (<em>int</em>) &#8211; Number of species (must be <em>at least</em> as many as unique species in species array). (Default,
+None, counts the unique values in <cite>species</cite>.)</li>
+<li><strong>comment</strong> (<em>str</em>) &#8211; Comment string to put at head of file. Must be a single line or the file may not be read
+properly later. (Default is &#8220;Written with clustergb&#8221;.)</li>
+<li><strong>mask</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((n,)\)</span> <em>bool</em> mask indicating which atoms should be written if only a subset is
+desired. (Default, None, writes the entire array of atoms.)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">How to cite ClusterGB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../development.html">Development</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../development.html#docs">Docs:</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mod.html">ClusterGB module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exe.html">Executables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="clustergb.project.html"
+                        title="previous chapter">clustergb.project</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="clustergb.voronoi.html"
+                        title="next chapter">clustergb.voronoi</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/develop/module/clustergb.structure.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clustergb.voronoi.html" title="clustergb.voronoi"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.project.html" title="clustergb.project"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" >ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Liam Huber.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

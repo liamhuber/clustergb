@@ -1,0 +1,7 @@
+cgb_init_job.py
+===============
+
+.. automodule:: cgb_init_job
+    :members:
+    :undoc-members:
+    :show-inheritance:

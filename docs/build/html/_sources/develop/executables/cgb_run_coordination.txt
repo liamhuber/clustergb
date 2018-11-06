@@ -1,0 +1,7 @@
+cgb_run_coordination.py
+=======================
+
+.. automodule:: cgb_run_coordination
+    :members:
+    :undoc-members:
+    :show-inheritance:

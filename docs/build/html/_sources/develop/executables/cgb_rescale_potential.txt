@@ -1,0 +1,7 @@
+cgb_rescale_potential.py
+========================
+
+.. automodule:: cgb_rescale_potential
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,7 @@
+cgb_bulk_modulus.py
+===================
+
+.. automodule:: cgb_bulk_modulus
+    :members:
+    :undoc-members:
+    :show-inheritance:

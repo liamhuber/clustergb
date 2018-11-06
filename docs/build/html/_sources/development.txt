@@ -1,0 +1,22 @@
+Development
+===========
+
+This section contains the documentation for the source code itself. It will be particularly useful if you want to write
+and extension for |project|, but is hopefully unnecessary for a regular user.
+
+The only rule is that any new ``cgb_run_*`` calculation on the GB data should store results as a new |namespace|_
+in ``Job.results``.
+
+.. |namespace| replace:: ``Namespace``
+.. _namespace: https://docs.python.org/2/library/argparse.html#argparse.Namespace
+
+
+Docs:
+-----
+
+.. toctree::
+    :maxdepth: 2
+
+    develop/mod
+    develop/exe
+

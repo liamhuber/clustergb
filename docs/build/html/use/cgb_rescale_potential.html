@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>cgb_rescale_potential.py &mdash; ClusterGB 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ClusterGB 1.0.0 documentation" href="../index.html" />
+    <link rel="up" title="Usage" href="../usage.html" />
+    <link rel="next" title="cgb_run_bond_orientational_order.py" href="cgb_run_bond_orientational_order.html" />
+    <link rel="prev" title="cgb_interactive.py" href="cgb_interactive.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cgb_run_bond_orientational_order.html" title="cgb_run_bond_orientational_order.py"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="cgb_interactive.html" title="cgb_interactive.py"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../usage.html" accesskey="U">Usage</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cgb-rescale-potential-py">
+<span id="use-rescale"></span><h1>cgb_rescale_potential.py<a class="headerlink" href="#cgb-rescale-potential-py" title="Permalink to this headline">¶</a></h1>
+<p>Rescale an EAM potential to match a target lattice parameter at 0K.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">cgb_rescale_potential</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">(</span><span class="o">--</span><span class="n">fcc</span> <span class="n">FCC</span> <span class="o">|</span> <span class="o">--</span><span class="n">bcc</span> <span class="n">BCC</span><span class="p">)</span>
+                             <span class="p">[</span><span class="o">--</span><span class="n">precision</span> <span class="n">PRECISION</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">strain</span> <span class="n">STRAIN</span><span class="p">]</span>
+                             <span class="p">[</span><span class="o">--</span><span class="n">nsamples</span> <span class="n">NSAMPLES</span><span class="p">]</span>
+                             <span class="p">[</span><span class="o">--</span><span class="n">init_dr_step</span> <span class="n">INIT_DR_STEP</span><span class="p">]</span>
+                             <span class="p">[</span><span class="o">--</span><span class="n">lammps_force_convergence</span> <span class="n">LAMMPS_FORCE_CONVERGENCE</span><span class="p">]</span>
+                             <span class="p">[</span><span class="o">--</span><span class="n">lammps_max_steps</span> <span class="n">LAMMPS_MAX_STEPS</span><span class="p">]</span>
+                             <span class="p">[</span><span class="o">--</span><span class="n">procs</span> <span class="n">PROCS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">check_only</span><span class="p">]</span>
+                             <span class="n">potential</span> <span class="n">species</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments">
+<h2>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h2>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>potential</kbd></td>
+<td>Path to the empirical potential to rescale.</td></tr>
+<tr><td class="option-group">
+<kbd>species</kbd></td>
+<td>Elemental symbol for the host (as referenced in the potential.)</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Named Arguments">
+<h2>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h2>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;fcc, -fcc</kbd></td>
+<td>Use fcc lattice and target given size (in angstroms).</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;bcc, -bcc</kbd></td>
+<td>Use bcc lattice and target given size (in angstroms).</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;precision, -prec</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Precision for matching actual lattice constant to target.</p>
+<p class="last">Default: 1e-05</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;strain, -stn</kbd></td>
+<td><p class="first">Maximum strain away from target value for energy-volume curve.</p>
+<p class="last">Default: 1e-05</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;nsamples, -n</kbd></td>
+<td><p class="first">Number of points in energy-volume curve.</p>
+<p class="last">Default: 8</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;init_dr_step, -dr0</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Initial step for changing the potential&#8217;s dr value.</p>
+<p class="last">Default: 1e-05</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;lammps_force_convergence, -ftol</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Force convergence for all LAMMPS minimizations in eV/angstrom.</p>
+<p class="last">Default: 0.001</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;lammps_max_steps, -lms</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Max steps for LAMMPS energy minimization.</p>
+<p class="last">Default: 10000</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;procs, -np</kbd></td>
+<td><p class="first">Max processors available to run mpi on.</p>
+<p class="last">Default: 1</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;check_only, -check</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Instead of rescaling the potential, just get its optimal lattice constant from an energy-volume curve.</p>
+<p class="last">Default: False</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../usage.html">Usage</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#initialize-project">Initialize project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#initialize-a-job">Initialize a job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#calculate-a-gb-property">Calculate a GB property</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#before-and-after">Before and After</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#thermo-data"><code class="docutils literal"><span class="pre">thermo_data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#decompose"><code class="docutils literal"><span class="pre">decompose</span></code></a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../usage.html#executables">Executables:</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cgb_bulk_modulus.html">cgb_bulk_modulus.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_delete.html">cgb_delete.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_init_job.html">cgb_init_job.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_init_project.html">cgb_init_project.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_interactive.html">cgb_interactive.py</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cgb_rescale_potential.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_run_bond_orientational_order.html">cgb_run_bond_orientational_order.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_run_coordination.html">cgb_run_coordination.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_run_monosegregation.html">cgb_run_monosegregation.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_run_voronoi.html">cgb_run_voronoi.py</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">How to cite ClusterGB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cgb_interactive.html"
+                        title="previous chapter">cgb_interactive.py</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cgb_run_bond_orientational_order.html"
+                        title="next chapter">cgb_run_bond_orientational_order.py</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/use/cgb_rescale_potential.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cgb_run_bond_orientational_order.html" title="cgb_run_bond_orientational_order.py"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="cgb_interactive.html" title="cgb_interactive.py"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../usage.html" >Usage</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Liam Huber.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+.. _steinhardt:
+
+Steinhardt *et al.*
+===================
+
+.. code-block:: bibtex
+
+    @article{steinhardt1983bond,
+        title={Bond-orientational order in liquids and glasses},
+        author={Steinhardt, Paul J and Nelson, David R and Ronchetti, Marco},
+        journal={Physical Review B},
+        volume={28},
+        number={2},
+        pages={784},
+        year={1983},
+        publisher={APS}
+    }

@@ -1,0 +1,464 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>cgb_init_project.py &mdash; ClusterGB 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ClusterGB 1.0.0 documentation" href="../index.html" />
+    <link rel="up" title="Usage" href="../usage.html" />
+    <link rel="next" title="cgb_interactive.py" href="cgb_interactive.html" />
+    <link rel="prev" title="cgb_init_job.py" href="cgb_init_job.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cgb_interactive.html" title="cgb_interactive.py"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="cgb_init_job.html" title="cgb_init_job.py"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../usage.html" accesskey="U">Usage</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cgb-init-project-py">
+<span id="use-init-proj"></span><h1>cgb_init_project.py<a class="headerlink" href="#cgb-init-project-py" title="Permalink to this headline">¶</a></h1>
+<p>Sets up a Project to host multiple GBs (Jobs) using a particular potential all treated in a consistent manner.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">cgb_init_project</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="o">--</span><span class="n">potential</span> <span class="n">POTENTIAL</span> <span class="o">--</span><span class="n">host</span> <span class="n">HOST</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">solutes</span> <span class="n">SOLUTES</span> <span class="p">[</span><span class="n">SOLUTES</span> <span class="o">...</span><span class="p">]]</span>
+                        <span class="p">(</span><span class="o">--</span><span class="n">fcc</span> <span class="n">FCC</span> <span class="o">|</span> <span class="o">--</span><span class="n">bcc</span> <span class="n">BCC</span> <span class="o">|</span> <span class="o">--</span><span class="n">hcp</span> <span class="n">HCP</span> <span class="n">HCP</span><span class="p">)</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">radius</span> <span class="n">RADIUS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">inner</span><span class="o">-</span><span class="n">radius</span> <span class="n">INNER_RADIUS</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">outer</span><span class="o">-</span><span class="n">radius</span> <span class="n">OUTER_RADIUS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">vacuum</span> <span class="n">VACUUM</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">newton</span><span class="o">-</span><span class="n">precision</span> <span class="n">NEWTON_PRECISION</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">newton</span><span class="o">-</span><span class="nb">max</span><span class="o">-</span><span class="n">steps</span> <span class="n">NEWTON_MAX_STEPS</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">newton</span><span class="o">-</span><span class="n">verbosity</span> <span class="n">NEWTON_VERBOSITY</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">spsa</span><span class="o">-</span><span class="n">probe</span><span class="o">-</span><span class="n">size</span> <span class="n">SPSA_PROBE_SIZE</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">spsa</span><span class="o">-</span><span class="n">gamma</span> <span class="n">SPSA_GAMMA</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">spsa</span><span class="o">-</span><span class="n">step</span><span class="o">-</span><span class="n">size</span> <span class="n">SPSA_STEP_SIZE</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">spsa</span><span class="o">-</span><span class="n">step</span><span class="o">-</span><span class="n">offset</span> <span class="n">SPSA_STEP_OFFSET</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">spsa</span><span class="o">-</span><span class="n">alpha</span> <span class="n">SPSA_ALPHA</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">spsa</span><span class="o">-</span><span class="n">convergence</span><span class="o">-</span><span class="n">distance</span> <span class="n">SPSA_CONVERGENCE_DISTANCE</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">spsa</span><span class="o">-</span><span class="n">convergence</span><span class="o">-</span><span class="n">energy</span> <span class="n">SPSA_CONVERGENCE_ENERGY</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">spsa</span><span class="o">-</span><span class="n">momentum</span> <span class="n">SPSA_MOMENTUM</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">spsa</span><span class="o">-</span><span class="nb">max</span><span class="o">-</span><span class="n">steps</span> <span class="n">SPSA_MAX_STEPS</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">spsa</span><span class="o">-</span><span class="n">trials</span> <span class="n">SPSA_TRIALS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">spsa</span><span class="o">-</span><span class="n">verbose</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">merge</span><span class="o">-</span><span class="n">limits</span> <span class="nb">min</span> <span class="nb">max</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">lammps</span><span class="o">-</span><span class="n">force</span><span class="o">-</span><span class="n">convergence</span> <span class="n">LAMMPS_FORCE_CONVERGENCE</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">lammps</span><span class="o">-</span><span class="nb">max</span><span class="o">-</span><span class="n">steps</span> <span class="n">LAMMPS_MAX_STEPS</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">lammps</span><span class="o">-</span><span class="n">timestep</span> <span class="n">LAMMPS_TIMESTEP</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">annealing</span><span class="o">-</span><span class="n">time</span> <span class="n">ANNEALING_TIME</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">annealing</span><span class="o">-</span><span class="n">temp</span> <span class="n">ANNEALING_TEMP</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">annealing</span><span class="o">-</span><span class="n">init</span><span class="o">-</span><span class="n">temp</span> <span class="n">ANNEALING_INIT_TEMP</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">annealing</span><span class="o">-</span><span class="n">langevin</span> <span class="n">ANNEALING_LANGEVIN</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">quenching</span><span class="o">-</span><span class="n">samples</span> <span class="n">QUENCHING_SAMPLES</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">quenching</span><span class="o">-</span><span class="n">damping</span> <span class="n">QUENCHING_DAMPING</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">quenching</span><span class="o">-</span><span class="n">time</span> <span class="n">QUENCHING_TIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">decompose</span><span class="p">]</span>
+                        <span class="p">[</span><span class="o">--</span><span class="n">procs</span> <span class="n">PROCS</span><span class="p">]</span>
+                        <span class="n">name</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments">
+<h2>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h2>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>name</kbd></td>
+<td>Unique project name.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Named Arguments">
+<h2>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h2>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;decompose, -dcomp</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">In addition to segregation calculations, run pure-host structures with solute-relaxed structures so energies can later be decomposed into chemical and deformation components.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;procs, -np</kbd></td>
+<td><p class="first">Max processors available to run mpi on.s</p>
+<p class="last">Default: 1</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Chemistry">
+<h2>Chemistry<a class="headerlink" href="#Chemistry" title="Permalink to this headline">¶</a></h2>
+<p>Parameters controlling the chemistry.</p>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;potential, -potl</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Path to the empirical potential to use.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;host, -host</kbd></td>
+<td>Chemical symbol for host species.</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;solutes, -sol</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Elemental symbol(s) for solute species.</p>
+<p class="last">Default: []</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Crystal">
+<h2>Crystal<a class="headerlink" href="#Crystal" title="Permalink to this headline">¶</a></h2>
+<p>Parameters for the bulk crystal lattice.</p>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;fcc, -fcc</kbd></td>
+<td>Use fcc lattice with given size.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;bcc, -bcc</kbd></td>
+<td>Use bcc lattice with given size.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;hcp, -hcp</kbd></td>
+<td>Use hcp lattice with given a- and c-lattice length. <strong>Warning:</strong> Not implemented.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Cluster geometry">
+<h2>Cluster geometry<a class="headerlink" href="#Cluster geometry" title="Permalink to this headline">¶</a></h2>
+<p>Parameters for the geometry of the vacuum cluster.</p>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;radius, -r</kbd></td>
+<td><p class="first">The radius of the cluster.</p>
+<p class="last">Default: 140.0</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;inner-radius, -rin</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Radius of the sub-sphere used for calculating GB energies, finding GB sites, etc.</p>
+<p class="last">Default: 80.0</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;outer-radius, -rout</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>A slightly larger sub-sphere, for moving a few extra atoms to the head of the structure file. Default is the smaller of the inner radius +5 angstroms, or the total cluster radius.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;vacuum, -vac</kbd></td>
+<td><p class="first">The minimum vacuum between periodic images of the cluster.</p>
+<p class="last">Default: 20.0</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Newton's method">
+<h2>Newton&#8217;s method<a class="headerlink" href="#Newton's method" title="Permalink to this headline">¶</a></h2>
+<p>Parameters for using Newton&#8217;s method to find bravais lattices for the two grains which match the macroscopic GB degrees of freedom.</p>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;newton-precision, -nprec</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Numeric precision limit, mostly for L2-norm difference determining whether two vectors are the same. Used in gradient descent when looking for GB bravais vectors.</p>
+<p class="last">Default: 1e-08</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;newton-max-steps, -nms</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Maximum number of gradient descent steps to use in search for rotation angles when looking for GB bravais vectors.</p>
+<p class="last">Default: 5000</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;newton-verbosity, -ndv</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Verbosity interval of the gradient descent search for rotation angles. 0 is silent.</p>
+<p class="last">Default: 0</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="SPSA">
+<h2>SPSA<a class="headerlink" href="#SPSA" title="Permalink to this headline">¶</a></h2>
+<p>Parameters for using Simultaneous Perturbation Stochastic Approximation to (stochastically) minimize the GB microscopic DoF. Default values are taken from Spall&#8217;s 1998 IEEE or chosen to work for minimizing unrelaxed GB energies on the order of 100-1000 mJ/m^2. The minimization takes place in (translation, merge distance) space, where translation is of one grain relative to the other modulo the bravais lattice, and merging for atoms across the GB plane and is bounded.</p>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;spsa-probe-size, -spsaps</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>How far (in angstroms) to step when evaluating the simultaneous perturbation for a gradient. Default is 0.01 of the lattice constant.</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;spsa-gamma, -spsag</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">The power at which probe size decays with iterations.</p>
+<p class="last">Default: 0.101</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;spsa-step-size, -spsass</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Multiplier for how far to follow the gradient.</p>
+<p class="last">Default: 0.0001</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;spsa-step-offset, -spsaso</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Iteration offset for damping the decay of the step size (larger means slower decay).</p>
+<p class="last">Default: 1.0</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;spsa-alpha, -spsaa</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">The power at which the step size decays with iterations.</p>
+<p class="last">Default: 0.602</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;spsa-convergence-distance, -spsacd</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">The maximum change in (translation, merge)-space (angstroms) between consecutive minima to be considered converged.</p>
+<p class="last">Default: 0.1</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;spsa-convergence-energy, -spsace</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">The maximum change in unrelaxed GB energy (mJ/m^2) between consecutive minima to be considered converged</p>
+<p class="last">Default: 0.1</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;spsa-momentum, -spsam</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Momenta for the stochastic gradient descent, i.e. fraction of last iteration&#8217;s step to add to the current step.</p>
+<p class="last">Default: 0.8</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;spsa-max-steps, -spsams</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Maximum number of iterations to use.</p>
+<p class="last">Default: 200</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;spsa-trials, -spsat</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Number of (semi)randomly initialized SPSA trials to perform.</p>
+<p class="last">Default: 5</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;spsa-verbose, -spsav</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Flag to activate verbose output for the SPSA search.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;merge-limits, -merge</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>SPSA searches over a merge distance, over which atoms from different grains will be merged across the GB plane. The minimum and maximum distances in the search will asymptotically approach the limits given here. Default is one third the 1NN distance to 85 percent of the NN distance.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="LAMMPS ">
+<h2>LAMMPS <a class="headerlink" href="#LAMMPS " title="Permalink to this headline">¶</a></h2>
+<p>Parameters to control LAMMPS calculations.</p>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;lammps-force-convergence, -ftol</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Force convergence (eV/angstrom) for all LAMMPS minimizations.</p>
+<p class="last">Default: 0.001</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;lammps-max-steps, -lms</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Max steps for LAMMPS energy minimization.</p>
+<p class="last">Default: 10000</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;lammps-timestep, -dt</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Timestep (ps) for LAMMPS MD.</p>
+<p class="last">Default: 0.002</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;annealing-time, -atime</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">How long (ps) to anneal for.</p>
+<p class="last">Default: 0</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;annealing-temp, -atemp</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">How hot (K) to anneal.</p>
+<p class="last">Default: 293</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;annealing-init-temp, -atemp0</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Temperature (K) for initial velocities during annealing. Default is 1.5x temperature.</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;annealing-langevin, -alangevin</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">LAMMPS-format Langevin damping parameter (ps) to use for thermostat while annealing.</p>
+<p class="last">Default: 5.0</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;quenching-samples, -qsamples</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Number of times to sample the annealed state with a quench and minimization</p>
+<p class="last">Default: 1</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;quenching-damping, -qdamping</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Strength of quench (friction: force/velocity).</p>
+<p class="last">Default: 0.01</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;quenching-time, -qtime</kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Duration of quench (ps).</p>
+<p class="last">Default: 1.0</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../usage.html">Usage</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#initialize-project">Initialize project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#initialize-a-job">Initialize a job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#calculate-a-gb-property">Calculate a GB property</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#before-and-after">Before and After</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#thermo-data"><code class="docutils literal"><span class="pre">thermo_data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage.html#decompose"><code class="docutils literal"><span class="pre">decompose</span></code></a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../usage.html#executables">Executables:</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cgb_bulk_modulus.html">cgb_bulk_modulus.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_delete.html">cgb_delete.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_init_job.html">cgb_init_job.py</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cgb_init_project.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_interactive.html">cgb_interactive.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_rescale_potential.html">cgb_rescale_potential.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_run_bond_orientational_order.html">cgb_run_bond_orientational_order.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_run_coordination.html">cgb_run_coordination.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_run_monosegregation.html">cgb_run_monosegregation.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cgb_run_voronoi.html">cgb_run_voronoi.py</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">How to cite ClusterGB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cgb_init_job.html"
+                        title="previous chapter">cgb_init_job.py</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cgb_interactive.html"
+                        title="next chapter">cgb_interactive.py</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/use/cgb_init_project.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cgb_interactive.html" title="cgb_interactive.py"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="cgb_init_job.html" title="cgb_init_job.py"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../usage.html" >Usage</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Liam Huber.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

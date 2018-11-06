@@ -1,0 +1,17 @@
+.. _lee:
+
+Lee and Choi
+============
+
+.. code-block:: bibtex
+
+    @article{lee2004computation,
+        title={Computation of grain boundary energies},
+        author={Lee, Byeong-Joo and Choi, Shi-Hoon},
+        journal={Modelling and Simulation in Materials Science and Engineering},
+        volume={12},
+        number={4},
+        pages={621},
+        year={2004},
+        publisher={IOP Publishing}
+    }

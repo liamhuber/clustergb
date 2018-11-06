@@ -1,0 +1,552 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>clustergb.extra_math &mdash; ClusterGB 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ClusterGB 1.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="ClusterGB module" href="../mod.html" />
+    <link rel="next" title="clustergb.gb_geometry" href="clustergb.gb_geometry.html" />
+    <link rel="prev" title="clustergb.coordination" href="clustergb.coordination.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clustergb.gb_geometry.html" title="clustergb.gb_geometry"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.coordination.html" title="clustergb.coordination"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" accesskey="U">ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-clustergb.extra_math">
+<span id="clustergb-extra-math"></span><h1>clustergb.extra_math<a class="headerlink" href="#module-clustergb.extra_math" title="Permalink to this headline">¶</a></h1>
+<p>Some useful math functions, mostly rotation-related stuff.</p>
+<dl class="function">
+<dt id="clustergb.extra_math.alignment_matrix">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">alignment_matrix</code><span class="sig-paren">(</span><em>subject</em>, <em>target</em>, <em>precision=1e-08</em>, <em>verbosity=0</em>, <em>max_steps=1000</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.alignment_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Numerically find the rotation matrix necessary to rotate the <cite>subject</cite> vector to the <cite>target</cite> direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>subject</strong> (<em>np.ndarray</em>) &#8211; Length-3 vector to rotate.</li>
+<li><strong>target</strong> (<em>np.ndarray</em>) &#8211; Length-3 vector to rotate to.</li>
+<li><strong>precision</strong> (<em>float</em>) &#8211; Mostly for whether two unit vectors are close enough (L2-norm) to be the same.</li>
+<li><strong>verbosity</strong> (<em>bool</em>) &#8211; Whether to print info from Newton&#8217;s method search.</li>
+<li><strong>max_steps</strong> (<em>int</em>) &#8211; Maximum allowable steps in Newton&#8217;s method when searching for the rotation matrix.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p>3-element tuple containing</p>
+<ul class="simple">
+<li>(<em>np.ndarray</em>): 3x3 rotation matrix to bring <cite>subject</cite> into alignment with <cite>target</cite>.</li>
+<li>(<em>np.ndarray</em>): Length-3 axis of rotation.</li>
+<li>(<em>float</em>): Rotation angle (radians).</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.fermi">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">fermi</code><span class="sig-paren">(</span><em>r</em>, <em>r0</em>, <em>sigma</em>, <em>safe_data=False</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.fermi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the value of the <a class="reference external" href="https://en.wikipedia.org/wiki/Fermi-Dirac_statistics">Fermi-Dirac</a> distribution at <cite>r</cite>,</p>
+<div class="math">
+\[\frac{1}{1 + \exp \left( \frac{r - r_0}{\sigma} \right)}.\]</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If vectors are used for <cite>r</cite>/<cite>r_0</cite>/<cite>sigma</cite>, they must have commensurate shapes.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>r</strong> (<em>np.ndarray or float</em>) &#8211; Where on the distribution to evaluate.</li>
+<li><strong>r0</strong> (<em>np.ndarray or float</em>) &#8211; Distribution midpoint (i.e. Fermi level/half-occupancy point.)</li>
+<li><strong>sigma</strong> (<em>np.ndarray or float</em>) &#8211; Smearing width.</li>
+<li><strong>safe_data</strong> (<em>bool</em>) &#8211; Whether data can be safely used without over-/under-flow clamps. (Default is False, use
+clamping.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>float</em>) &#8211; Fermi-Dirac distribution value.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.hypersphere_unit">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">hypersphere_unit</code><span class="sig-paren">(</span><em>n</em>, <em>scale=1</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.hypersphere_unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a random vector on the surface of an n-dimensional hypersphere. Credit to <a class="reference external" href="http://mathworld.wolfram.com/HyperspherePointPicking.html">Wolfram</a> and <a class="reference external" href="https://stackoverflow.com/questions/6283080/random-unit-vector-in-multi-dimensional-space">StackOverflow</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If <cite>scale</cite> isn&#8217;t 1, the function name is misleading since it&#8217;s no longer a unit vector.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n</strong> (<em>int</em>) &#8211; Number of dimensions.</li>
+<li><strong>scale</strong> (<em>float</em>) &#8211; How long the vector should be. (Default is 1, i.e. unit vector.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>np.ndarray</em>) &#8211; <span class="math">\((n,)\)</span> vector randomly sampled from the hypersphere surface.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.is_rotation_matrix_3d">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">is_rotation_matrix_3d</code><span class="sig-paren">(</span><em>mat</em>, <em>precision=1e-08</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.is_rotation_matrix_3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the provided matrix is a rotation matrix or not (3x3, inverse = transpose, and determinant of +1).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mat</strong> (<em>np.ndarray</em>) &#8211; 3x3 vector to check.</li>
+<li><strong>precision</strong> (<em>float</em>) &#8211; Numeric precision for the inverse and determinant checks. (Default is very small.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>bool</em>) &#8211; True when the vector meets all three criteria.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.l2normalize">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">l2normalize</code><span class="sig-paren">(</span><em>vec</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.l2normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rescales a vector to unit length.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vec</strong> (<em>np.ndarray</em>) &#8211; Vector to normalize.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(<em>np.ndarray</em>) &#8211; Renormalized <cite>vec</cite> with L2 norm of 1.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.matmat_mult">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">matmat_mult</code><span class="sig-paren">(</span><em>m1</em>, <em>m2</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.matmat_mult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiplies two row-major arrays as though they were matrices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>m1</strong> (<em>np.ndarray</em>) &#8211; 3x3 left matrix.</li>
+<li><strong>m2</strong> (<em>np.ndarray</em>) &#8211; 3x3 right matrix.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>np.ndarray</em>) &#8211; 3x3 matrix product.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.matvec_mult">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">matvec_mult</code><span class="sig-paren">(</span><em>m</em>, <em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.matvec_mult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiplies a row-major array by a vector as though they were matrices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>m</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((3,3)\)</span> Rotation matrix.</li>
+<li><strong>v</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((n,3)\)</span> vector of real-space vectors to rotate.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>np.ndarray</em>) &#8211; <span class="math">\((n,3)\)</span> vector of rotated real-space vectors.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.newton1d">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">newton1d</code><span class="sig-paren">(</span><em>func</em>, <em>guess=0.0</em>, <em>step_size=0.1</em>, <em>precision=1e-08</em>, <em>verbosity=0</em>, <em>max_steps=1000</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.newton1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Zeroing a function using newton&#8217;s method for a single dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>func</strong> (<em>function</em>) &#8211; Takes a single float and has a zero somewhere you want to find.</li>
+<li><strong>guess</strong> (<em>float</em>) &#8211; Initial guess for where the zero is.</li>
+<li><strong>step_size</strong> (<em>float</em>) &#8211; Initial step size for calculating linear approximation to gradient.</li>
+<li><strong>precision</strong> (<em>float</em>) &#8211; Numeric precision for, e.g. whether we&#8217;re at zero. Also lower bounds the step_size.</li>
+<li><strong>verbosity</strong> (<em>bool</em>) &#8211; Whether to print information on how the search is going.</li>
+<li><strong>max_steps</strong> (<em>int</em>) &#8211; Maximum allowable iterations of Newton&#8217;s method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p>3-element tuple</p>
+<ul class="simple">
+<li>(<em>float</em>): Solution (i.e. location of zero).</li>
+<li>(<em>int</em>): Number of iterations used.</li>
+<li>(<em>float</em>): Final step size for evaluating gradient</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.pole_projection_z">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">pole_projection_z</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.pole_projection_z" title="Permalink to this definition">¶</a></dt>
+<dd><p>Project a set of unit vectors onto a unit circle in the (001) plane.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> (<em>np.ndarray</em>) &#8211; <span class="math">\((n, 3)\)</span> vector of 3D points to project. All should have z&gt;=0.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(<em>np.ndarray</em>) &#8211; <span class="math">\((n, 3)\)</span> vector of those points (rescaled to unit) and projected onto a circle.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.rademacher">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">rademacher</code><span class="sig-paren">(</span><em>n</em>, <em>size=None</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.rademacher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a Rademacher distribution, which is 1&#8217;s and -1&#8217;s with equal probability. If scale is given, the magnitude
+of the resulting vector is set to match.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n</strong> (<em>int</em>) &#8211; Dimension (length) of vector.</li>
+<li><strong>size</strong> (<em>float</em>) &#8211; L2-norm length of the resulting vector. (Default is 1.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>np.ndarray</em>) &#8211; Length-<span class="math">\(n\)</span> random vector of 1&#8217;s and -1&#8217;s with equal probability (rescaled so total
+vector has an L2 norm of <cite>scale</cite>).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.rotation">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">rotation</code><span class="sig-paren">(</span><em>theta</em>, <em>axis</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.rotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds a rotation matrix for rotating about the given axis by a set amount. Thanks, Wikipedia and Hamilton.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>theta</strong> (<em>float</em>) &#8211; Radians by which to rotate.</li>
+<li><strong>axis</strong> (<em>np.ndarray</em>) &#8211; Length-3 axis about which to rotate.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>np.ndarray</em>) &#8211; <span class="math">\((3,3)\)</span> rotation matrix which will appropriately rotate a column vector.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.shortest_vector">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">shortest_vector</code><span class="sig-paren">(</span><em>array</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.shortest_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the shortest vector in a 2D array and get its length.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>array</strong> (<em>np.ndarray</em>) &#8211; With shape <span class="math">\((n, m)\)</span>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(<em>np.ndarray</em>) &#8211; Length of the shortest <span class="math">\((1, m)\)</span> vector from among the <span class="math">\(n\)</span> choices.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.sigmoid">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">sigmoid</code><span class="sig-paren">(</span><em>x</em>, <em>left_asymptote=0</em>, <em>right_asymptote=1</em>, <em>center=0</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.sigmoid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the value of a <a class="reference external" href="https://en.wikipedia.org/wiki/Sigmoid_function">sigmoidal</a> function at <cite>x</cite>,</p>
+<div class="math">
+\[\frac{(R - L)}{1 + \exp (-(x - c))} + \frac{L + R - 1}{2}.\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>float or np.ndarray</em>) &#8211; Where on the sigmoid to evaluate.</li>
+<li><strong>left_asymptote</strong> (<em>float</em>) &#8211; Limit as <cite>x</cite> is very negative.</li>
+<li><strong>right_asymptote</strong> (<em>float</em>) &#8211; Limit as <cite>x</cite> is very positive.</li>
+<li><strong>center</strong> (<em>float</em>) &#8211; <cite>x</cite> value for the midpoint of transition between the two asymptotes.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>float</em>) Sigmoid evaluated at <cite>x</cite>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.spsa">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">spsa</code><span class="sig-paren">(</span><em>u</em>, <em>J</em>, <em>c</em>, <em>a</em>, <em>conv_u</em>, <em>conv_J</em>, <em>max_steps=inf</em>, <em>alpha=0.602</em>, <em>A=1.0</em>, <em>gamma=0.101</em>, <em>m=0.0</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.spsa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses simulataneous perturbation stochastic approximation <a class="footnote-reference" href="#id4" id="id1">[1]</a> <a class="footnote-reference" href="#id5" id="id2">[2]</a> to minimize a function <cite>J</cite> with respect to the
+vector <cite>u</cite>. Notation follows the <a class="reference external" href="https://en.wikipedia.org/wiki/Simultaneous_perturbation_stochastic_approximation">Wikipedia</a> page on the topic at the time of writing.</p>
+<p>At each step we perturb our loss function, <span class="math">\(J\)</span>, in a random direction <span class="math">\(c_n \Delta_n\)</span>, and look at the
+first-order approximation to the gradient in that direction. <span class="math">\(c_n\)</span> is then allowed to shrink each step. It&#8217;s
+rather like finite difference, but we probe all dimensions simultaneously, so we need only <em>two</em> evaluations of
+<span class="math">\(J\)</span> instead of the number of dimensions evaluations. Pretty nifty.</p>
+<p>Parameter defaults are taken from Spall&#8217;s 1998 IEEE <a class="reference external" href="http://www.jhuapl.edu/SPSA/PDF-SPSA/Spall_Implementation_of_the_Simultaneous.PDF">paper</a> <a class="footnote-reference" href="#id6" id="id3">[3]</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The proof of convergence sketched on <a class="reference external" href="https://en.wikipedia.org/wiki/Simultaneous_perturbation_stochastic_approximation">Wikipedia</a> requires <span class="math">\(J\)</span> to be thrice differentiable, so this might
+not converge for your problem.</p>
+</div>
+<table class="docutils footnote" frame="void" id="id4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Spall, IEEE Transactions on Automatic Control 37 (1992)</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Maryak, Chin, IEEE Transactions on Automatic Control 53 (2008)</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Spall, IEEE Transactions on Aerospace and Electronic Systems 24 (1998)</td></tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em>np.ndarray</em>) &#8211; Initial guess for the vector that minimizes the function J.</li>
+<li><strong>J</strong> (<em>function</em>) &#8211; The function to  minimize. Must take <cite>u</cite> as an argument and return a scalar.</li>
+<li><strong>c</strong> (<em>float</em>) &#8211; Initial magnitude of the probing step in <cite>u</cite>-space.</li>
+<li><strong>a</strong> (<em>float</em>) &#8211; Initial magnitude of the gradient scalar. Should be &gt; <cite>c</cite> &gt; 0.</li>
+<li><strong>conv_u</strong> (<em>float</em>) &#8211; Maximum distance of consecutive best-<cite>J</cite> <cite>u</cite>&#8216;s to be considered converged.</li>
+<li><strong>conv_J</strong> (<em>float</em>) &#8211; Maximum <cite>J</cite> difference between best-<cite>J</cite>&#8216;s to be considered converged.</li>
+<li><strong>max_steps</strong> (<em>int</em>) &#8211; Maximum number of gradient steps to take. (Default is unlimited.)</li>
+<li><strong>alpha</strong> (<em>float</em>) &#8211; Power at which <cite>a</cite> decays with iteration, i.e. <span class="math">\(a_n = a_0 / (A + n)^\gamma.\)</span> (Default is
+0.602)</li>
+<li><strong>A</strong> (<em>float</em>) &#8211; Offset for <cite>a</cite>-decay. (Default is 1.)</li>
+<li><strong>gamma</strong> (<em>float</em>) &#8211; Power at which c decays with iteration, i.e. <span class="math">\(c_n = c_0 / n^\gamma.\)</span> (Default is 0.101.)</li>
+<li><strong>m</strong> (<em>float</em>) &#8211; Maximum momentum factor, i.e. fraction of last change to add to new change. Ramps on.
+(Default is 0.)</li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211; Whether to print the fit.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p>2-element tuple containing</p>
+<ul class="simple">
+<li>(<em>np.ndarray</em>) &#8211; Best found solution in <cite>u</cite>-space.</li>
+<li>(<em>int</em>) &#8211; Number of iterations.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.uniform_points_on_sphere">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">uniform_points_on_sphere</code><span class="sig-paren">(</span><em>N</em>, <em>r=1.0</em>, <em>min_polar=0.0</em>, <em>max_polar=3.141592653589793</em>, <em>min_azimuthal=0.0</em>, <em>max_azimuthal=6.283185307179586</em>, <em>inclusive=False</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.uniform_points_on_sphere" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate points on the surface of a sphere (or portion thereof) in a uniform way. How much of the sphere to use is
+controlled by the maximum polar and azimuthal angles, e.g. <cite>max_polar</cite> = Pi/2 and <cite>max_azithumal</cite> = Pi / 2 will use
+only the +++ octant of the sphere, while <cite>max_polar</cite> = Pi and <cite>max_azithumal</cite> = Pi uses the (+/-)+(+/-) hemisphere.</p>
+<p>Adapted from a 2004 <a class="reference external" href="https://www.cmu.edu/biolphys/deserno/pdf/sphere_equi.pdf">pdf</a> from Markus Deserno.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>N</strong> (<em>int</em>) &#8211; Approximate number of points on the sphere (portion).</li>
+<li><strong>r</strong> (<em>float</em>) &#8211; Radius of the sphere.</li>
+<li><strong>min_polar</strong> (<em>float</em>) &#8211; Minimum polar angle. (Default is 0.)</li>
+<li><strong>max_polar</strong> (<em>float</em>) &#8211; Maximum polar angle (if &lt;2 Pi, only a portion of the sphere is used.) (Default is Pi.)</li>
+<li><strong>min_azimuthal</strong> (<em>float</em>) &#8211; Minimum azimuthal angle. (Default is 0.)</li>
+<li><strong>max_azimuthal</strong> (<em>float</em>) &#8211; Maximum azimuthal angle (if &lt;2 Pi, only a portion of the sphere is used.) (Default is 2
+Pi.)</li>
+<li><strong>inclusive</strong> (<em>bool</em>) &#8211; Whether to include points at the end of the azimuthal angle. (Default is False.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(<em>np.ndarray</em>) &#8211; <span class="math">\((n, 3)\)</span> vector of equidistributed points on the surface of the unit sphere.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.vectors_are_antiparallel">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">vectors_are_antiparallel</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>precision=1e-08</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.vectors_are_antiparallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>A bool for whether two vectors are anti-parallel.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.vectors_are_parallel">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">vectors_are_parallel</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>precision=1e-08</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.vectors_are_parallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>A bool for whether two vectors are parallel.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="clustergb.extra_math.vectors_are_perpendicular">
+<code class="descclassname">clustergb.extra_math.</code><code class="descname">vectors_are_perpendicular</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>precision=1e-08</em><span class="sig-paren">)</span><a class="headerlink" href="#clustergb.extra_math.vectors_are_perpendicular" title="Permalink to this definition">¶</a></dt>
+<dd><p>A bool for whether two vectors are perpendicular.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">How to cite ClusterGB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../development.html">Development</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../development.html#docs">Docs:</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mod.html">ClusterGB module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exe.html">Executables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="clustergb.coordination.html"
+                        title="previous chapter">clustergb.coordination</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="clustergb.gb_geometry.html"
+                        title="next chapter">clustergb.gb_geometry</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/develop/module/clustergb.extra_math.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clustergb.gb_geometry.html" title="clustergb.gb_geometry"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="clustergb.coordination.html" title="clustergb.coordination"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ClusterGB 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../development.html" >Development</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../mod.html" >ClusterGB module</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Liam Huber.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

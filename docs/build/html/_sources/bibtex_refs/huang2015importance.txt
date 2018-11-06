@@ -1,0 +1,17 @@
+.. _huang:
+
+Huang *et al.*
+==============
+
+.. code-block:: bibtex
+
+    @article{huang2015importance,
+        title={Importance of coordination number and bond length in titanium revealed by electronic structure investigations},
+        author={Huang, Liang-Feng and Grabowski, Blazej and McEniry,  and Trinkle, Dallas R and Neugebauer, J{\"o}rg},
+        journal={Phys. Status Solidi B},
+        volume={252},
+        number={9},
+        pages={1907--1924},
+        year={2015},
+        publisher={Wiley Online Library}
+    }
