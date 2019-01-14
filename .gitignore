@@ -1,3 +1,4 @@
 .idea/
+**.DS_store/
 *.pyc
 copy_dev.sh
