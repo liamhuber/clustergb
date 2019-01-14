@@ -343,8 +343,8 @@ class Job:
                                             init_temp=init_temp, write_restart=restart_file_name)
                 lammps.add_run_nve_damped(self.par.lammps.quenching.steps, self.par.lammps.timestep,
                                           self.par.lammps.quenching.damping)
-                lammps.add_dump_thermo(dump_period=self.par.out.thermo_period)
-                lammps.add_dump_xyz("last.xyz", dump_period=self.par.out.dump_period)
+                lammps.add_dump_thermo(dump_period=self.par.output.thermo_period)
+                lammps.add_dump_xyz("last.xyz", dump_period=self.par.output.dump_period)
                 lammps.add_run_minimization(self.par.lammps.max_steps, self.par.lammps.force_convergence)
                 lammps.run(self.procs)
 
