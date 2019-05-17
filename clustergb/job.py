@@ -15,7 +15,7 @@ import numpy as np
 import clustergb as cgb
 from argparse import Namespace
 import pickle
-from project import Project
+from .project import Project
 import shutil
 
 __author__ = "Liam Huber"

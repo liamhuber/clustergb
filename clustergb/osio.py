@@ -10,8 +10,8 @@ Functions for os and io.
 import os
 import pickle
 import logging
-import project
-import job
+from . import project
+from . import job
 import subprocess as sp
 
 __author__ = "Liam Huber"

@@ -11,7 +11,7 @@ Fermi-smeared version of this value from [1]_ which is more appropriate for the 
 """
 
 import numpy as np
-from extra_math import fermi
+from .extra_math import fermi
 
 __author__ = "Liam Huber"
 __copyright__ = "Copyright 2018, Liam Huber"
