@@ -106,5 +106,6 @@ def to_spherical(x, y, z):
     r_circ_sq = x * x + y * y
     r_sphere = np.sqrt(r_circ_sq + z * z)
     theta = np.arctan2(y, x)  # Azimuthal, in [0, 2*pi]
-    phi = np.arctan2(z, np.sqrt(r_circ_sq))  # Polar, in [0, pi]
+    # Polar from the noth pole, in [0, pi]
+    phi = 0.5 * np.pi - np.arctan2(z, np.sqrt(r_circ_sq))
     return r_sphere, theta, phi
