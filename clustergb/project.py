@@ -13,6 +13,7 @@ e.g. annealing temperatures and times.
     Python path, e.g. `import sys; sys.path.append('/path/to/clustergb')`.
 """
 
+from __future__ import print_function
 import yaml
 import os
 import numpy as np
@@ -363,7 +364,7 @@ class Project:
                 continue
 
             if (job.project.name == self.name) and (job.name not in self.child_names):
-                print "Adding from " + dir_
+                print("Adding from " + dir_)
                 self.child_names += [job.name]
 
     def run_bulk(self, procs):

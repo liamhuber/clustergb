@@ -9,8 +9,8 @@ Run `voro++ <http://math.lbl.gov/voro++/>`_ on a set of positions using the voro
 
 import os
 import yaml
-from structure import write_vorin
-from osio import run_in_shell
+from .structure import write_vorin
+from .osio import run_in_shell
 from numpy import genfromtxt
 
 __author__ = "Liam Huber"

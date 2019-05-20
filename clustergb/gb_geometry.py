@@ -24,8 +24,8 @@ This page_ is also useful.
 
 import numpy as np
 from scipy.spatial.distance import cdist
-import extra_math as em
-from osio import tee
+from . import extra_math as em
+from .osio import tee
 
 __author__ = "Liam Huber, Raheleh Hadian"
 __copyright__ = "Copyright 2018, Liam Huber"

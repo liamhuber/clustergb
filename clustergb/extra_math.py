@@ -12,7 +12,7 @@ Some useful math functions, mostly rotation-related stuff.
 """
 
 import numpy as np
-from osio import tee
+from .osio import tee
 
 __author__ = "Liam Huber"
 __copyright__ = "Copyright 2018, Liam Huber"

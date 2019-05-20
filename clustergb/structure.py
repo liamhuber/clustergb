@@ -8,7 +8,7 @@ For reading and writing LAMMPS-compatible structure files.
 """
 
 import numpy as np
-import osio
+from . import osio
 
 __author__ = "Liam Huber"
 __copyright__ = "Copyright 2018, Liam Huber"

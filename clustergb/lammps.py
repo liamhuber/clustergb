@@ -9,7 +9,7 @@ A class and functions for writing LAMMPS input files and running LAMMPS.
 
 import os
 import clustergb as cgb
-import osio
+from . import osio
 import subprocess as sp
 import argparse
 import numpy as np
