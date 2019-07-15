@@ -469,6 +469,7 @@ def spsa(u, J, c, a, conv_u, conv_J, max_steps=np.inf, alpha=0.602, A=1., gamma=
             print("Step " + str(n) + ": best J, u, J, F, dub, dJb = " +
                   ", ".join([str(J_best), str(new_vec), str(new_loss), str(force), str(u_best_change),
                              str(J_best_change)]))
+        last_du = du
         n += 1
 
     if verbose:
