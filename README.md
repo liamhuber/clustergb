@@ -71,7 +71,7 @@ __Main code:__
 
 * https://github.com/liamhuber/clustergb
 
-* Huber, Hadian, Grabowski, and Neugebauer, IN PRESS (2018)
+* Huber, Hadian, Grabowski, and Neugebauer, npj Computational Materials **4** (2018), 1-8
 
 * Lee and Choi, Modelling Simul. Mater. Sci. Eng. 12 (2004) 621
 
